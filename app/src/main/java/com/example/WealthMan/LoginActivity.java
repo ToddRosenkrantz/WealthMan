@@ -10,25 +10,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-//MainActivity
-public class MainActivity extends AppCompatActivity {
+//LoginActivity
+public class LoginActivity extends AppCompatActivity {
     EditText mTextUsername;
     EditText mTextPassword;
     Button mButtonLogin;
     TextView mTextViewRegister;
     DatabaseHelper db;
-    ViewGroup progressView;
-    protected boolean isProgressShowing = false;
+//    ViewGroup progressView;
+//    protected boolean isProgressShowing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
+/*
         Dialog dialog = new Dialog(this,android.R.style.Theme_Translucent_NoTitleBar);
         View v = this.getLayoutInflater().inflate(R.layout.progress_bar,null);
         dialog.setContentView(v);
         dialog.show();
+*/
 
         db = new DatabaseHelper(this);
         mTextUsername = (EditText)findViewById(R.id.edittext_username);
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mTextViewRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent registerIntent = new Intent(MainActivity.this,RegisterActivity.class);
+                Intent registerIntent = new Intent(LoginActivity.this,RegisterActivity.class);
                 startActivity(registerIntent);
             }
         });
@@ -48,21 +50,23 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String user = mTextUsername.getText().toString().trim();
                 String pwd = mTextPassword.getText().toString().trim();
+                mTextUsername.getText().clear();
+                mTextPassword.getText().clear();
                 Boolean res = db.checkUser(user, pwd);
                 if(res)
                 {
-                    Intent HomePage = new Intent(MainActivity.this,HomeActivity.class);
+                    Intent HomePage = new Intent(LoginActivity.this,HomeActivity.class);
                     startActivity(HomePage);
                 }
                 else
                 {
-                    Toast.makeText(MainActivity.this,"Login Error",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this,"Login Error",Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    public void showProgressingView() {
+/*    public void showProgressingView() {
 
         if (!isProgressShowing) {
             View view=findViewById(R.id.progressBar1);
@@ -75,5 +79,5 @@ public class MainActivity extends AppCompatActivity {
         ViewGroup viewGroup = (ViewGroup) v;
         viewGroup.removeView(progressView);
         isProgressShowing = false;
-    }
+    }*/
 }

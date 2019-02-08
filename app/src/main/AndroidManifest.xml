@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name="com.example.WealthMan.HomeActivity"></activity>
         <activity android:name="com.example.WealthMan.RegisterActivity" />
-        <activity android:name="com.example.WealthMan.MainActivity">
+        <activity android:name="com.example.WealthMan.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

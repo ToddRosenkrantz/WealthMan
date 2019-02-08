@@ -4,25 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.WealthMan.MainActivity"
+    tools:context="com.example.WealthMan.LoginActivity"
     android:orientation="vertical"
     android:id="@+id/container"
-    android:background="#123456"
+    android:background="#85bb65"
     android:gravity="center_horizontal">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="127dp"
-        android:layout_marginTop="50dp"
-        app:srcCompat="@drawable/logo"/>
 
-    <LinearLayout
-        android:gravity="center_horizontal"
+    android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="#c2ffffff"
         android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="127dp"
+            android:layout_marginTop="50dp"
+            app:srcCompat="@drawable/logo"/>
         <EditText
             android:id="@+id/edittext_username"
             android:layout_width="190dp"
@@ -40,15 +39,16 @@
             android:layout_marginTop="20dp"
             android:background="#ffffff"
             android:drawableLeft="@drawable/password"
+            android:inputType="textPassword"
             android:hint="@string/password"/>
-    </LinearLayout>
+
 
     <Button
         android:id="@+id/button_login"
         android:layout_width="190dp"
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
-        android:background="#04ea00"
+        android:background="#429740"
         android:textColor="#ffffff"
         android:text="@string/login"/>
 
@@ -70,7 +70,7 @@
             android:layout_height="35dp"
             android:paddingLeft="10dp"
             android:textStyle="bold"
-            android:textColor="#04ea00"
+            android:textColor="#429740"
             android:text="@string/register"/>
 
     </LinearLayout>
