@@ -1,4 +1,4 @@
-package com.example.easylearn;
+package com.example.WealthMan;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

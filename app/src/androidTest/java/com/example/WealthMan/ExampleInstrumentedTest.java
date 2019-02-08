@@ -1,4 +1,4 @@
-package com.example.easylearn;
+package com.example.WealthMan;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

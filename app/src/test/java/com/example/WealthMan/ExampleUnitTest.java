@@ -1,4 +1,4 @@
-package com.example.easylearn;
+package com.example.WealthMan;
 
 import org.junit.Test;
 

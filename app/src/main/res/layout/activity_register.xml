@@ -7,7 +7,7 @@
     android:background="@drawable/img_background"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    tools:context="com.example.easylearn.RegisterActivity">
+    tools:context="com.example.WealthMan.RegisterActivity">
 
     <ImageView
         android:layout_width="wrap_content"

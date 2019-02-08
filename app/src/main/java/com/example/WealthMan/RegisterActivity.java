@@ -2,7 +2,7 @@
 
 
 //package com.demo.easylearn;
-package com.example.easylearn;
+package com.example.WealthMan;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
