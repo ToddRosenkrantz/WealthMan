@@ -55,7 +55,9 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = mTextEmail.getText().toString().trim();
                 String pin = mTextPin.getText().toString().trim();
 
-                if(pwd.equals(cnf_pwd)){
+                // Validation occurs here
+
+                if(pwd.equals(cnf_pwd) && !(pwd.length() < 6 || pwd.length() > 12)){
                     if (!db.checkUserExist(user)){
                         long val = db.addUser(user, pwd, email, pin);
                         if(val > 0){
@@ -75,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 }
                 else {
-                    Toast.makeText(RegisterActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Passwords must match and length must be between 6 and 12 characters", Toast.LENGTH_SHORT).show();
                 }
             }
         });
