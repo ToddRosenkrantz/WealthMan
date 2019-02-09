@@ -74,4 +74,24 @@
             android:text="@string/register"/>
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+    <TextView
+        android:id="@+id/textview_forgot"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:paddingLeft="10dp"
+        android:textStyle="bold"
+        android:textColor="#429740"
+        android:text="@string/forgot"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:textColor="#ffffff"
+        android:text=" password?"/>
+
+    </LinearLayout>
 </LinearLayout>

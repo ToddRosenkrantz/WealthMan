@@ -16,6 +16,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText mTextPassword;
     Button mButtonLogin;
     TextView mTextViewRegister;
+    TextView mTextViewForgot;
+
     DatabaseHelper db;
 //    ViewGroup progressView;
 //    protected boolean isProgressShowing = false;
@@ -37,11 +39,20 @@ public class LoginActivity extends AppCompatActivity {
         mTextPassword = (EditText)findViewById(R.id.edittext_password);
         mButtonLogin = (Button)findViewById(R.id.button_login);
         mTextViewRegister = (TextView)findViewById(R.id.textview_register);
+        mTextViewForgot = (TextView)findViewById(R.id.textview_forgot);
+
         mTextViewRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent registerIntent = new Intent(LoginActivity.this,RegisterActivity.class);
                 startActivity(registerIntent);
+            }
+        });
+        mTextViewForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent forgotIntent = new Intent(LoginActivity.this,ForgotActivity.class);
+                startActivity(forgotIntent);
             }
         });
 

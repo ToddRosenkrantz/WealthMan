@@ -56,9 +56,20 @@ public class RegisterActivity extends AppCompatActivity {
                 String pin = mTextPin.getText().toString().trim();
 
                 // Validation occurs here
+                int reg_error;
+                if(user.length()==0
+                        || pwd.length() == 0
+                        || cnf_pwd.length() == 0
+                        || email.length() == 0
+                        || pin.length() == 0) reg_error = 1;
+                else if (!pwd.equals(cnf_pwd)) reg_error = 2;
+                else if (pin.length() < 4 || pin.length() > 8) reg_error = 3;
+                else if (pwd.length() < 6 || pwd.length() > 12) reg_error = 4;
+                else if (db.checkUserExist(user)) reg_error = 5;
+                else reg_error = 0;
 
-                if(pwd.equals(cnf_pwd) && !(pwd.length() < 6 || pwd.length() > 12)){
-                    if (!db.checkUserExist(user)){
+                switch (reg_error){
+                    case 0:             // Everything is good => add user to database
                         long val = db.addUser(user, pwd, email, pin);
                         if(val > 0){
                             Toast.makeText(RegisterActivity.this,"You have registered",Toast.LENGTH_SHORT).show();
@@ -66,18 +77,29 @@ public class RegisterActivity extends AppCompatActivity {
                             startActivity(moveToLogin);
                             finish();
                         }
-                        else{
-                            Toast.makeText(RegisterActivity.this,"Registeration Error",Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                    else {
-                        Toast.makeText(RegisterActivity.this,"User Already Exists",Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-                else {
-                    Toast.makeText(RegisterActivity.this, "Passwords must match and length must be between 6 and 12 characters", Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(RegisterActivity.this, "Database Error", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 1:             // Need all fields entered
+                        Toast.makeText(RegisterActivity.this,
+                                "Please Enter ALL fields",Toast.LENGTH_SHORT).show();
+                        break;
+                    case 2:             // Passwords must match
+                        Toast.makeText(RegisterActivity.this,"" +
+                                "Passwords do not match",Toast.LENGTH_SHORT).show();
+                        break;
+                    case 3:             // PIN must be between 4 and 8 chars in length
+                        Toast.makeText(RegisterActivity.this,
+                                "PIN must be between 4 and 8 digits", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 4:             // Password must be between 6 and 12 chars in length
+                        Toast.makeText(RegisterActivity.this,
+                                "Passwords must be between 6 and 12 characters long", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 5:             // User must not be in database
+                        Toast.makeText(RegisterActivity.this,
+                                "That user already exists",Toast.LENGTH_SHORT).show();
+                        break;
                 }
             }
         });

@@ -13,5 +13,6 @@
     <string name="welcome_user">Welcome User</string>
     <string name="pw_pin">Recovery Pin</string>
     <string name="user_email">User Email</string>
+    <string name="forgot">Forgot</string>
 
 </resources>
