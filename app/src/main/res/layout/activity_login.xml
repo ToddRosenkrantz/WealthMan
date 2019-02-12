@@ -30,6 +30,7 @@
             android:paddingLeft="2dp"
             android:background="#ffffff"
             android:drawableLeft="@drawable/username"
+            android:nextFocusForward="@+id/edittext_password"
             android:hint="@string/username"/>
 
         <EditText
@@ -40,6 +41,7 @@
             android:background="#ffffff"
             android:drawableLeft="@drawable/password"
             android:inputType="textPassword"
+            android:nextFocusForward="@id/button_login"
             android:hint="@string/password"/>
 
 

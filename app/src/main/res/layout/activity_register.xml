@@ -23,6 +23,7 @@
         android:paddingLeft="2dp"
         android:background="#ffffff"
         android:drawableLeft="@drawable/username"
+        android:nextFocusForward="@id/user_email"
         android:hint="@string/username"/>
     <EditText
         android:id="@+id/user_email"
@@ -32,6 +33,7 @@
         android:layout_marginTop="20dp"
         android:background="#ffffff"
         android:drawableLeft="@drawable/letter"
+        android:nextFocusForward="@+id/edittext_password"
         android:hint="@string/user_email"/>
 
     <EditText
@@ -41,6 +43,7 @@
         android:layout_marginTop="20dp"
         android:background="#ffffff"
         android:drawableLeft="@drawable/password"
+        android:nextFocusForward="@+id/edittext_cnf_password"
         android:hint="@string/password"/>
 
     <EditText
@@ -50,6 +53,7 @@
         android:layout_marginTop="20dp"
         android:background="#ffffff"
         android:drawableLeft="@drawable/password"
+        android:nextFocusForward="@+id/recovery_pin"
         android:hint="@string/confirm_password"/>
     <EditText
         android:id="@+id/recovery_pin"
@@ -59,6 +63,7 @@
         android:layout_marginTop="20dp"
         android:background="#ffffff"
         android:drawableLeft="@drawable/numberpad"
+        android:nextFocusForward="@+id/button_register"
         android:hint="@string/pw_pin"/>
     <Button
         android:id="@+id/button_register"
