@@ -22,27 +22,28 @@
             android:layout_height="127dp"
             android:layout_marginTop="50dp"
             app:srcCompat="@drawable/logo"/>
-        <EditText
-            android:id="@+id/edittext_username"
-            android:layout_width="190dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:paddingLeft="2dp"
-            android:background="#ffffff"
-            android:drawableLeft="@drawable/username"
-            android:nextFocusForward="@+id/edittext_password"
-            android:hint="@string/username"/>
 
-        <EditText
-            android:id="@+id/edittext_password"
-            android:layout_width="190dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:background="#ffffff"
-            android:drawableLeft="@drawable/password"
-            android:inputType="textPassword"
-            android:nextFocusForward="@id/button_login"
-            android:hint="@string/password"/>
+    <EditText
+        android:id="@+id/edittext_useremail"
+        android:layout_width="234dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
+        android:drawableLeft="@drawable/username"
+        android:hint="@string/user_email"
+        android:nextFocusForward="@+id/edittext_password"
+        android:paddingLeft="2dp" />
+
+    <EditText
+        android:id="@+id/edittext_password"
+        android:layout_width="227dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="#ffffff"
+        android:drawableLeft="@drawable/password"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:nextFocusForward="@id/button_login" />
 
 
     <Button

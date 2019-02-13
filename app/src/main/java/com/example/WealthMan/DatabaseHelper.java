@@ -43,11 +43,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return  res;
     }
 
-    public boolean checkUser(String username, String password){
+    public boolean checkUser(String email, String password){
+        System.out.println("checkuser:::"+email);
         String[] columns = { COL_1 };
         SQLiteDatabase db = getReadableDatabase();
-        String selection = COL_2 + "=?" + " and " + COL_3 + "=?";
-        String[] selectionArgs = { username, password };
+        String selection = COL_4 + "=?" + " and " + COL_3 + "=?";
+        String[] selectionArgs = { email, password };
         Cursor cursor = db.query(TABLE_NAME,columns,selection,selectionArgs,null,null,null);
         int count = cursor.getCount();
         cursor.close();
@@ -58,12 +59,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         else
             return  false;
     }
-    public boolean checkUserExist(String user){
+    public boolean checkUserExist(String email){
         String[] columns = { COL_1 };
         SQLiteDatabase db = getReadableDatabase();
-        String Query = "Select * from " + TABLE_NAME + " where " + COL_2 + " = " + user;
-        String selection = COL_2 + "=?";
-        String[] selectionArgs = { user };
+        String Query = "Select * from " + TABLE_NAME + " where " + COL_4 + " = " + email;
+        String selection = COL_4 + "=?";
+        String[] selectionArgs = { email };
         Cursor cursor = db.query(TABLE_NAME,columns,selection,selectionArgs,null,null,null);
         int count = cursor.getCount();
         cursor.close();
