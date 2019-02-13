@@ -1,9 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.WealthMan.ForgotActivity">
+    android:background="#85bb65"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context="com.example.WealthMan.RegisterActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="127dp"
+        android:layout_marginTop="25dp"
+        app:srcCompat="@drawable/logo"/>
+
+
+    <EditText
+        android:id="@+id/user_email"
+        android:inputType="textEmailAddress"
+        android:layout_width="206dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="#ffffff"
+        android:drawableLeft="@drawable/letter"
+        android:nextFocusForward="@+id/edittext_password"
+        android:hint="@string/user_email"/>
+
+
+
+    <EditText
+        android:id="@+id/recovery_pin"
+        android:inputType="numberPassword"
+        android:layout_width="206dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="#ffffff"
+        android:drawableLeft="@drawable/numberpad"
+        android:nextFocusForward="@+id/button_register"
+        android:hint="@string/pw_pin"/>
+    <Button
+        android:id="@+id/button_Ok"
+        android:layout_width="206dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="#429740"
+        android:textColor="#ffffff"
+        android:text="Retrieve password"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:textColor="#ffffff"
+            android:text="If the pin code is entered correctly, the original password will be returned to you."/>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
