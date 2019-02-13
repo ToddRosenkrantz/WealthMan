@@ -12,7 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 //LoginActivity
 public class LoginActivity extends AppCompatActivity {
-    EditText mTextUsername;
+    //EditText mTextUsername;
+    EditText mTextEmail;
     EditText mTextPassword;
     Button mButtonLogin;
     TextView mTextViewRegister;
@@ -35,7 +36,8 @@ public class LoginActivity extends AppCompatActivity {
 */
 
         db = new DatabaseHelper(this);
-        mTextUsername = (EditText)findViewById(R.id.edittext_username);
+       //mTextUsername = (EditText)findViewById(R.id.edittext_username);
+        mTextEmail = (EditText)findViewById(R.id.edittext_useremail);
         mTextPassword = (EditText)findViewById(R.id.edittext_password);
         mButtonLogin = (Button)findViewById(R.id.button_login);
         mTextViewRegister = (TextView)findViewById(R.id.textview_register);
@@ -59,20 +61,31 @@ public class LoginActivity extends AppCompatActivity {
         mButtonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String user = mTextUsername.getText().toString().trim();
+                String email = mTextEmail.getText().toString().trim();
                 String pwd = mTextPassword.getText().toString().trim();
-                mTextUsername.getText().clear();
+                //Toast.makeText(getApplicationContext(),email,Toast.LENGTH_SHORT).show();
+                //System.out.println("setOnClickListener:::"+email);
+                mTextEmail.getText().clear();
                 mTextPassword.getText().clear();
-                Boolean res = db.checkUser(user, pwd);
+                Boolean res = db.checkUser(email, pwd);
                 if(res)
                 {
                     Intent HomePage = new Intent(LoginActivity.this,HomeActivity.class);
                     startActivity(HomePage);
                 }
+                else if(email.length()==0
+                        || pwd.length() == 0)
+                {
+                    Toast.makeText(LoginActivity.this,
+                            "Please Enter ALL fields", Toast.LENGTH_SHORT).show();
+                }
                 else
                 {
                     Toast.makeText(LoginActivity.this,"Login Error",Toast.LENGTH_SHORT).show();
                 }
+
+
+                //
             }
         });
     }
