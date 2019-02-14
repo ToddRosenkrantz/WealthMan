@@ -59,18 +59,14 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         else
             return  false;
     }
-    public String checkpassword(String Email, String Pin){
+    public String checkpin(String Email, String Pin){
         String[] columns = { COL_3 };
-        Log.d("ForgotActivity","卡在提取string之前11");
         SQLiteDatabase db = getReadableDatabase();
         String selection = COL_4 + "=?" + " and " + COL_5 + "=?";
         String[] selectionArgs = {Email,Pin};
-        Log.d("ForgotActivity","卡在提取string之前,"+Email+Pin);
         Cursor cursor = db.query(TABLE_NAME,columns,selection,selectionArgs,null,null,null);
         cursor.moveToFirst();//***!!!very important
         int count = cursor.getCount();
-        Log.d("ForgotActivity","卡在提取string之前,"+count);
-
         if(count>0){
             Log.d("ForgotActivity","If进入onCreate execute");
             String password = "Your password is "+cursor.getString(cursor.getColumnIndex("password"));
