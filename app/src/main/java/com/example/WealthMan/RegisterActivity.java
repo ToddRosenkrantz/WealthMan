@@ -67,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
                 else if (!pwd.equals(cnf_pwd)) reg_error = 2;
                 else if (pin.length() < 4 || pin.length() > 8) reg_error = 3;
                 else if (pwd.length() < 6 || pwd.length() > 12) reg_error = 4;
-                else if (db.checkUserExist(user)) reg_error = 5;
+                else if (db.checkUserExist(email)) reg_error = 5;
                 else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) reg_error = 6;
                 else reg_error = 0;
 
@@ -103,7 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this,
                                 "That user already exists",Toast.LENGTH_SHORT).show();
                         break;
-                    case 6:             // User must not be in database
+                    case 6:             // Email must not be valid format
                         Toast.makeText(RegisterActivity.this,
                                 "Please enter a valid email address",Toast.LENGTH_SHORT).show();
                         break;
