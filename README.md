@@ -1,6 +1,9 @@
 Wealth Manager - Stock Recording System
 Basic Wealth Management Android app for Agile Class Project
 
+Adapted from code downloaded from:
+https://theeasylearn.blogspot.com/
+
 Most recent changes include:
 	Full Registration page
 	Finish() is called after successful registration or if user select Login
