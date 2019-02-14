@@ -5,8 +5,10 @@
 package com.example.WealthMan;
 
 import android.content.Intent;
+import android.os.PatternMatcher;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
                 else if (pin.length() < 4 || pin.length() > 8) reg_error = 3;
                 else if (pwd.length() < 6 || pwd.length() > 12) reg_error = 4;
                 else if (db.checkUserExist(user)) reg_error = 5;
+                else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) reg_error = 6;
                 else reg_error = 0;
 
                 switch (reg_error){
@@ -99,6 +102,10 @@ public class RegisterActivity extends AppCompatActivity {
                     case 5:             // User must not be in database
                         Toast.makeText(RegisterActivity.this,
                                 "That user already exists",Toast.LENGTH_SHORT).show();
+                        break;
+                    case 6:             // User must not be in database
+                        Toast.makeText(RegisterActivity.this,
+                                "Please enter a valid email address",Toast.LENGTH_SHORT).show();
                         break;
                 }
             }

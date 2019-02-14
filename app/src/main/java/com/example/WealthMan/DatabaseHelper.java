@@ -44,12 +44,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return  res;
     }
 
-    public boolean checkUser(String email, String password){
-        System.out.println("checkuser:::"+email);
+    public boolean checkUser(String username, String password){
         String[] columns = { COL_1 };
         SQLiteDatabase db = getReadableDatabase();
-        String selection = COL_4 + "=?" + " and " + COL_3 + "=?";
-        String[] selectionArgs = { email, password };
+        String selection = COL_2 + "=?" + " and " + COL_3 + "=?";
+        String[] selectionArgs = { username, password };
         Cursor cursor = db.query(TABLE_NAME,columns,selection,selectionArgs,null,null,null);
         int count = cursor.getCount();
         cursor.close();
@@ -60,18 +59,14 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         else
             return  false;
     }
-    public String checkpassword(String Email, String Pin){
+    public String checkpin(String Email, String Pin){
         String[] columns = { COL_3 };
-        Log.d("ForgotActivity","卡在提取string之前11");
         SQLiteDatabase db = getReadableDatabase();
         String selection = COL_4 + "=?" + " and " + COL_5 + "=?";
         String[] selectionArgs = {Email,Pin};
-        Log.d("ForgotActivity","卡在提取string之前,"+Email+Pin);
         Cursor cursor = db.query(TABLE_NAME,columns,selection,selectionArgs,null,null,null);
         cursor.moveToFirst();//***!!!very important
         int count = cursor.getCount();
-        Log.d("ForgotActivity","卡在提取string之前,"+count);
-
         if(count>0){
             Log.d("ForgotActivity","If进入onCreate execute");
             String password = "Your password is "+cursor.getString(cursor.getColumnIndex("password"));
@@ -86,12 +81,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             return warn;
         }
     }
-    public boolean checkUserExist(String email){
+    public boolean checkUserExist(String user){
         String[] columns = { COL_1 };
         SQLiteDatabase db = getReadableDatabase();
-        String Query = "Select * from " + TABLE_NAME + " where " + COL_4 + " = " + email;
-        String selection = COL_4 + "=?";
-        String[] selectionArgs = { email };
+        String Query = "Select * from " + TABLE_NAME + " where " + COL_2 + " = " + user;
+        String selection = COL_2 + "=?";
+        String[] selectionArgs = { user };
         Cursor cursor = db.query(TABLE_NAME,columns,selection,selectionArgs,null,null,null);
         int count = cursor.getCount();
         cursor.close();
