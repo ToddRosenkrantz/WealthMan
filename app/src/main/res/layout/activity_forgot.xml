@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="127dp"
         android:layout_marginTop="25dp"
-        app:srcCompat="@drawable/logo"/>
+        app:srcCompat="@drawable/round_logo"/>
 
 
     <EditText
