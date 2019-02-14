@@ -82,12 +82,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             return warn;
         }
     }
-    public boolean checkUserExist(String user){
+    public boolean checkUserExist(String email){
         String[] columns = { COL_1 };
         SQLiteDatabase db = getReadableDatabase();
-        String Query = "Select * from " + TABLE_NAME + " where " + COL_2 + " = " + user;
-        String selection = COL_2 + "=?";
-        String[] selectionArgs = { user };
+        String Query = "Select * from " + TABLE_NAME + " where " + COL_4 + " = " + email;
+        String selection = COL_4 + "=?";
+        String[] selectionArgs = { email };
         Cursor cursor = db.query(TABLE_NAME,columns,selection,selectionArgs,null,null,null);
         int count = cursor.getCount();
         cursor.close();
