@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
     public static final String DATABASE_NAME ="register.db";
@@ -43,11 +44,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return  res;
     }
 
-    public boolean checkUser(String username, String password){
+    public boolean checkUser(String email, String password){
+        System.out.println("checkuser:::"+email);
         String[] columns = { COL_1 };
         SQLiteDatabase db = getReadableDatabase();
-        String selection = COL_2 + "=?" + " and " + COL_3 + "=?";
-        String[] selectionArgs = { username, password };
+        String selection = COL_4 + "=?" + " and " + COL_3 + "=?";
+        String[] selectionArgs = { email, password };
         Cursor cursor = db.query(TABLE_NAME,columns,selection,selectionArgs,null,null,null);
         int count = cursor.getCount();
         cursor.close();
@@ -58,12 +60,34 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         else
             return  false;
     }
-    public boolean checkUserExist(String user){
+    public String checkpin(String Email, String Pin){
+        String[] columns = { COL_3 };
+        SQLiteDatabase db = getReadableDatabase();
+        String selection = COL_4 + "=?" + " and " + COL_5 + "=?";
+        String[] selectionArgs = {Email,Pin};
+        Cursor cursor = db.query(TABLE_NAME,columns,selection,selectionArgs,null,null,null);
+        cursor.moveToFirst();//***!!!very important
+        int count = cursor.getCount();
+        if(count>0){
+            Log.d("ForgotActivity","If进入onCreate execute");
+            String password = "Your password is "+cursor.getString(cursor.getColumnIndex("password"));
+            cursor.close();
+            db.close();
+            return  password;}
+        else {
+            Log.d("ForgotActivity", "else进入onCreate execute");
+            String warn = "Email or PIN code is wrong";
+            cursor.close();
+            db.close();
+            return warn;
+        }
+    }
+    public boolean checkUserExist(String email){
         String[] columns = { COL_1 };
         SQLiteDatabase db = getReadableDatabase();
-        String Query = "Select * from " + TABLE_NAME + " where " + COL_2 + " = " + user;
-        String selection = COL_2 + "=?";
-        String[] selectionArgs = { user };
+        String Query = "Select * from " + TABLE_NAME + " where " + COL_4 + " = " + email;
+        String selection = COL_4 + "=?";
+        String[] selectionArgs = { email };
         Cursor cursor = db.query(TABLE_NAME,columns,selection,selectionArgs,null,null,null);
         int count = cursor.getCount();
         cursor.close();
