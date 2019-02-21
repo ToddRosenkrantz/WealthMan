@@ -14,5 +14,8 @@
     <string name="pw_pin">Recovery Pin</string>
     <string name="user_email">User Email</string>
     <string name="forgot">Forgot</string>
+    <string name="ok">Ok</string>
+    <string name="stock_symbol">stock symbol</string>
+    <string name="symbol_hint">Enter a stock symple ie. AAPL or aapl</string>
 
 </resources>

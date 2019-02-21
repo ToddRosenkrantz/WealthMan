@@ -1,19 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.WealthMan.HomeActivity"
-    android:gravity="center">
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:id="@+id/container"
+android:orientation="vertical"
+android:gravity="center_horizontal"
+tools:context="com.example.WealthMan.HomeActivity">
 
+
+<EditText
+    android:id="@+id/url_to_fetch"
+    android:layout_width="346dp"
+    android:layout_height="60dp"
+    android:layout_marginTop="50dp"
+    android:contentDescription="@string/stock_symbol"
+    android:autofillHints="@string/symbol_hint"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp"/>
+<ScrollView
+    android:id="@+id/textAreaScroller"
+    android:layout_marginTop="10dp"
+    android:layout_width="346dp"
+    android:scrollbars="vertical"
+    android:layout_height="398dp">
+    <!--    android:layout_x="0px"
+        android:layout_y="300dp"
+    /!-->
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/text"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/welcome_user"
-        android:textColor="#123456"
-        android:textSize="23sp"
-        tools:layout_editor_absoluteX="151dp"
-        tools:layout_editor_absoluteY="227dp" />
+        android:layout_height="398dp"
+        android:text="Hello World!"
+        android:textAlignment="viewStart" />
+</ScrollView>
+<Button
+    android:id="@+id/button"
+    android:layout_marginTop="10dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/ok"
+    tools:layout_editor_absoluteX="161dp"
+    tools:layout_editor_absoluteY="657dp" />
+
+
 </LinearLayout>
