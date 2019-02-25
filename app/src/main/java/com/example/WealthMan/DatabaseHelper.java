@@ -16,6 +16,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public static final String COL_4 ="email";      // TEXT
     public static final String COL_5 ="pin";        // Stored as TEXT to preserve any leading Zeros
 
+    public static final String SYM_TBL = "symbols";
+    public static final String SYM_COL_1 = "symbol";
+    public static final String SYM_COL_2 = "name";
+
+    public static final String WL_TBL = "watchlist";
+    public static final String WL_COL_1 = "symbol";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
     }
@@ -23,6 +30,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("CREATE TABLE registeruser (ID INTEGER PRIMARY  KEY AUTOINCREMENT, username TEXT, password TEXT, email TEXT, pin TEXT)");
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS symbols (symbol TEXT PRIMARY KEY, name TEXT)");
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS watchlist (symbol TEXT PRIMARY KEY)");
     }
 
     @Override
@@ -42,6 +51,15 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         long res = db.insert("registeruser",null,contentValues);
         db.close();
         return  res;
+    }
+    public long addSymbol(String sym, String name){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("symbol", sym);
+        contentValues.put("name", name);
+        long res = db.insert(SYM_TBL,null, contentValues);
+        db.close();
+        return res;
     }
 
     public boolean checkUser(String email, String password){
