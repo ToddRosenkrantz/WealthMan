@@ -98,36 +98,6 @@ public class APIInterface {
         public String label = null; //": "Apr 03, 17",
         public float changeOverTime = 0; //": -0.0039
     }
-    public class chart {
-        public List<chartDatum> chartdata = new ArrayList<chartDatum>();
-    }
-    public class news {
-        List<article> articles = new ArrayList<article>();
-    }
-    public class marketQuote{
-        public String itemType = null;
-        public Quote iQuote;
-
-    }
-    public class market{
-        public String mSymbol;
-        public Quote mQuote;
-//        public news mNews;
-//        public chart mChart;
-    }
-    public class results {
-        List<Company> companies = new ArrayList<Company>();
-    }
-    public class Company{
-        public Quote quote;
-    }
-    public static class Companies{
-        List<Company> companies;
-        public Companies(List<Company> companies) {
-            this.companies = companies;
-        }
-
-    }
     public class stockSym{
         String symbol;
         String name;
@@ -141,18 +111,28 @@ public class APIInterface {
         public QuoteList(List<Quote> quotes) {
             this.quotes = quotes;
         }
-
     }
-    public static class CompanyListDeserializer implements JsonDeserializer<Companies>{
+    public class Batch{
+        public Quote quote;
+        public ArrayList<article> news;
+        public ArrayList<chartDatum> chart;
+    }
+    public static class Batches {
+        List<Batch> batches;
+        public Batches(List<Batch> batches) {
+            this.batches = batches;
+        }
+    }
+    public static class CompanyListDeserializer implements JsonDeserializer<Batches> {
         @Override
-        public Companies deserialize(JsonElement element, Type type,JsonDeserializationContext context) throws JsonParseException {
+        public Batches deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
             JsonObject jsonObject = element.getAsJsonObject();
-            List<Company> companies = new ArrayList<Company>();
+            List<Batch> batches = new ArrayList<Batch>();
             for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-                Company company = context.deserialize(entry.getValue(), Company.class);
-                companies.add(company);
+                Batch batch = context.deserialize(entry.getValue(), Batch.class);
+                batches.add(batch);
             }
-            return new Companies(companies);
+            return new Batches(batches);
         }
     }
     public static class QuoteListDeserializer implements JsonDeserializer<QuoteList> {
@@ -168,8 +148,6 @@ public class APIInterface {
             }
             return new QuoteList(quotes);
         }
-
-
     }
     JsonParser parser = new JsonParser();
     public String returnJson(String inputString){
