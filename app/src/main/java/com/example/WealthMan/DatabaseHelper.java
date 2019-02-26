@@ -5,7 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
     public static final String DATABASE_NAME ="register.db";
@@ -21,7 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public static final String SYM_COL_2 = "name";
 
     public static final String WL_TBL = "watchlist";
-    public static final String WL_COL_1 = "symbol";
+    public static final String WL_COL_SYMBOL = "symbol";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -39,6 +43,28 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL(" DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
+    public long createWatchlist(){
+        String[] wlArray = {"intc","aapl","fb","aal","bac","csc","aal","wfc",
+        "wmt","cof","amzn","vmw","ibm","dell","hp","msft","jnpr","orcl"};
+        SQLiteDatabase db = this.getReadableDatabase();
+        long res = 0;
+        for (int i = 0 ; i < wlArray.length; i++){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(WL_COL_SYMBOL, wlArray[i]);
+            res = db.insert(WL_TBL,null,contentValues);
+        }
+        db.close();
+        return res;
+    }
+    public long addWatch(String symbol){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(WL_COL_SYMBOL, symbol);
+        long res = db.insert(WL_TBL,null,contentValues);
+        db.close();
+        return res;
+}
+
 
     public long addUser(String user, String password, String email, String pin){
         SQLiteDatabase db = this.getWritableDatabase();

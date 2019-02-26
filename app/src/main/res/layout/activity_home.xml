@@ -19,30 +19,36 @@ tools:context="com.example.WealthMan.HomeActivity">
     android:autofillHints="@string/symbol_hint"
     android:paddingLeft="2dp"
     android:paddingRight="2dp"/>
-<ScrollView
-    android:id="@+id/textAreaScroller"
-    android:layout_marginTop="10dp"
-    android:layout_width="346dp"
-    android:scrollbars="vertical"
-    android:layout_height="398dp">
-    <!--    android:layout_x="0px"
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="348dp"
+        android:layout_height="347dp" />
+
+    <ScrollView
+        android:id="@+id/textAreaScroller"
+        android:layout_width="346dp"
+        android:layout_height="113dp"
+        android:layout_marginTop="10dp"
+        android:scrollbars="vertical">
+        <!--    android:layout_x="0px"
         android:layout_y="300dp"
     /!-->
-    <TextView
-        android:id="@+id/text"
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="398dp"
+            android:text="Hello World!"
+            android:textAlignment="viewStart" />
+    </ScrollView>
+
+    <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
-        android:layout_height="398dp"
-        android:text="Hello World!"
-        android:textAlignment="viewStart" />
-</ScrollView>
-<Button
-    android:id="@+id/button"
-    android:layout_marginTop="10dp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/ok"
-    tools:layout_editor_absoluteX="161dp"
-    tools:layout_editor_absoluteY="657dp" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/ok"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="657dp" />
 
 
 </LinearLayout>
