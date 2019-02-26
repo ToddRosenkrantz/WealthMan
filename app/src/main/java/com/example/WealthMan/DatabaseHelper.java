@@ -44,8 +44,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         onCreate(sqLiteDatabase);
     }
     public long createWatchlist(){
-        String[] wlArray = {"intc","aapl","fb","aal","bac","csc","aal","wfc",
-        "wmt","cof","amzn","vmw","ibm","dell","hp","msft","jnpr","orcl"};
+        String[] wlArray = {"intc","aapl","fb","aal","bac","csc","wfc",
+        "wmt","cof","amzn","vmw","ibm","dell","hpq","msft","jnpr","orcl"};
         SQLiteDatabase db = this.getReadableDatabase();
         long res = 0;
         for (int i = 0 ; i < wlArray.length; i++){
@@ -63,8 +63,16 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         long res = db.insert(WL_TBL,null,contentValues);
         db.close();
         return res;
-}
-
+    }
+    public String getWatchList(){
+        String result;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT GROUP_CONCAT(symbol) as symbol from watchlist",null);
+        cursor.moveToFirst();
+        result = cursor.getString(cursor.getColumnIndex("symbol"));
+        db.close();
+        return result;
+    }
 
     public long addUser(String user, String password, String email, String pin){
         SQLiteDatabase db = this.getWritableDatabase();
