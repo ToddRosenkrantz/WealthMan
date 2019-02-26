@@ -52,40 +52,38 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         db = new DatabaseHelper(this);
-        SharedPreferences preference =  getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
+        SharedPreferences preference = getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
         SharedPreferences.Editor editor = preference.edit();
-        long now  = System.currentTimeMillis();
+        long now = System.currentTimeMillis();
         long updateDue = preference.getLong("updateDue", 0);
-        if ( updateDue < now){  // Calc next time to update
+        if (false) {  // Calc next time to update
+//        if (updateDue < now) {  // Calc next time to update
             System.out.println("Symbol Update due");
             long thirtyDays = System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS);
-            if(updateSymbols()){
+            if (updateSymbols()) {
                 editor.putLong("updateDue", thirtyDays);   // Store new time to update
                 editor.commit();
 //                System.out.println("Update was saved");
-            }
-            else
+            } else
                 Toast.makeText(HomeActivity.this, "Error updating Stock Symbols", Toast.LENGTH_LONG).show();
-        }
-        else
+        } else
             System.out.println("No Symbol Update is due...");
-        if (!preference.getBoolean("setupDone", false)){
+        if (!preference.getBoolean("setupDone", false)) {
             long res = db.createWatchlist();  //special one time add
             if (res > 0) {
                 editor.putBoolean("setupDone", true);
                 editor.commit();
-            }
-            else
+            } else
                 Toast.makeText(HomeActivity.this, "Database Error creating Watch List", Toast.LENGTH_LONG).show();
         }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        mButtonOk = (Button)findViewById(R.id.button);
-        mTextURI = (EditText)findViewById(R.id.url_to_fetch);
+        mButtonOk = (Button) findViewById(R.id.button);
+        mTextURI = (EditText) findViewById(R.id.url_to_fetch);
         mTextURI.setText(db.getWatchList());
-        final TextView mTextView = (TextView)findViewById(R.id.text);
+        final TextView mTextView = (TextView) findViewById(R.id.text);
         mTextURI.append("");
         final RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -100,7 +98,7 @@ public class HomeActivity extends AppCompatActivity {
                 // Instantiate the RequestQueue.
 //                String url ="https://api.iextrading.com/1.0/stock/market/batch?symbols="+ symbols +"&types=chart&range=1m&last=5";
 //                String url ="https://api.iextrading.com/1.0/stock/market/batch?symbols="+ symbols +"&types=quote,news,chart&range=6m";
-                String url ="https://api.iextrading.com/1.0/stock/market/batch?symbols="+ symbols +"&types=quote,news,chart&last=5";
+                String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + symbols + "&types=quote,news,chart&last=5";
 //          Sql query should be like SELECT GROUP_CONCAT(symbol SEPARATOR ',')
 //              or SELECT GROUP_CONCAT(symbol)
 
@@ -110,8 +108,6 @@ public class HomeActivity extends AppCompatActivity {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                // Display the first 500 characters of the response string.
-//                                mTextView.setText("Response is: "+ response.substring(0,1000));
                                 if (response.equals("{}"))
                                     mTextView.setText(mTextView.getText() + ("No Data returned.  Did you enter a valid stock symbol?"));
                                 else {
@@ -125,7 +121,7 @@ public class HomeActivity extends AppCompatActivity {
                                         mTextView.append(" ");
                                         mTextView.append(Float.toString(myData.batches.get(index).quote.latestPrice));
                                         mTextView.append(" ");
-                                        if(myData.batches.get(index).quote.change < 0){
+                                        if (myData.batches.get(index).quote.change < 0) {
                                             //mTextView.setTextColor(Color.parseColor("#FF0000"));
                                             mTextView.append(Float.toString(myData.batches.get(index).quote.change));
                                         } else {
@@ -136,8 +132,8 @@ public class HomeActivity extends AppCompatActivity {
                                         Gson gsonPretty = new GsonBuilder().setPrettyPrinting().create();
                                         String json = gsonPretty.toJson(myData);
 
-                                    //System.out.println("JSON = " + json);
-                                    //mTextView.append(json);
+                                        //System.out.println("JSON = " + json);
+                                        //mTextView.append(json);
 
                                         //mTextView.setTextColor(Color.parseColor("#000000"));
                                     }
@@ -158,23 +154,25 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
     public boolean updateSymbols() {
+        final RequestQueue queue = Volley.newRequestQueue(this);
         System.out.println("Updating Symbols now");
         String symbolUrl = "https://api.iextrading.com/1.0/ref-data/symbols";
         final GsonBuilder gsonSymbols = new GsonBuilder();
         dbsuccess = false;
-        StringRequest symbolRequest = new StringRequest(Request.Method.GET, symbolUrl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                stockSym[] mySyms = gsonSymbols.create().fromJson(response,stockSym[].class);
-             // Make two DB entries, one for symbol-symbol lookup
-             // Other for name-symbol lookup
-                System.out.println("Length = " + mySyms.length);
-                long val = 0;
-                for (int i = 0 ; i < mySyms.length ; i++) {
-                    val += db.addSymbol(mySyms[i].symbol,mySyms[i].symbol);
-                    val += db.addSymbol(mySyms[i].name,mySyms[i].symbol);
-                    System.out.println(mySyms[i].name +"   ,  " +mySyms[i].symbol);
-                }
+        StringRequest symbolRequest = new StringRequest(Request.Method.GET, symbolUrl,
+                new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    stockSym[] mySyms = gsonSymbols.create().fromJson(response,stockSym[].class);
+                    // Make two DB entries, one for symbol-symbol lookup
+                    // Other for name-symbol lookup
+                    System.out.println("Length = " + mySyms.length);
+                    long val = 0;
+                    for (int i = 0 ; i < mySyms.length ; i++) {
+                        val += db.addSymbol(mySyms[i].symbol,mySyms[i].symbol);
+                        val += db.addSymbol(mySyms[i].name,mySyms[i].symbol);
+                        //System.out.println(mySyms[i].name +"   ,  " +mySyms[i].symbol);
+                    }
                 if (val <= mySyms.length) {
                     Toast.makeText(HomeActivity.this, "Symbol Database Error", Toast.LENGTH_LONG).show();
                     dbsuccess = false;
@@ -186,6 +184,8 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(HomeActivity.this, "That didn't work! Do you have an internet connection?", Toast.LENGTH_LONG).show();
             }
         });
+        // Add the request to the RequestQueue.
+        queue.add(symbolRequest);
         return dbsuccess;
     }
     public void getData(String jsonData) {
