@@ -11,12 +11,14 @@ next steps:
     FIX crash when stock symbol is bad
 
  */
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,24 +44,37 @@ public class HomeActivity extends AppCompatActivity {
     Button mButtonOk;
     DatabaseHelper db;
     boolean dbsuccess = true;
+    public static final String MY_PREFS_FILE = "wealthman_prefs";
+
 //    final TextView mTextView = (TextView)findViewById(R.id.text);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         db = new DatabaseHelper(this);
-        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences preference =  getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
+        SharedPreferences.Editor editor = preference.edit();
         long now  = System.currentTimeMillis();
-        if (preference.getLong("updateDue", 0) < now){  // Calc next time to update
+        long updateDue = preference.getLong("updateDue", 0);
+        if ( updateDue < now){  // Calc next time to update
+            System.out.println("Symbol Update due");
             long thirtyDays = System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS);
-            if(updateSymbols())
-                preference.edit().putLong("updateDue", thirtyDays);   // Store new time to update
+            if(updateSymbols()){
+                editor.putLong("updateDue", thirtyDays);   // Store new time to update
+                editor.commit();
+//                System.out.println("Update was saved");
+            }
             else
                 Toast.makeText(HomeActivity.this, "Error updating Stock Symbols", Toast.LENGTH_LONG).show();
         }
+        else
+            System.out.println("No Symbol Update is due...");
         if (!preference.getBoolean("setupDone", false)){
             long res = db.createWatchlist();  //special one time add
-            if (res > 0)
-                preference.edit().putBoolean("setupDone", true);
+            if (res > 0) {
+                editor.putBoolean("setupDone", true);
+                editor.commit();
+            }
             else
                 Toast.makeText(HomeActivity.this, "Database Error creating Watch List", Toast.LENGTH_LONG).show();
         }
@@ -69,6 +84,7 @@ public class HomeActivity extends AppCompatActivity {
 
         mButtonOk = (Button)findViewById(R.id.button);
         mTextURI = (EditText)findViewById(R.id.url_to_fetch);
+        mTextURI.setText(db.getWatchList());
         final TextView mTextView = (TextView)findViewById(R.id.text);
         mTextURI.append("");
         final RequestQueue queue = Volley.newRequestQueue(this);
@@ -120,8 +136,8 @@ public class HomeActivity extends AppCompatActivity {
                                         Gson gsonPretty = new GsonBuilder().setPrettyPrinting().create();
                                         String json = gsonPretty.toJson(myData);
 
-                                    System.out.println("JSON = " + json);
-                                    mTextView.append(json);
+                                    //System.out.println("JSON = " + json);
+                                    //mTextView.append(json);
 
                                         //mTextView.setTextColor(Color.parseColor("#000000"));
                                     }
@@ -142,29 +158,29 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
     public boolean updateSymbols() {
+        System.out.println("Updating Symbols now");
         String symbolUrl = "https://api.iextrading.com/1.0/ref-data/symbols";
-        GsonBuilder gsonSymbols = new GsonBuilder();
+        final GsonBuilder gsonSymbols = new GsonBuilder();
+        dbsuccess = false;
         StringRequest symbolRequest = new StringRequest(Request.Method.GET, symbolUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                // boolean success = true;
-                // parse data here
-                GsonBuilder gsonBuilder = new GsonBuilder();
-                stockSym[] mySyms = gsonBuilder.create().fromJson(response,stockSym[].class);
-                // Make two DB entries, one for symbol-symbol lookup
-                // Other for name-symbol lookup
+                stockSym[] mySyms = gsonSymbols.create().fromJson(response,stockSym[].class);
+             // Make two DB entries, one for symbol-symbol lookup
+             // Other for name-symbol lookup
+                System.out.println("Length = " + mySyms.length);
                 long val = 0;
                 for (int i = 0 ; i < mySyms.length ; i++) {
                     val += db.addSymbol(mySyms[i].symbol,mySyms[i].symbol);
                     val += db.addSymbol(mySyms[i].name,mySyms[i].symbol);
                     System.out.println(mySyms[i].name +"   ,  " +mySyms[i].symbol);
                 }
-                if (val <= 0) {
-                    Toast.makeText(HomeActivity.this, "Database Error", Toast.LENGTH_LONG).show();
+                if (val <= mySyms.length) {
+                    Toast.makeText(HomeActivity.this, "Symbol Database Error", Toast.LENGTH_LONG).show();
                     dbsuccess = false;
                 }
             }
-        }, new Response.ErrorListener() {
+            }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(HomeActivity.this, "That didn't work! Do you have an internet connection?", Toast.LENGTH_LONG).show();
@@ -175,13 +191,13 @@ public class HomeActivity extends AppCompatActivity {
     public void getData(String jsonData) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
-        Batches myData = gsonBuilder.create().fromJson(jsonData, Batches.class);
-        Gson gsonPretty = new GsonBuilder().setPrettyPrinting().create();
-        System.out.println(myData);
-        String json = gsonPretty.toJson(myData);
-        System.out.println("JSON = " + json);
-        for (int index = 0; index < myData.batches.size(); index++) {
-            System.out.println(index + "\t" + myData.batches.get(index).quote.symbol + "\t" + myData.batches.get(index).quote.latestPrice + "\t" + myData.batches.get(index).quote.change);
+        Batches watchList = gsonBuilder.create().fromJson(jsonData, Batches.class);
+//        Gson gsonPretty = new GsonBuilder().setPrettyPrinting().create();
+//        System.out.println(watchList);
+//        String json = gsonPretty.toJson(watchList);
+//        System.out.println("JSON = " + json);
+        for (int index = 0; index < watchList.batches.size(); index++) {
+            System.out.println(index + "\t" + watchList.batches.get(index).quote.symbol + "\t" + watchList.batches.get(index).quote.latestPrice + "\t" + watchList.batches.get(index).quote.change);
         }
     }
 }
