@@ -11,11 +11,9 @@ next steps:
     FIX crash when stock symbol is bad
 
  */
-import android.app.DownloadManager;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
-import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -35,35 +33,36 @@ import com.android.volley.toolbox.Volley;
 import com.example.WealthMan.APIInterface.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.example.WealthMan.APIInterface;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 
 public class HomeActivity extends AppCompatActivity {
     EditText mTextURI;
     Button mButtonOk;
+    DatabaseHelper db;
+    boolean dbsuccess = true;
 //    final TextView mTextView = (TextView)findViewById(R.id.text);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-/*        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(this);
-            long now  = System.currentTimeMillis();
-            if (preference.getLong("updateDue", 0) < now){
-                // calculate next update time
-                long thirtyDays = System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS);
-                // update TABLE and update SharedPrefs
-                // update call
-                if(updateSymbols())
-                    // Success means we can update the sharedPreference
-                    preference.edit().putLong("updateDue", thirtyDays);
-                else
-                    // WE had an error
-                    Toast.makeText(HomeActivity.this, "Error updating Stock Symbols", Toast.LENGTH_LONG).show();
-
-            }*/
+        db = new DatabaseHelper(this);
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(this);
+        long now  = System.currentTimeMillis();
+        if (preference.getLong("updateDue", 0) < now){  // Calc next time to update
+            long thirtyDays = System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS);
+            if(updateSymbols())
+                preference.edit().putLong("updateDue", thirtyDays);   // Store new time to update
+            else
+                Toast.makeText(HomeActivity.this, "Error updating Stock Symbols", Toast.LENGTH_LONG).show();
+        }
+        if (!preference.getBoolean("setupDone", false)){
+            long res = db.createWatchlist();  //special one time add
+            if (res > 0)
+                preference.edit().putBoolean("setupDone", true);
+            else
+                Toast.makeText(HomeActivity.this, "Database Error creating Watch List", Toast.LENGTH_LONG).show();
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -105,16 +104,16 @@ public class HomeActivity extends AppCompatActivity {
                                     Batches myData = gsonBuilder.create().fromJson(response, Batches.class);
                                     for (int index = 0; index < myData.batches.size(); index++) {
                                         mTextView.append(Integer.toString(index));
-                                        mTextView.append("\t");
+                                        mTextView.append(" ");
                                         mTextView.append(myData.batches.get(index).quote.symbol);
-                                        mTextView.append("\t");
+                                        mTextView.append(" ");
                                         mTextView.append(Float.toString(myData.batches.get(index).quote.latestPrice));
-                                        mTextView.append("\t");
+                                        mTextView.append(" ");
                                         if(myData.batches.get(index).quote.change < 0){
-                                            mTextView.setTextColor(Color.parseColor("#FF0000"));
+                                            //mTextView.setTextColor(Color.parseColor("#FF0000"));
                                             mTextView.append(Float.toString(myData.batches.get(index).quote.change));
                                         } else {
-                                            mTextView.setTextColor(Color.parseColor("#00FF00"));
+                                            //mTextView.setTextColor(Color.parseColor("#00FF00"));
                                             mTextView.append(Float.toString(myData.batches.get(index).quote.change));
                                         }
                                         mTextView.append("\n");
@@ -145,15 +144,25 @@ public class HomeActivity extends AppCompatActivity {
     public boolean updateSymbols() {
         String symbolUrl = "https://api.iextrading.com/1.0/ref-data/symbols";
         GsonBuilder gsonSymbols = new GsonBuilder();
-        boolean success = false;
         StringRequest symbolRequest = new StringRequest(Request.Method.GET, symbolUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                // boolean success = true;
                 // parse data here
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 stockSym[] mySyms = gsonBuilder.create().fromJson(response,stockSym[].class);
-
-                // update table here
+                // Make two DB entries, one for symbol-symbol lookup
+                // Other for name-symbol lookup
+                long val = 0;
+                for (int i = 0 ; i < mySyms.length ; i++) {
+                    val += db.addSymbol(mySyms[i].symbol,mySyms[i].symbol);
+                    val += db.addSymbol(mySyms[i].name,mySyms[i].symbol);
+                    System.out.println(mySyms[i].name +"   ,  " +mySyms[i].symbol);
+                }
+                if (val <= 0) {
+                    Toast.makeText(HomeActivity.this, "Database Error", Toast.LENGTH_LONG).show();
+                    dbsuccess = false;
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -161,18 +170,16 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(HomeActivity.this, "That didn't work! Do you have an internet connection?", Toast.LENGTH_LONG).show();
             }
         });
-        return success;
+        return dbsuccess;
     }
     public void getData(String jsonData) {
         GsonBuilder gsonBuilder = new GsonBuilder();
-//        QuoteList myData = gsonBuilder.create().fromJson(jsonData, QuoteList.class);
         gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
         Batches myData = gsonBuilder.create().fromJson(jsonData, Batches.class);
         Gson gsonPretty = new GsonBuilder().setPrettyPrinting().create();
         System.out.println(myData);
         String json = gsonPretty.toJson(myData);
         System.out.println("JSON = " + json);
-//        int index = 0;
         for (int index = 0; index < myData.batches.size(); index++) {
             System.out.println(index + "\t" + myData.batches.get(index).quote.symbol + "\t" + myData.batches.get(index).quote.latestPrice + "\t" + myData.batches.get(index).quote.change);
         }
