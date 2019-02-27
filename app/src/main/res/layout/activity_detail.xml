@@ -30,7 +30,7 @@
             android:layout_height="40dp"
             android:background="#429740"
             android:textColor="#ffffff"
-            android:text="BUY / SELL"
+            android:text="Buy / Sell"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:layout_gravity="center"/>
@@ -41,7 +41,7 @@
             android:layout_height="40dp"
             android:background="#429740"
             android:textColor="#ffffff"
-            android:text="WATCH / UNWATCH"
+            android:text="Watch / Unwatch"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:layout_gravity="center"/>
