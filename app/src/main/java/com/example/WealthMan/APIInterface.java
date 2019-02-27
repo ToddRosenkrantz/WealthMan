@@ -122,6 +122,10 @@ public class APIInterface {
         public Batches(List<Batch> batches) {
             this.batches = batches;
         }
+        public int size(){
+            return batches.size();
+        }
+
     }
     public static class CompanyListDeserializer implements JsonDeserializer<Batches> {
         @Override
