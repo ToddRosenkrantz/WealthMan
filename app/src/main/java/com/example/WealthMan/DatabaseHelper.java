@@ -66,7 +66,23 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.close();
         return res;
     }
-
+    public int getUserId(String Email){
+        String[] columns = { COL_1 };
+        SQLiteDatabase db = getReadableDatabase();
+        String selection = COL_4 + "=?";
+        String[] selectionArgs = {Email};
+        Cursor cursor = db.query(TABLE_NAME,columns,selection,selectionArgs,null,null,null);
+        cursor.moveToFirst();//***!!!very important
+        int count = cursor.getCount();
+        int userid = 0;
+        if(count>0){
+            Log.d("ForgotActivity","If进入onCreate execute");
+            userid = cursor.getInt(cursor.getColumnIndex("ID"));
+            cursor.close();
+            db.close();
+            }
+        return  userid;
+    }
     public void remWatch(String symbol){
         SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME+ " WHERE "+WL_COL_SYMBOL+"='"+symbol+"'");
