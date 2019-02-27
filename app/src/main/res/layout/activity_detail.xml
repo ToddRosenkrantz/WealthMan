@@ -166,73 +166,76 @@
             </LinearLayout>
         </LinearLayout>
 
-        <include layout="@layout/detail_content_index" />
+        <!--<include layout="@layout/detail_content_index" />-->
         <!--here keep for you   start -->
         <!--<include-->
             <!--layout="@layout/detail_content_index"-->
             <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
+            <!--android:layout_height="wrap_content"-->
+            <!--/>-->
 
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dataList">
+        </ListView>
         <Button
             android:id="@+id/buyOrSell"
             style="@style/Widget.AppCompat.Button"
             android:layout_width="190dp"
             android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
             android:background="#429740"
-            android:gravity="center"
+            android:textColor="#ffffff"
             android:text="Buy / Sell"
-            android:textColor="#ffffff" />
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"/>
 
         <Button
             android:id="@+id/watchOrUnwatch"
             android:layout_width="190dp"
             android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
             android:background="#429740"
-            android:gravity="center"
+            android:textColor="#ffffff"
             android:text="Watch / Unwatch"
-            android:textColor="#ffffff" />
-
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"/>
         <TextView
             android:id="@+id/news"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="News"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:text="News" />
-
+            />
         <View
-            android:layout_width="match_parent"
             android:layout_height="0.5dip"
-            android:layout_marginTop="10dp"
-            android:background="#429740" />
-
+            android:background="#429740"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"/>
         <TextView
             android:id="@+id/tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:gravity="center"
-            android:textColor="#429740" />
+            android:layout_gravity="center"
+            android:textColor="#429740"
+            />
         />
-
         <TextView
             android:id="@+id/tv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center" />
+            android:gravity="center"
+            android:layout_gravity="center"/>
         />
-
         <TextView
             android:id="@+id/tv3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center" />
+            android:gravity="center"
+            android:layout_gravity="center"/>
         />
         <!-- end  -->
     </LinearLayout>
