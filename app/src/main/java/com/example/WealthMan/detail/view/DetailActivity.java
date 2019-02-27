@@ -58,7 +58,8 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        beforeInflateView();
+        Intent intent = getIntent();
+        int userid = intent.getIntExtra("UserId", 0);        beforeInflateView();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
@@ -97,6 +98,10 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         if (intent != null) {
             symbolName = intent.getStringExtra(SYMBOL_NAME);
             symbolName = "aapl";
+
+            symbolName = intent.getStringExtra("Symbol");
+            Toast.makeText(com.example.WealthMan.detail.view.DetailActivity.this, "Passed symbol: " + symbolName, Toast.LENGTH_LONG).show();
+
         }
     }
 

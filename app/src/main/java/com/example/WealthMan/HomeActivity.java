@@ -12,6 +12,7 @@ next steps:
 
  */
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
@@ -42,6 +43,7 @@ import java.util.concurrent.TimeUnit;
 public class HomeActivity extends AppCompatActivity {
     EditText mTextURI;
     Button mButtonOk;
+    Button mButtonTest;
     DatabaseHelper db;
     boolean dbsuccess = true;
     public static final String MY_PREFS_FILE = "wealthman_prefs";
@@ -50,7 +52,8 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        Intent intent = getIntent();
+        int userid = intent.getIntExtra("UserId", 0);
         db = new DatabaseHelper(this);
         SharedPreferences preference = getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
         SharedPreferences.Editor editor = preference.edit();
@@ -153,6 +156,27 @@ public class HomeActivity extends AppCompatActivity {
         mButtonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                Intent intent = getIntent();
+//                String str = intent.getStringExtra("Symbol");
+                // Enable the following to go to Detail Activity and retrieve the Symbol with the above lines
+
+                Intent intent = new Intent(getApplicationContext(), com.example.WealthMan.detail.view.DetailActivity.class);
+                String symbol = mTextURI.getText().toString().trim();
+                intent.putExtra("Symbol", symbol);
+                startActivity(intent);
+            }
+        });
+        mButtonTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = getIntent();
+//                String str = intent.getStringExtra("Symbol");
+                // Enable the following to go to Detail Activity and retrieve the Symbol with the above lines
+
+                Intent intent = new Intent(getApplicationContext(), com.example.WealthMan.detail.view.DetailActivity.class);
+                String symbol = mTextURI.getText().toString().trim();
+                intent.putExtra("Symbol", symbol);
+                startActivity(intent);
             }
         });
     }

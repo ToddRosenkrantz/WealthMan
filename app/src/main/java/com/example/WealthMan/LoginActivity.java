@@ -71,6 +71,10 @@ public class LoginActivity extends AppCompatActivity {
                 if(res)
                 {
                     Intent HomePage = new Intent(LoginActivity.this,HomeActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), com.example.WealthMan.detail.view.DetailActivity.class);
+                    int userid = db.getUserId(email);
+                    HomePage.putExtra ("UserId", userid);
+
                     startActivity(HomePage);
                 }
                 else if(email.length()==0
