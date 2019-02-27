@@ -56,13 +56,15 @@ public class HomeActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = preference.edit();
         long now = System.currentTimeMillis();
         long updateDue = preference.getLong("updateDue", 0);
-        if (false) {  // Calc next time to update
-//        if (updateDue < now) {  // Calc next time to update
+//        if (false) {  // Calc next time to update
+        System.out.println("After Read Prefs: Now = "+ now + " , Due = " + updateDue);
+        if (updateDue < now) {  // Calc next time to update
             System.out.println("Symbol Update due");
-            long thirtyDays = System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS);
+            updateDue = now + TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS);
             if (updateSymbols()) {
-                editor.putLong("updateDue", thirtyDays);   // Store new time to update
+                editor.putLong("updateDue", updateDue);   // Store new time to update
                 editor.commit();
+                System.out.println("At commit: Now = "+ now + " , Due = " + updateDue);
 //                System.out.println("Update was saved");
             } else
                 Toast.makeText(HomeActivity.this, "Error updating Stock Symbols", Toast.LENGTH_LONG).show();
@@ -82,7 +84,7 @@ public class HomeActivity extends AppCompatActivity {
 
         mButtonOk = (Button) findViewById(R.id.button);
         mTextURI = (EditText) findViewById(R.id.url_to_fetch);
-        mTextURI.setText(db.getWatchList());
+//        mTextURI.setText(db.getWatchList());
         final TextView mTextView = (TextView) findViewById(R.id.text);
         mTextURI.append("");
         final RequestQueue queue = Volley.newRequestQueue(this);
@@ -90,66 +92,67 @@ public class HomeActivity extends AppCompatActivity {
         mTextView.setMovementMethod(new ScrollingMovementMethod());
 // Gson
         final GsonBuilder gsonBuilder = new GsonBuilder();
-// ...
-        mButtonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String symbols = mTextURI.getText().toString().trim();
-                // Instantiate the RequestQueue.
+//        String symbols = mTextURI.getText().toString().trim();
+        String symbols = db.getWatchList().trim();
+        // Instantiate the RequestQueue.
 //                String url ="https://api.iextrading.com/1.0/stock/market/batch?symbols="+ symbols +"&types=chart&range=1m&last=5";
 //                String url ="https://api.iextrading.com/1.0/stock/market/batch?symbols="+ symbols +"&types=quote,news,chart&range=6m";
-                String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + symbols + "&types=quote,news,chart&last=5";
+        String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + symbols + "&types=quote,news,chart&last=5";
 //          Sql query should be like SELECT GROUP_CONCAT(symbol SEPARATOR ',')
 //              or SELECT GROUP_CONCAT(symbol)
 
 //                String url ="https://api.iextrading.com/1.0/stock/"+ symbols +"/quote";
 // Request a string response from the provided URL.
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                if (response.equals("{}"))
-                                    mTextView.setText(mTextView.getText() + ("No Data returned.  Did you enter a valid stock symbol?"));
-                                else {
-                                    mTextView.setText("");
-                                    gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
-                                    Batches myData = gsonBuilder.create().fromJson(response, Batches.class);
-                                    for (int index = 0; index < myData.batches.size(); index++) {
-                                        mTextView.append(Integer.toString(index));
-                                        mTextView.append(" ");
-                                        mTextView.append(myData.batches.get(index).quote.symbol);
-                                        mTextView.append(" ");
-                                        mTextView.append(Float.toString(myData.batches.get(index).quote.latestPrice));
-                                        mTextView.append(" ");
-                                        if (myData.batches.get(index).quote.change < 0) {
-                                            //mTextView.setTextColor(Color.parseColor("#FF0000"));
-                                            mTextView.append(Float.toString(myData.batches.get(index).quote.change));
-                                        } else {
-                                            //mTextView.setTextColor(Color.parseColor("#00FF00"));
-                                            mTextView.append(Float.toString(myData.batches.get(index).quote.change));
-                                        }
-                                        mTextView.append("\n");
-                                        Gson gsonPretty = new GsonBuilder().setPrettyPrinting().create();
-                                        String json = gsonPretty.toJson(myData);
-
-                                        //System.out.println("JSON = " + json);
-                                        //mTextView.append(json);
-
-                                        //mTextView.setTextColor(Color.parseColor("#000000"));
-                                    }
-                                    //mTextView.setText("Response is: " + response);
-
-                                }
-                            }
-                        }, new Response.ErrorListener() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
-                        mTextView.setText("That didn't work! Do you have an internet connection?");
+                    public void onResponse(String response) {
+                        if (response.equals("{}"))
+                            mTextView.setText(mTextView.getText() + ("No Data returned.  Did you enter a valid stock symbol?"));
+                        else {
+                            mTextView.setText("");
+                            gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
+                            Batches myData = gsonBuilder.create().fromJson(response, Batches.class);
+                            for (int index = 0; index < myData.batches.size(); index++) {
+                                mTextView.append(Integer.toString(index));
+                                mTextView.append(" ");
+                                mTextView.append(myData.batches.get(index).quote.symbol);
+                                mTextView.append(" ");
+                                mTextView.append(Float.toString(myData.batches.get(index).quote.latestPrice));
+                                mTextView.append(" ");
+                                if (myData.batches.get(index).quote.change < 0) {
+                                    //mTextView.setTextColor(Color.parseColor("#FF0000"));
+                                    mTextView.append(Float.toString(myData.batches.get(index).quote.change));
+                                } else {
+                                    //mTextView.setTextColor(Color.parseColor("#00FF00"));
+                                    mTextView.append(Float.toString(myData.batches.get(index).quote.change));
+                                }
+                                mTextView.append("\n");
+                                Gson gsonPretty = new GsonBuilder().setPrettyPrinting().create();
+                                String json = gsonPretty.toJson(myData);
+
+                                //System.out.println("JSON = " + json);
+                                //mTextView.append(json);
+
+                                //mTextView.setTextColor(Color.parseColor("#000000"));
+                            }
+                            //mTextView.setText("Response is: " + response);
+
+                        }
                     }
-                });
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mTextView.setText("That didn't work! Do you have an internet connection?");
+            }
+        });
 
 // Add the request to the RequestQueue.
-                queue.add(stringRequest);
+        queue.add(stringRequest);
+
+        mButtonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
             }
         });
     }
@@ -173,10 +176,10 @@ public class HomeActivity extends AppCompatActivity {
                         val += db.addSymbol(mySyms[i].name,mySyms[i].symbol);
                         //System.out.println(mySyms[i].name +"   ,  " +mySyms[i].symbol);
                     }
-                if (val <= mySyms.length) {
-                    Toast.makeText(HomeActivity.this, "Symbol Database Error", Toast.LENGTH_LONG).show();
-                    dbsuccess = false;
-                }
+//                if (val <= mySyms.length) {
+//                    Toast.makeText(HomeActivity.this, "Symbol Database Error", Toast.LENGTH_LONG).show();
+//                    dbsuccess = false;
+//                }
             }
             }, new Response.ErrorListener() {
             @Override
@@ -186,7 +189,7 @@ public class HomeActivity extends AppCompatActivity {
         });
         // Add the request to the RequestQueue.
         queue.add(symbolRequest);
-        return dbsuccess;
+        return true;
     }
     public void getData(String jsonData) {
         GsonBuilder gsonBuilder = new GsonBuilder();
