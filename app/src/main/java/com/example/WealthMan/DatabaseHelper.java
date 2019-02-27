@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
+import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.util.Log;
 
 import java.lang.reflect.Array;
@@ -64,6 +65,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.close();
         return res;
     }
+
+    public void remWatch(String symbol){
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_NAME+ " WHERE "+WL_COL_SYMBOL+"='"+symbol+"'");
+        db.close();
+    }
+    
     public String getWatchList(){
         String result;
         SQLiteDatabase db = this.getReadableDatabase();
