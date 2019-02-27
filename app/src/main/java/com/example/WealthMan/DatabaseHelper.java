@@ -52,10 +52,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         long res = 0;
         for (int i = 0 ; i < wlArray.length; i++){
             ContentValues contentValues = new ContentValues();
-<<<<<<< HEAD
             contentValues.put(WL_COL_USER, 1);
-=======
->>>>>>> 8454a95f265dbc6889488890f75749c31d99a143
+
             contentValues.put(WL_COL_SYMBOL, wlArray[i]);
             res = db.insert(WL_TBL,null,contentValues);
         }
@@ -70,7 +68,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.close();
         return res;
     }
-<<<<<<< HEAD
     public void remWatch(String symbol, int userid){
         SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME+ " WHERE "+ WL_COL_SYMBOL + " = " + symbol + "AND userid=" + userid +";");
@@ -93,15 +90,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return  userid;
     }
 
-=======
 
     public void remWatch(String symbol){
         SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME+ " WHERE "+WL_COL_SYMBOL+"='"+symbol+"'");
         db.close();
     }
->>>>>>> 8454a95f265dbc6889488890f75749c31d99a143
-    
+
     public String getWatchList(){
         String result;
         SQLiteDatabase db = this.getReadableDatabase();
