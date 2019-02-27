@@ -17,7 +17,70 @@
 
         <include layout="@layout/detail_content_index" />
         <!--here keep for you   start -->
+        <include
+            layout="@layout/detail_content_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
 
+        <Button
+            android:id="@+id/buyOrSell"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="190dp"
+            android:layout_height="40dp"
+            android:background="#429740"
+            android:textColor="#ffffff"
+            android:text="BUY / SELL"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+
+        <Button
+            android:id="@+id/watchOrUnwatch"
+            android:layout_width="190dp"
+            android:layout_height="40dp"
+            android:background="#429740"
+            android:textColor="#ffffff"
+            android:text="WATCH / UNWATCH"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+        <TextView
+            android:id="@+id/news"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="News"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            />
+        <View
+            android:layout_height="0.5dip"
+            android:background="#429740"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="#429740"
+            />
+        />
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+        />
+        <TextView
+            android:id="@+id/tv3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+        />
         <!-- end  -->
     </LinearLayout>
 </ScrollView>
