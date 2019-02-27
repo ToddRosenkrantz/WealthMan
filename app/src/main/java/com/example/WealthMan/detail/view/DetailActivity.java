@@ -5,23 +5,30 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.WealthMan.R;
+import com.example.WealthMan.TransactionActivity;
 import com.example.WealthMan.detail.bean.DetailLineBean;
 import com.example.WealthMan.detail.okhttp.RequestManger;
 import com.example.WealthMan.detail.okhttp.RequstCallBack;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
+
 
 public class DetailActivity extends AppCompatActivity implements RequstCallBack, View.OnClickListener {
     public ArrayList<DetailLineBean> dateBean = new ArrayList<>();
@@ -56,7 +63,20 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        TextView tv1 = findViewById(R.id.tv1);
+        //click buy or sell to transaction page
+        Button buyOrSell= findViewById(R.id.buyOrSell);
+        buyOrSell.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                 Intent intent =new Intent(DetailActivity.this,TransactionActivity.class);
+                 startActivity(intent);
+            }
+
+        });
+        final TextView tv1 = findViewById(R.id.tv1);
+
+
+        tv1.setMovementMethod(new ScrollingMovementMethod());
         tv1.setText(Html.fromHtml("<a  href='https://api.iextrading.com/1.0/stock/aapl/article/5022287287028639'>Apple: Stress-Valuation</a>"));
         tv1.setMovementMethod(LinkMovementMethod.getInstance());
         TextView tv2 = findViewById(R.id.tv2);
@@ -68,15 +88,9 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         tv3.setMovementMethod(LinkMovementMethod.getInstance());
 
 
-        //data list
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(DetailActivity.this, android.R.layout.simple_list_item_1,dataList);//适配器
-        ListView listView = (ListView) findViewById(R.id.dataList); //找到ListView布局
-        listView.setAdapter(adapter);
-
         initView();
         initListen();
-        requstDate(baseUrl + "?symbols=" + symbolName + "&types=quote,chart&range=" + dayType);
-        loading(true);
+        requstDate(baseUrl + "?symbols=" + symbolName + "&types=quote,news,chart&range=" + dayType);
     }
 
     private void beforeInflateView() {
@@ -139,7 +153,32 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         }
         float v = aapl.quote.changePercent * 100;
         name.setText(aapl.quote.companyName + "close :" + aapl.quote.close + "( " + v + "%)");
-        name.setTextColor(textColor);
+        //information
+        TextView symbols = findViewById(R.id.symbols);
+        symbols.setText("Symbol: "+aapl.quote.symbol);
+
+        TextView cpName = findViewById(R.id.cpName);
+        cpName.setText("Company name: "+aapl.quote.companyName);
+
+        TextView openPrice = findViewById(R.id.openPrice);
+        openPrice.setText("Open: "+aapl.quote.open);
+
+        TextView latestVolume = findViewById(R.id.latestVolume);
+        latestVolume.setText("Volume: "+aapl.quote.latestVolume);
+
+        TextView change = findViewById(R.id.change);
+        change.setText("Change:     "+aapl.quote.change);
+
+        TextView changePercent = findViewById(R.id.changePercent);
+        changePercent.setText("Change Percent: "+aapl.quote.changePercent);
+
+
+
+        Logger.addLogAdapter(new AndroidLogAdapter());
+        Logger.d(aapl.quote);
+
+//        name.setTextColor(textColor);
+
         List<DetailLineBean.Detaildate.DetailLineDate> newchart = new ArrayList<>();
         DetailLineBean.Detaildate.DetailLineDate detailLineDate = chart.get(0);
         float firstClose = detailLineDate.close;

@@ -15,7 +15,8 @@
             android:id="@+id/name"
             android:layout_width="300dp"
             android:layout_height="30dp"
-            android:text="name :" />
+            android:text="name :"
+            android:textColor="#000000"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -174,11 +175,88 @@
             <!--android:layout_height="wrap_content"-->
             <!--/>-->
 
-        <ListView
+        <!--<ListView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"></ListView>-->
+        <TextView
+        android:id="@+id/symbols"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="News"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:textSize="15dp"
+        />
+        <View
+            android:layout_height="0.5dip"
+            android:background="#429740"
+            android:layout_width="match_parent"
+            />
+        <TextView
+            android:id="@+id/cpName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/dataList">
-        </ListView>
+            android:text="News"
+            android:layout_marginLeft="30dp"
+            android:textSize="15dp"
+            />
+        <View
+            android:layout_height="0.5dip"
+            android:background="#429740"
+            android:layout_width="match_parent"
+            />
+        <TextView
+            android:id="@+id/openPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="News"
+            android:layout_marginLeft="30dp"
+            android:textSize="15dp"
+            />
+        <View
+            android:layout_height="0.5dip"
+            android:background="#429740"
+            android:layout_width="match_parent"
+            />
+        <TextView
+            android:id="@+id/latestVolume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="News"
+            android:layout_marginLeft="30dp"
+            android:textSize="15dp"
+            />
+        <View
+            android:layout_height="0.5dip"
+            android:background="#429740"
+            android:layout_width="match_parent"
+            />
+        <TextView
+            android:id="@+id/change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="News"
+            android:layout_marginLeft="30dp"
+            android:textSize="15dp"
+            />
+        <View
+            android:layout_height="0.5dip"
+            android:background="#429740"
+            android:layout_width="match_parent"
+            />
+        <TextView
+            android:id="@+id/changePercent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="News"
+            android:layout_marginLeft="30dp"
+            android:textSize="15dp"
+            />
+        <View
+            android:layout_height="0.5dip"
+            android:background="#429740"
+            android:layout_width="match_parent"
+            />
         <Button
             android:id="@+id/buyOrSell"
             style="@style/Widget.AppCompat.Button"
@@ -187,7 +265,7 @@
             android:background="#429740"
             android:textColor="#ffffff"
             android:text="Buy / Sell"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:layout_gravity="center"/>
 
@@ -207,7 +285,7 @@
             android:layout_height="wrap_content"
             android:text="News"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             />
         <View
             android:layout_height="0.5dip"
@@ -218,24 +296,22 @@
             android:id="@+id/tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:textColor="#429740"
-            />
+            android:layout_marginLeft="30dp"
+            android:textSize="15dp"            />
         />
         <TextView
             android:id="@+id/tv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center"/>
+            android:layout_marginLeft="30dp"
+            android:textSize="15dp"/>
         />
         <TextView
             android:id="@+id/tv3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center"/>
+            android:layout_marginLeft="30dp"
+            android:textSize="15dp"/>
         />
         <!-- end  -->
     </LinearLayout>
