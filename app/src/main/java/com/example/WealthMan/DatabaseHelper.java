@@ -53,7 +53,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         long res = 0;
         for (int i = 0 ; i < wlArray.length; i++){
             ContentValues contentValues = new ContentValues();
-            contentValues.put(WL_COL_USER, 0);
+            contentValues.put(WL_COL_USER, 1);
             contentValues.put(WL_COL_SYMBOL, wlArray[i]);
             res = db.insert(WL_TBL,null,contentValues);
         }
