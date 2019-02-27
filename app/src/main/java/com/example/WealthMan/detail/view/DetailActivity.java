@@ -7,6 +7,8 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +47,7 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
     private String dayType = "1d";
     private ProgressBar progressBar;
     private TextView name;
+    private String[] dataList={"appl"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,12 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         TextView tv3 = findViewById(R.id.tv3);
         tv3.setText(Html.fromHtml("<a href='https://api.iextrading.com/1.0/stock/aapl/article/5750047012237294'>The diversity challenge facing tech</a>"));
         tv3.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+        //data list
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(DetailActivity.this, android.R.layout.simple_list_item_1,dataList);//适配器
+        ListView listView = (ListView) findViewById(R.id.dataList); //找到ListView布局
+        listView.setAdapter(adapter);
 
         initView();
         initListen();
