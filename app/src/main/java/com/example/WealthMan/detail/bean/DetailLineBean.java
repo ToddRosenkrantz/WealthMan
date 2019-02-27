@@ -23,6 +23,9 @@ public class DetailLineBean {
         public class DetailNew {
             public String symbol;
             public String companyName;
+            public String news;
+            public String open;
+            public String latestVolume;
             public float close;
             public float change;
             public float week52High;
