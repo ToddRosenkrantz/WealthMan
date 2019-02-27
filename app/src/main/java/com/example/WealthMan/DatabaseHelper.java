@@ -27,6 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public static final String SYM_COL_3 = "symbol";
 
     public static final String WL_TBL = "watchlist";
+    public static final String WL_COL_USER = "userid";
     public static final String WL_COL_SYMBOL = "symbol";
 
     public DatabaseHelper(Context context) {
@@ -37,7 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("CREATE TABLE registeruser (ID INTEGER PRIMARY  KEY AUTOINCREMENT, username TEXT, password TEXT, email TEXT, pin TEXT)");
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS symbols (ID INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT, symbol TEXT)");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS watchlist (symbol TEXT PRIMARY KEY)");
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS watchlist (userid INTEGER, symbol TEXT)");
     }
 
     @Override
@@ -52,15 +53,17 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         long res = 0;
         for (int i = 0 ; i < wlArray.length; i++){
             ContentValues contentValues = new ContentValues();
+            contentValues.put(WL_COL_USER, 0);
             contentValues.put(WL_COL_SYMBOL, wlArray[i]);
             res = db.insert(WL_TBL,null,contentValues);
         }
         db.close();
         return res;
     }
-    public long addWatch(String symbol){
+    public long addWatch(String symbol, int userid){
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(WL_COL_USER, userid);
         contentValues.put(WL_COL_SYMBOL, symbol);
         long res = db.insert(WL_TBL,null,contentValues);
         db.close();
