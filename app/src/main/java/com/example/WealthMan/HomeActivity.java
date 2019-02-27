@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 public class HomeActivity extends AppCompatActivity {
     EditText mTextURI;
     Button mButtonOk;
-    Button mButtonTest;
+    
     DatabaseHelper db;
     boolean dbsuccess = true;
     public static final String MY_PREFS_FILE = "wealthman_prefs";
@@ -154,19 +154,6 @@ public class HomeActivity extends AppCompatActivity {
         queue.add(stringRequest);
 
         mButtonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = getIntent();
-//                String str = intent.getStringExtra("Symbol");
-                // Enable the following to go to Detail Activity and retrieve the Symbol with the above lines
-
-                Intent intent = new Intent(getApplicationContext(), com.example.WealthMan.detail.view.DetailActivity.class);
-                String symbol = mTextURI.getText().toString().trim();
-                intent.putExtra("Symbol", symbol);
-                startActivity(intent);
-            }
-        });
-        mButtonTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Intent intent = getIntent();
