@@ -244,6 +244,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public boolean updateSymbols() {
+
         final RequestQueue queue = Volley.newRequestQueue(this);
         System.out.println("Updating Symbols now");
         String symbolUrl = "https://api.iextrading.com/1.0/ref-data/symbols";
