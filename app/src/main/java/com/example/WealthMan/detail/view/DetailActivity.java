@@ -74,11 +74,11 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         setContentView(R.layout.activity_detail);
 
         //get symbol from HomeActivity
-
-        Intent intent = getIntent();
-        String symboldata = intent.getStringExtra("Symbol");
-        Logger.addLogAdapter(new AndroidLogAdapter());
-        Logger.d(symboldata);
+//
+//        Intent intent = getIntent();
+//        String symboldata = intent.getStringExtra("Symbol");
+//        Logger.addLogAdapter(new AndroidLogAdapter());
+//        Logger.d(symboldata);
 
         //click buy or sell to transaction page
         Button buyOrSell= findViewById(R.id.buyOrSell);
@@ -149,12 +149,19 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         initView();
         initListen();
         requstDate(baseUrl + "?symbols=" + symbolName + "&types=quote,news,chart&range=" + dayType);
+        Logger.addLogAdapter(new AndroidLogAdapter());
+        Logger.d(baseUrl + "?symbols=" + symbolName + "&types=quote,news,chart&range=" + dayType);
+
+
+
     }
 
     private void beforeInflateView() {
         Intent intent = getIntent();
         if (intent != null) {
-            symbolName = intent.getStringExtra(SYMBOL_NAME);
+            symbolName = intent.getStringExtra("SYMBOL_NAME");
+//            Logger.addLogAdapter(new AndroidLogAdapter());
+//            Logger.d(symbolName);
             symbolName = "aapl";
         }
     }

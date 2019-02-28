@@ -37,12 +37,14 @@ import com.example.WealthMan.APIInterface.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 
 public class HomeActivity extends AppCompatActivity {
     EditText mTextURI;
     Button mButtonOk;
+    ArrayList<WatchListData> wl_data = new ArrayList<>();
 
     DatabaseHelper db;
     boolean dbsuccess = true;
@@ -53,7 +55,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent = getIntent();
-        int userid = intent.getIntExtra("UserId", 0);
+        final int userid = intent.getIntExtra("UserId", 0);
         db = new DatabaseHelper(this);
         SharedPreferences preference = getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
         SharedPreferences.Editor editor = preference.edit();
@@ -162,7 +164,9 @@ public class HomeActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), com.example.WealthMan.detail.view.DetailActivity.class);
                 String symbol = mTextURI.getText().toString().trim();
+                intent.putExtra("SYMBOL_NAME", symbol);
                 intent.putExtra("Symbol", symbol);
+                intent.putExtra("UserID", userid);
                 startActivity(intent);
             }
         });
@@ -212,6 +216,14 @@ public class HomeActivity extends AppCompatActivity {
 //        System.out.println("JSON = " + json);
         for (int index = 0; index < watchList.batches.size(); index++) {
             System.out.println(index + "\t" + watchList.batches.get(index).quote.symbol + "\t" + watchList.batches.get(index).quote.latestPrice + "\t" + watchList.batches.get(index).quote.change);
+            for (int i = 0 ; i < watchList.batches.size(); i++){
+               WatchListData temp = new WatchListData();
+               temp.setChange(watchList.batches.get(i).quote.change);
+                temp.setPrice(watchList.batches.get(i).quote.latestPrice);
+                temp.setName(watchList.batches.get(i).quote.companyName);
+                temp.setSymbol(watchList.batches.get(i).quote.symbol);
+                wl_data.add(temp);
+            }
         }
     }
 }
