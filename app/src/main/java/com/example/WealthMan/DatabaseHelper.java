@@ -72,7 +72,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
     public void remWatch(int userid, String symbol){
         SQLiteDatabase db = this.getReadableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_NAME+ " WHERE "+ WL_COL_SYMBOL + " = " + symbol + "AND userid=" + userid +";");
+        db.execSQL("DELETE FROM " + TABLE_NAME+ " WHERE "+ WL_COL_SYMBOL + " = " + symbol + "AND "+WL_COL_USER+ "="+userid+";");
         db.close();
     }
     public int getUserId(String Email){

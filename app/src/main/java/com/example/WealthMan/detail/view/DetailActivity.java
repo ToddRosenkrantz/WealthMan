@@ -35,12 +35,12 @@ import java.util.Random;
 
 public class DetailActivity extends AppCompatActivity implements RequstCallBack, View.OnClickListener {
 
-    //+++++++++++Watch button+++++
+    //+++++++++++Watch button data+++++
     Button watch;
     AlertDialog.Builder builder;
     DatabaseHelper db;
     int ID;
-    //+++++++++++++++++++++++
+    //++++++++++++++++++++++++++++
     public ArrayList<DetailLineBean> dateBean = new ArrayList<>();
     public float maxAverage = 0;
     public float minAverage = 0;
