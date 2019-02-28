@@ -107,7 +107,7 @@ public class HomeActivity extends AppCompatActivity {
 ///////////////////*/
 //        setContentView(R.layout.activity_home);
 
-        mButtonOk = (Button) findViewById(R.id.button);
+        mButtonOk = (Button) findViewById(R.id.update_data_btn);
         mButtonTest = (Button) findViewById(R.id.button2);
 ////        mTextURI = (EditText) findViewById(R.id.url_to_fetch);
 //        mTextURI.setText(db.getWatchList());
