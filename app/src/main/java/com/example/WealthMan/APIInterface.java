@@ -35,41 +35,41 @@ public class APIInterface {
         public String primaryExchange = null;
         public String sector = null;
         public String calculationPrice = null;
-        public float open = 0;
+        public double open = 0;
         public long openTime = 0;              // Epoch time
-        public float close = 0;
+        public double close = 0;
         public long closeTime = 0;
-        public float high = 0;
-        public float low = 0;
-        public float latestPrice = 0;
+        public double high = 0;
+        public double low = 0;
+        public double latestPrice = 0;
         public String latestSource = null;
         public String latestTime = null;
         public long latestUpdate= 0;           // Epoch time
         public long latestVolume = 0;
-        public float iexRealtimePrice = 0;
+        public double iexRealtimePrice = 0;
         public long iexRealtimeSize = 0;
         public long  iexLastUpdated = 0;       // Epoch time
-        public float delayedPrice = 0;
+        public double delayedPrice = 0;
         public long  delayedPriceTime = 0;              // Epoch time
-        public float extendedPrice = 0;
-        public float extendedChange = 0;
-        public float extendedChangePercent = 0;
+        public double extendedPrice = 0;
+        public double extendedChange = 0;
+        public double extendedChangePercent = 0;
         public long extendedPriceTime = 0;              // Epoch time
-        public float previousClose = 0;
-        public float change = 0;
-        public float changePercent = 0;
-        public float iexMarketPercent = 0;
+        public double previousClose = 0;
+        public double change = 0;
+        public double changePercent = 0;
+        public double iexMarketPercent = 0;
         public long  iexVolume = 0;
         public long  avgTotalVolume = 0;
-        public float iexBidPrice = 0;
+        public double iexBidPrice = 0;
         public long  iexBidSize = 0;
-        public float iexAskPrice = 0;
+        public double iexAskPrice = 0;
         public long  iexAskSize = 0;
         public long  marketCap = 0;
-        public float peRatio = 0;
-        public float week52High = 0;
-        public float week52Low = 0;
-        public float ytdChange = 0;
+        public double peRatio = 0;
+        public double week52High = 0;
+        public double week52Low = 0;
+        public double ytdChange = 0;
     }
     public class article {
         public String datetime = null;
@@ -83,17 +83,17 @@ public class APIInterface {
     public class chartDatum{
         public String date = null; //": "2017-04-03",
         public String open = null; //": 143.1192,
-        public float high = 0; //": 143.5275,
-        public float low = 0; //": 142.4619,
-        public float close = 0;//": 143.1092,
+        public double high = 0; //": 143.5275,
+        public double low = 0; //": 142.4619,
+        public double close = 0;//": 143.1092,
         public long volume = 0; //": 19985714,
-        public float unadjustedClose = 0; //": 143.7,
+        public double unadjustedClose = 0; //": 143.7,
         public long unadjustedVolume = 0; //": 19985714,
-        public float change = 0; //": 0.039835,
-        public float changePercent = 0; //": 0.028,
-        public float vwap = 0; //": 143.0507,
+        public double change = 0; //": 0.039835,
+        public double changePercent = 0; //": 0.028,
+        public double vwap = 0; //": 143.0507,
         public String label = null; //": "Apr 03, 17",
-        public float changeOverTime = 0; //": -0.0039
+        public double changeOverTime = 0; //": -0.0039
     }
     public class stockSym{
         String symbol;
@@ -135,13 +135,13 @@ public class APIInterface {
     public static class WatchListData{
         private String symbol;
         private String name;
-        private Float price;
-        private Float change;
+        private double price;
+        private double change;
 
-        public void setPrice(Float price){
+        public void setPrice(double price){
             this.price = price;
         }
-        public void setChange(Float change){
+        public void setChange(double change){
             this.change = change;
         }
         public void setSymbol(String symbol){ this.symbol = symbol; }
@@ -149,10 +149,10 @@ public class APIInterface {
             this.name = name;
         }
 
-        public Float getPrice(){
+        public double getPrice(){
             return price;
         }
-        public Float getChange(){
+        public double getChange(){
             return change;
         }
         public String getSymbol(){
@@ -169,7 +169,7 @@ public class APIInterface {
             JsonObject jsonObject = element.getAsJsonObject();
             List<Quote> quotes = new ArrayList<Quote>();
             for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-                // For individual Quote objects, we can use default deserialisation:
+                // For individual Quote objects, we can use default deserialization:
                 Quote quote = context.deserialize(entry.getValue(), Quote.class);
                 quotes.add(quote);
             }

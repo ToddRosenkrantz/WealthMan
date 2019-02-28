@@ -56,8 +56,7 @@ public class HomeActivity extends AppCompatActivity {
 //    Button mButtonTest;
     ArrayList<WatchListData> wl_data = new ArrayList<>();
 
-    String jsonData = "";
-
+    int userid = getIntent().getIntExtra("UserID",1);
     DatabaseHelper db;
     boolean dbsuccess = true;
     public static final String MY_PREFS_FILE = "wealthman_prefs";
@@ -125,7 +124,7 @@ public class HomeActivity extends AppCompatActivity {
         // Instantiate the RequestQueue.
 //                String url ="https://api.iextrading.com/1.0/stock/market/batch?symbols="+ symbols +"&types=chart&range=1m&last=5";
 //                String url ="https://api.iextrading.com/1.0/stock/market/batch?symbols="+ symbols +"&types=quote,news,chart&range=6m";
-        String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + symbols + "&types=quote,news,chart&last=5";
+        String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + symbols + "&types=quote";
 //          Sql query should be like SELECT GROUP_CONCAT(symbol SEPARATOR ',')
 //              or SELECT GROUP_CONCAT(symbol)
 
@@ -142,7 +141,13 @@ public class HomeActivity extends AppCompatActivity {
         ////                    mTextView.setText("");
                             GsonBuilder gsonBuilder = new GsonBuilder();
                             gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
-                            Batches myData = gsonBuilder.create().fromJson(jsonData, Batches.class);
+                            Batches myData = gsonBuilder.create().fromJson(response, Batches.class);
+                            Gson gsonPretty = new GsonBuilder().setPrettyPrinting().create();
+                            String json = gsonPretty.toJson(myData);
+                            System.out.println(json);
+                            initData(myData);
+
+                            //System.out.println("JSON = " + json);
 /*                            for (int index = 0; index < myData.batches.size(); index++) {
          ////                       mTextView.append(Integer.toString(index));
          ////                       mTextView.append(" ");
@@ -158,10 +163,6 @@ public class HomeActivity extends AppCompatActivity {
          ////                           mTextView.append(Float.toString(myData.batches.get(index).quote.change));
                                 }
          ////                       mTextView.append("\n");
-                                Gson gsonPretty = new GsonBuilder().setPrettyPrinting().create();
-                                String json = gsonPretty.toJson(myData);
-
-                                //System.out.println("JSON = " + json);
                                 //mTextView.append(json);
 
                                 //mTextView.setTextColor(Color.parseColor("#000000"));
@@ -209,7 +210,7 @@ public class HomeActivity extends AppCompatActivity {
 //                startActivity(intent);
 //            }
 //        });
-        initData(jsonData);
+
 
 
 //        mButtonOk.setOnClickListener(new View.OnClickListener() {
@@ -287,25 +288,39 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void initData(String jsonData) {
+    private void initData(Batches jsonData) {
 
-        IconBean symbol = new IconBean("FB","FaceBook",7.77,0.89);
-        mIconBeenList.add(symbol);
-        symbol = new IconBean("AAPL","Apple Inc.",140.63,-0.09);
-        mIconBeenList.add(symbol);
-        mIconBeenList.add(symbol);
-        mIconBeenList.add(symbol);
-        mIconBeenList.add(symbol);
-        mIconBeenList.add(symbol);
-        mIconBeenList.add(symbol);
-        mIconBeenList.add(symbol);
-        mIconBeenList.add(symbol);
-        mIconBeenList.add(symbol);
-        mIconBeenList.add(symbol);
-        mIconBeenList.add(symbol);
-        mIconBeenList.add(symbol);
-        mIconBeenList.add(symbol);
-        System.out.println(jsonData);
+        for (int i = 0 ; i < jsonData.batches.size(); i++) {
+//            WatchListData temp = new WatchListData();
+//            temp.setChange(jsonData.quotes.get(i).change);
+//            temp.setPrice(jsonData.quotes.get(i).latestPrice);
+//            temp.setName(jsonData.quotes.get(i).companyName);
+//            temp.setSymbol(jsonData.quotes.get(i).symbol);
+//            System.out.println();
+            IconBean symbol = new IconBean(
+                    jsonData.batches.get(i).quote.symbol.trim(),
+                    jsonData.batches.get(i).quote.companyName.trim(),
+                    jsonData.batches.get(i).quote.latestPrice,
+                    jsonData.batches.get(i).quote.change
+                );
+//            IconBean symbol = new IconBean("FB","FaceBook",7.77,0.89);
+            mIconBeenList.add(symbol);
+        }
+//        symbol = new IconBean("AAPL","Apple Inc.",140.63,-0.09);
+//        mIconBeenList.add(symbol);
+//        mIconBeenList.add(symbol);
+//        mIconBeenList.add(symbol);
+//        mIconBeenList.add(symbol);
+//        mIconBeenList.add(symbol);
+//        mIconBeenList.add(symbol);
+//        mIconBeenList.add(symbol);
+//        mIconBeenList.add(symbol);
+//        mIconBeenList.add(symbol);
+//        mIconBeenList.add(symbol);
+//        mIconBeenList.add(symbol);
+//        mIconBeenList.add(symbol);
+//        mIconBeenList.add(symbol);
+//        System.out.println(jsonData);
 //        private View show_list(){
 //        List<String> data_list = new ArrayList<>(Arrays.asList(data));
 //        ArrayAdapter<String> data_adapter = new ArrayAdapter<>(this,R.layout.lv_item,data_list);
