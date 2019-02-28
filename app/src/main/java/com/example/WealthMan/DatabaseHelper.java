@@ -149,13 +149,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         cursor.moveToFirst();//***!!!very important
         int count = cursor.getCount();
         if(count>0){
-            Log.d("ForgotActivity","If进入onCreate execute");
+            Log.d("ForgotActivity","If onCreate execute");
             String password = "Your password is "+cursor.getString(cursor.getColumnIndex("password"));
             cursor.close();
             db.close();
             return  password;}
         else {
-            Log.d("ForgotActivity", "else进入onCreate execute");
+            Log.d("ForgotActivity", "else onCreate execute");
             String warn = "Email or PIN code is wrong";
             cursor.close();
             db.close();
