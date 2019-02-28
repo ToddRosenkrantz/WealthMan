@@ -162,7 +162,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), com.example.WealthMan.detail.view.DetailActivity.class);
                 String symbol = mTextURI.getText().toString().trim();
-                intent.putExtra("Symbol", symbol);
+                intent.putExtra("SYMBOL_NAME", symbol);
                 startActivity(intent);
             }
         });
