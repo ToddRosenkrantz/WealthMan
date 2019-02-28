@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,8 +43,15 @@ import java.util.concurrent.TimeUnit;
 
 
 public class HomeActivity extends AppCompatActivity {
+    private ArrayList<IconBean> mIconBeenList = new ArrayList<>();
+    private ListView lv;
+    private String latestprice;
+    private IconAdapter sa;
+    private DatabaseHelper DatabaseHelper;
+    //public String [] data = {"apple","apple","orange","watermelon","peat","grape","pineapple","strawberry","cherry","mango"};
     EditText mTextURI;
     Button mButtonOk;
+    Button mButtonTest;
     ArrayList<WatchListData> wl_data = new ArrayList<>();
 
     DatabaseHelper db;
@@ -85,16 +93,28 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+
+        setContentView(R.layout.activity_ativity_test_watchlist);
+        lv = (ListView)findViewById(R.id.lv);
+        //为listview添加adapter
+        lv.setAdapter(new IconAdapter(this,mIconBeenList));
+
+/*
+//        IconAdapter adapter = new IconAdapter(
+//                MainActivity.this,R.layout.lv_item,data);
+//        ListView listView = lv;
+///////////////////*/
+//        setContentView(R.layout.activity_home);
 
         mButtonOk = (Button) findViewById(R.id.button);
-        mTextURI = (EditText) findViewById(R.id.url_to_fetch);
+        mButtonTest = (Button) findViewById(R.id.button2);
+////        mTextURI = (EditText) findViewById(R.id.url_to_fetch);
 //        mTextURI.setText(db.getWatchList());
-        final TextView mTextView = (TextView) findViewById(R.id.text);
-        mTextURI.append("");
+////        final TextView mTextView = (TextView) findViewById(R.id.text);
+////        mTextURI.append("");
         final RequestQueue queue = Volley.newRequestQueue(this);
 
-        mTextView.setMovementMethod(new ScrollingMovementMethod());
+////        mTextView.setMovementMethod(new ScrollingMovementMethod());
 // Gson
         final GsonBuilder gsonBuilder = new GsonBuilder();
 //        String symbols = mTextURI.getText().toString().trim();
@@ -113,26 +133,28 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if (response.equals("{}"))
-                            mTextView.setText(mTextView.getText() + ("No Data returned.  Did you enter a valid stock symbol?"));
+                            Toast.makeText(HomeActivity.this, "Nothing Returned", Toast.LENGTH_LONG).show();
+    ////                        mTextView.setText(mTextView.getText() + ("No Data returned.  Did you enter a valid stock symbol?"));
                         else {
-                            mTextView.setText("");
+        ////                    mTextView.setText("");
+                            initData(response);
                             gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
                             Batches myData = gsonBuilder.create().fromJson(response, Batches.class);
                             for (int index = 0; index < myData.batches.size(); index++) {
-                                mTextView.append(Integer.toString(index));
-                                mTextView.append(" ");
-                                mTextView.append(myData.batches.get(index).quote.symbol);
-                                mTextView.append(" ");
-                                mTextView.append(Float.toString(myData.batches.get(index).quote.latestPrice));
-                                mTextView.append(" ");
+         ////                       mTextView.append(Integer.toString(index));
+         ////                       mTextView.append(" ");
+         ////                       mTextView.append(myData.batches.get(index).quote.symbol);
+         ////                       mTextView.append(" ");
+         ////                       mTextView.append(Float.toString(myData.batches.get(index).quote.latestPrice));
+         ////                       mTextView.append(" ");
                                 if (myData.batches.get(index).quote.change < 0) {
                                     //mTextView.setTextColor(Color.parseColor("#FF0000"));
-                                    mTextView.append(Float.toString(myData.batches.get(index).quote.change));
+         ////                           mTextView.append(Float.toString(myData.batches.get(index).quote.change));
                                 } else {
                                     //mTextView.setTextColor(Color.parseColor("#00FF00"));
-                                    mTextView.append(Float.toString(myData.batches.get(index).quote.change));
+         ////                           mTextView.append(Float.toString(myData.batches.get(index).quote.change));
                                 }
-                                mTextView.append("\n");
+         ////                       mTextView.append("\n");
                                 Gson gsonPretty = new GsonBuilder().setPrettyPrinting().create();
                                 String json = gsonPretty.toJson(myData);
 
@@ -148,28 +170,41 @@ public class HomeActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mTextView.setText("That didn't work! Do you have an internet connection?");
+         ////       mTextView.setText("That didn't work! Do you have an internet connection?");
             }
         });
 
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
-        mButtonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = getIntent();
-//                String str = intent.getStringExtra("Symbol");
-                // Enable the following to go to Detail Activity and retrieve the Symbol with the above lines
-
-                Intent intent = new Intent(getApplicationContext(), com.example.WealthMan.detail.view.DetailActivity.class);
-                String symbol = mTextURI.getText().toString().trim();
-                intent.putExtra("SYMBOL_NAME", symbol);
-                intent.putExtra("Symbol", symbol);
-                intent.putExtra("UserID", userid);
-                startActivity(intent);
-            }
-        });
+//        mButtonOk.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                Intent intent = getIntent();
+////                String str = intent.getStringExtra("Symbol");
+//                // Enable the following to go to Detail Activity and retrieve the Symbol with the above lines
+//
+//                Intent intent = new Intent(getApplicationContext(), com.example.WealthMan.detail.view.DetailActivity.class);
+//                String symbol = mTextURI.getText().toString().trim();
+//                intent.putExtra("Symbol", symbol);
+//                intent.putExtra("UserID", userid);
+//                startActivity(intent);
+//            }
+//        });
+//        mButtonTest.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                Intent intent = getIntent();
+////                String str = intent.getStringExtra("Symbol");
+//                // Enable the following to go to Detail Activity and retrieve the Symbol with the above lines
+//
+//                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                String symbol = mTextURI.getText().toString().trim();
+//                intent.putExtra("Symbol", symbol);
+//                intent.putExtra("UserID", userid);
+//                startActivity(intent);
+//            }
+//        });
     }
     public boolean updateSymbols() {
         final RequestQueue queue = Volley.newRequestQueue(this);
@@ -226,4 +261,35 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
+    private void initData(String jsonData) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
+        Batches watchList = gsonBuilder.create().fromJson(jsonData, Batches.class);
+        System.out.println(jsonData);
+
+//        IconBean displayList = new IconBean("FB","FaceBook",7.77,7.99);
+        for (int i = 0 ; i < watchList.batches.size(); i++) {
+            WatchListData temp = new WatchListData();
+            temp.setChange(watchList.batches.get(i).quote.change);
+            temp.setPrice(watchList.batches.get(i).quote.latestPrice);
+            temp.setName(watchList.batches.get(i).quote.companyName);
+            temp.setSymbol(watchList.batches.get(i).quote.symbol);
+            System.out.println();
+            IconBean displayList = new IconBean(
+                    watchList.batches.get(i).quote.symbol,
+                    watchList.batches.get(i).quote.companyName,
+                    watchList.batches.get(i).quote.latestPrice,
+                    watchList.batches.get(i).quote.change
+            );
+            System.out.println(displayList.getcompanyName());
+            mIconBeenList.add(displayList);
+        }
+        //        private View show_list(){
+//        List<String> data_list = new ArrayList<>(Arrays.asList(data));
+//        ArrayAdapter<String> data_adapter = new ArrayAdapter<>(this,R.layout.lv_item,data_list);
+//        ListView data_view = (ListView)this.findViewById(R.id.list_view);
+//        data_view.setAdapter(data_adapter);
+//        return data_view;
+    }
 }
+

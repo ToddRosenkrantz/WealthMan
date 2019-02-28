@@ -27,7 +27,7 @@ public class IconBean {
         return latestPrice;
     }
 
-    public void setlatestPrice(double latestPrice) {
+    public void setlatestPrice(float latestPrice) {
         this.latestPrice = latestPrice;
     }
 
@@ -35,7 +35,7 @@ public class IconBean {
         return change;
     }
 
-    public void setchange(double change) {
+    public void setchange(float change) {
         this.change = change;
     }
 
