@@ -159,7 +159,7 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
             symbolName = intent.getStringExtra(SYMBOL_NAME);
 //            Logger.addLogAdapter(new AndroidLogAdapter());
 //            Logger.d(symbolName);
-//            symbolName = "aapl";
+            symbolName = "aapl";
         }
     }
 

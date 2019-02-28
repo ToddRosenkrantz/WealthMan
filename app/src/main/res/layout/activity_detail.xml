@@ -258,7 +258,8 @@
             style="@style/Widget.AppCompat.Button"
             android:layout_width="190dp"
             android:layout_height="40dp"
-
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_marginTop="20dp"
             android:background="#429740"
             android:text="Buy / Sell"
