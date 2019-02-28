@@ -1,3 +1,4 @@
+
 package com.example.WealthMan.detail.bean;
 
 import java.util.List;
@@ -15,6 +16,20 @@ public class DetailLineBean {
      * @website http://www.bejson.com/java2pojo/
      */
     public Detaildate AAPL;
+    public Detaildate FB;
+    public Detaildate AAL;
+    public Detaildate BAC;
+    public Detaildate WFC;
+    public Detaildate WMT;
+    public Detaildate COF;
+    public Detaildate AMZN;
+    public Detaildate VMW;
+    public Detaildate IBM;
+    public Detaildate DELL;
+    public Detaildate HPQ;
+    public Detaildate MSFT;
+    public Detaildate JNPR;
+    public Detaildate ORCL;
 
     public class Detaildate {
         public DetailNew quote;

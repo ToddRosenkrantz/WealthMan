@@ -1,3 +1,4 @@
+
 package com.example.WealthMan.detail.view;
 
 

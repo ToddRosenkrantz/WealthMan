@@ -11,6 +11,7 @@ next steps:
     FIX crash when stock symbol is bad
 
  */
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,6 +36,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import com.example.WealthMan.APIInterface.*;
+import com.example.WealthMan.detail.view.DetailActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -51,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
     //public String [] data = {"apple","apple","orange","watermelon","peat","grape","pineapple","strawberry","cherry","mango"};
     EditText mTextURI;
     Button mButtonOk;
-    Button mButtonTest;
+//    Button mButtonTest;
     ArrayList<WatchListData> wl_data = new ArrayList<>();
 
     String jsonData = "";
@@ -72,14 +74,14 @@ public class HomeActivity extends AppCompatActivity {
         long now = System.currentTimeMillis();
         long updateDue = preference.getLong("updateDue", 0);
 //        if (false) {  // Calc next time to update
-        System.out.println("After Read Prefs: Now = "+ now + " , Due = " + updateDue);
+        System.out.println("After Read Prefs: Now = " + now + " , Due = " + updateDue);
         if (updateDue < now) {  // Calc next time to update
             System.out.println("Symbol Update due");
             updateDue = now + TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS);
             if (updateSymbols()) {
                 editor.putLong("updateDue", updateDue);   // Store new time to update
                 editor.commit();
-                System.out.println("At commit: Now = "+ now + " , Due = " + updateDue);
+                System.out.println("At commit: Now = " + now + " , Due = " + updateDue);
 //                System.out.println("Update was saved");
             } else
                 Toast.makeText(HomeActivity.this, "Error updating Stock Symbols", Toast.LENGTH_LONG).show();
@@ -107,12 +109,12 @@ public class HomeActivity extends AppCompatActivity {
 ///////////////////*/
 //        setContentView(R.layout.activity_home);
 
-        mButtonOk = (Button) findViewById(R.id.update_data_btn);
-        mButtonTest = (Button) findViewById(R.id.button2);
-////        mTextURI = (EditText) findViewById(R.id.url_to_fetch);
+        mButtonOk = (Button) findViewById(R.id.button);
+//        mButtonTest = (Button) findViewById(R.id.button2);
+        mTextURI = (EditText) findViewById(R.id.url_to_fetch);
 //        mTextURI.setText(db.getWatchList());
-////        final TextView mTextView = (TextView) findViewById(R.id.text);
-////        mTextURI.append("");
+        final TextView mTextView = (TextView) findViewById(R.id.text);
+       mTextURI.append("");
         final RequestQueue queue = Volley.newRequestQueue(this);
 
 ////        mTextView.setMovementMethod(new ScrollingMovementMethod());
@@ -138,7 +140,9 @@ public class HomeActivity extends AppCompatActivity {
     ////                        mTextView.setText(mTextView.getText() + ("No Data returned.  Did you enter a valid stock symbol?"));
                         else {
         ////                    mTextView.setText("");
-
+                            GsonBuilder gsonBuilder = new GsonBuilder();
+                            gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
+                            Batches myData = gsonBuilder.create().fromJson(jsonData, Batches.class);
 /*                            for (int index = 0; index < myData.batches.size(); index++) {
          ////                       mTextView.append(Integer.toString(index));
          ////                       mTextView.append(" ");
@@ -176,20 +180,21 @@ public class HomeActivity extends AppCompatActivity {
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
-//        mButtonOk.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                Intent intent = getIntent();
-////                String str = intent.getStringExtra("Symbol");
-//                // Enable the following to go to Detail Activity and retrieve the Symbol with the above lines
-//
-//                Intent intent = new Intent(getApplicationContext(), com.example.WealthMan.detail.view.DetailActivity.class);
-//                String symbol = mTextURI.getText().toString().trim();
-//                intent.putExtra("Symbol", symbol);
-//                intent.putExtra("UserID", userid);
-//                startActivity(intent);
-//            }
-//        });
+
+        mButtonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = getIntent();
+//                String str = intent.getStringExtra("Symbol");
+                // Enable the following to go to Detail Activity and retrieve the Symbol with the above lines
+
+                Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+                String symbol = mTextURI.getText().toString().trim();
+                intent.putExtra("Symbol", symbol);
+                intent.putExtra("UserID", userid);
+                startActivity(intent);
+            }
+        });
 //        mButtonTest.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -206,7 +211,25 @@ public class HomeActivity extends AppCompatActivity {
 //        });
         initData(jsonData);
 
+
+//        mButtonOk.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                Intent intent = getIntent();
+////                String str = intent.getStringExtra("Symbol");
+//                // Enable the following to go to Detail Activity and retrieve the Symbol with the above lines
+//
+//                Intent intent = new Intent(getApplicationContext(), com.example.WealthMan.detail.view.DetailActivity.class);
+//                String symbol = mTextURI.getText().toString().trim();
+//                intent.putExtra(DetailActivity.SYMBOL_NAME, symbol);
+//                intent.putExtra("Symbol", symbol);
+//                intent.putExtra("UserID", userid);
+//                startActivity(intent);
+//            }
+//        });
+
     }
+
     public boolean updateSymbols() {
         final RequestQueue queue = Volley.newRequestQueue(this);
         System.out.println("Updating Symbols now");
@@ -215,24 +238,24 @@ public class HomeActivity extends AppCompatActivity {
         dbsuccess = false;
         StringRequest symbolRequest = new StringRequest(Request.Method.GET, symbolUrl,
                 new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    stockSym[] mySyms = gsonSymbols.create().fromJson(response,stockSym[].class);
-                    // Make two DB entries, one for symbol-symbol lookup
-                    // Other for name-symbol lookup
-                    System.out.println("Length = " + mySyms.length);
-                    long val = 0;
-                    for (int i = 0 ; i < mySyms.length ; i++) {
-                        val += db.addSymbol(mySyms[i].symbol,mySyms[i].symbol);
-                        val += db.addSymbol(mySyms[i].name,mySyms[i].symbol);
-                        //System.out.println(mySyms[i].name +"   ,  " +mySyms[i].symbol);
-                    }
+                    @Override
+                    public void onResponse(String response) {
+                        stockSym[] mySyms = gsonSymbols.create().fromJson(response, stockSym[].class);
+                        // Make two DB entries, one for symbol-symbol lookup
+                        // Other for name-symbol lookup
+                        System.out.println("Length = " + mySyms.length);
+                        long val = 0;
+                        for (int i = 0; i < mySyms.length; i++) {
+                            val += db.addSymbol(mySyms[i].symbol, mySyms[i].symbol);
+                            val += db.addSymbol(mySyms[i].name, mySyms[i].symbol);
+                            //System.out.println(mySyms[i].name +"   ,  " +mySyms[i].symbol);
+                        }
 //                if (val <= mySyms.length) {
 //                    Toast.makeText(HomeActivity.this, "Symbol Database Error", Toast.LENGTH_LONG).show();
 //                    dbsuccess = false;
 //                }
-            }
-            }, new Response.ErrorListener() {
+                    }
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(HomeActivity.this, "That didn't work! Do you have an internet connection?", Toast.LENGTH_LONG).show();
@@ -242,6 +265,7 @@ public class HomeActivity extends AppCompatActivity {
         queue.add(symbolRequest);
         return true;
     }
+
     public void getData(String jsonData) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
@@ -252,9 +276,9 @@ public class HomeActivity extends AppCompatActivity {
 //        System.out.println("JSON = " + json);
         for (int index = 0; index < watchList.batches.size(); index++) {
             System.out.println(index + "\t" + watchList.batches.get(index).quote.symbol + "\t" + watchList.batches.get(index).quote.latestPrice + "\t" + watchList.batches.get(index).quote.change);
-            for (int i = 0 ; i < watchList.batches.size(); i++){
-               WatchListData temp = new WatchListData();
-               temp.setChange(watchList.batches.get(i).quote.change);
+            for (int i = 0; i < watchList.batches.size(); i++) {
+                WatchListData temp = new WatchListData();
+                temp.setChange(watchList.batches.get(i).quote.change);
                 temp.setPrice(watchList.batches.get(i).quote.latestPrice);
                 temp.setName(watchList.batches.get(i).quote.companyName);
                 temp.setSymbol(watchList.batches.get(i).quote.symbol);
@@ -262,12 +286,12 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
+
     private void initData(String jsonData) {
-        final GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
-        Batches myData = gsonBuilder.create().fromJson(jsonData, Batches.class);
-        IconBean symbol=new IconBean("FB","FaceBook",7.77,7.99);
+
+        IconBean symbol = new IconBean("FB","FaceBook",7.77,0.89);
         mIconBeenList.add(symbol);
+        symbol = new IconBean("AAPL","Apple Inc.",140.63,-0.09);
         mIconBeenList.add(symbol);
         mIconBeenList.add(symbol);
         mIconBeenList.add(symbol);
