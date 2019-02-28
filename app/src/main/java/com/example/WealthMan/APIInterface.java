@@ -139,6 +139,38 @@ public class APIInterface {
             return new Batches(batches);
         }
     }
+    public static class watchListData{
+        private String symbol;
+        private String name;
+        private Float price;
+        private Float change;
+
+        public void setPrice(Float price){
+            this.price = price;
+        }
+        public void setChange(Float change){
+            this.change = change;
+        }
+        public void setSymbol(String symbol){
+            this.symbol = symbol;
+        }
+        public void setName(String name){
+            this.name = name;
+        }
+
+        public Float getPrice(){
+            return price;
+        }
+        public Float getChange(){
+            return change;
+        }
+        public String getSymbol(){
+            return symbol;
+        }
+        public String getName(){
+            return name;
+        }
+    }
     public static class QuoteListDeserializer implements JsonDeserializer<QuoteList> {
 
         @Override
