@@ -139,7 +139,7 @@ public class APIInterface {
             return new Batches(batches);
         }
     }
-    public static class watchListData{
+    public static class WatchListData{
         private String symbol;
         private String name;
         private Float price;
@@ -151,9 +151,7 @@ public class APIInterface {
         public void setChange(Float change){
             this.change = change;
         }
-        public void setSymbol(String symbol){
-            this.symbol = symbol;
-        }
+        public void setSymbol(String symbol){ this.symbol = symbol; }
         public void setName(String name){
             this.name = name;
         }

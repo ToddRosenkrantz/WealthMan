@@ -44,7 +44,7 @@ import java.util.concurrent.TimeUnit;
 public class HomeActivity extends AppCompatActivity {
     EditText mTextURI;
     Button mButtonOk;
-    ArrayList<watchListData> wl_data = new ArrayList<>();
+    ArrayList<WatchListData> wl_data = new ArrayList<>();
 
     DatabaseHelper db;
     boolean dbsuccess = true;
@@ -215,6 +215,14 @@ public class HomeActivity extends AppCompatActivity {
 //        System.out.println("JSON = " + json);
         for (int index = 0; index < watchList.batches.size(); index++) {
             System.out.println(index + "\t" + watchList.batches.get(index).quote.symbol + "\t" + watchList.batches.get(index).quote.latestPrice + "\t" + watchList.batches.get(index).quote.change);
+            for (int i = 0 ; i < watchList.batches.size(); i++){
+               WatchListData temp = new WatchListData();
+               temp.setChange(watchList.batches.get(i).quote.change);
+                temp.setPrice(watchList.batches.get(i).quote.latestPrice);
+                temp.setName(watchList.batches.get(i).quote.companyName);
+                temp.setSymbol(watchList.batches.get(i).quote.symbol);
+                wl_data.add(temp);
+            }
         }
     }
 }
