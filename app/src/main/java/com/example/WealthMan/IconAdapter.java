@@ -1,6 +1,7 @@
 package com.example.WealthMan;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +39,9 @@ public class IconAdapter extends BaseAdapter {
         if(convertView == null){ // 如果为空，就表示是第一次加载，还没有加入到缓存中
             convertView = mLayoutInflater.inflate(R.layout.lv_item,null);
 
-            viewHolder.symbol =(TextView) convertView.findViewById(R.id.symbol);
-            viewHolder.companyName =(TextView) convertView.findViewById(R.id.companyName);
-            viewHolder.latestPrice =(TextView) convertView.findViewById(R.id.latestPrice);
+//            viewHolder.symbol =(TextView) convertView.findViewById(R.id.symbol);
+//            viewHolder.companyName =(TextView) convertView.findViewById(R.id.companyName);
+//            viewHolder.latestPrice =(TextView) convertView.findViewById(R.id.latestPrice);
             viewHolder.change =(TextView) convertView.findViewById(R.id.change);
 
 
@@ -57,6 +58,13 @@ public class IconAdapter extends BaseAdapter {
         viewHolder.companyName.setText(bean.getcompanyName());
         viewHolder.latestPrice.setText(Double.toString(bean.getlatestPrice()));
         viewHolder.change.setText(Double.toString(bean.getchange()));
+        if (bean.getchange()>=0){
+            viewHolder.change.setTextColor(Color.parseColor("#458B00"));
+        }
+        else {
+            viewHolder.change.setTextColor(Color.parseColor("#FF0000"));
+        }
+
 
         return convertView;
 

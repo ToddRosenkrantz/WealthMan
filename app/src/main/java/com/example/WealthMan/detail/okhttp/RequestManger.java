@@ -1,3 +1,4 @@
+
 package com.example.WealthMan.detail.okhttp;
 
 import android.os.Handler;
@@ -64,6 +65,7 @@ public class RequestManger {
                         mCallback.onError("fail");
                     }
                 });
+
             }
 
             @Override
@@ -113,3 +115,4 @@ public class RequestManger {
         });
     }
 }
+

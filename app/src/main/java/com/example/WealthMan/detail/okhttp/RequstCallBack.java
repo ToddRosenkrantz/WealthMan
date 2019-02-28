@@ -1,3 +1,4 @@
+
 package com.example.WealthMan.detail.okhttp;
 
 public interface RequstCallBack {
@@ -6,3 +7,4 @@ public interface RequstCallBack {
     void onError(Object date);
 
 }
+

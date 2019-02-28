@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:theme="@android:style/Theme.Black">
+
 
 
     <RelativeLayout
@@ -12,6 +14,7 @@
 
         <TextView
             android:id="@+id/symbol"
+            android:textSize="20dp"
             android:layout_width="291dp"
             android:layout_height="35dp"
             android:layout_alignParentLeft="true"
@@ -36,6 +39,8 @@
             android:id="@+id/latestPrice"
             android:layout_width="108dp"
             android:layout_height="35dp"
+            android:textColor="@color/colorPrimaryDark"
+
             android:layout_alignParentRight="true"
             android:layout_margin="3dp"
             android:layout_marginStart="3dp"
@@ -50,6 +55,7 @@
             android:id="@+id/change"
             android:layout_width="109dp"
             android:layout_height="25dp"
+            android:textColor="@color/color_preloader_center"
             android:layout_below="@+id/latestPrice"
             android:layout_alignParentRight="true"
             android:text="change" />

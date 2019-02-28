@@ -16,7 +16,8 @@
             android:layout_width="300dp"
             android:layout_height="30dp"
             android:text="name :"
-            android:textColor="#000000"/>
+            android:textColor="#000000" />
+
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -137,6 +138,7 @@
                     android:layout_height="wrap_content"
                     android:text="5Y" />
 
+
                 <View
                     android:id="@+id/five_year_line"
                     android:layout_width="match_parent"
@@ -167,152 +169,153 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!--<include layout="@layout/detail_content_index" />-->
-        <!--here keep for you   start -->
-        <!--<include-->
-            <!--layout="@layout/detail_content_index"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--/>-->
 
-        <!--<ListView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"></ListView>-->
+        <!--<include layout="@layout/detail_content_index" />--><!--here keep for you   start --><!--<include--><!--layout="@layout/detail_content_index"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--/>-->
+
+        <!--<ListView--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"></ListView>-->
         <TextView
-        android:id="@+id/symbols"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="News"
-            android:layout_marginTop="20dp"
+            android:id="@+id/symbols"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:textSize="15dp"
-        />
+            android:layout_marginTop="20dp"
+            android:text="News"
+            android:textSize="15dp" />
+
         <View
-            android:layout_height="0.5dip"
-            android:background="#429740"
             android:layout_width="match_parent"
-            />
+            android:layout_height="0.5dip"
+            android:background="#429740" />
+
         <TextView
             android:id="@+id/cpName"
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
-            android:text="News"
             android:layout_marginLeft="30dp"
-            android:textSize="15dp"
-            />
+            android:text="News"
+            android:textSize="15dp" />
+
         <View
-            android:layout_height="0.5dip"
-            android:background="#429740"
             android:layout_width="match_parent"
-            />
+            android:layout_height="0.5dip"
+            android:background="#429740" />
+
         <TextView
             android:id="@+id/openPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="News"
             android:layout_marginLeft="30dp"
-            android:textSize="15dp"
-            />
+            android:text="News"
+            android:textSize="15dp" />
+
         <View
-            android:layout_height="0.5dip"
-            android:background="#429740"
             android:layout_width="match_parent"
-            />
+            android:layout_height="0.5dip"
+            android:background="#429740" />
+
         <TextView
             android:id="@+id/latestVolume"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="News"
             android:layout_marginLeft="30dp"
-            android:textSize="15dp"
-            />
+            android:text="News"
+            android:textSize="15dp" />
+
         <View
-            android:layout_height="0.5dip"
-            android:background="#429740"
             android:layout_width="match_parent"
-            />
+            android:layout_height="0.5dip"
+            android:background="#429740" />
+
         <TextView
             android:id="@+id/change"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="News"
             android:layout_marginLeft="30dp"
-            android:textSize="15dp"
-            />
+            android:text="News"
+            android:textSize="15dp" />
+
         <View
-            android:layout_height="0.5dip"
-            android:background="#429740"
             android:layout_width="match_parent"
-            />
+            android:layout_height="0.5dip"
+            android:background="#429740" />
+
         <TextView
             android:id="@+id/changePercent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="News"
             android:layout_marginLeft="30dp"
-            android:textSize="15dp"
-            />
+            android:text="News"
+            android:textSize="15dp" />
+
         <View
-            android:layout_height="0.5dip"
-            android:background="#429740"
             android:layout_width="match_parent"
-            />
+            android:layout_height="0.5dip"
+            android:background="#429740" />
+
         <Button
             android:id="@+id/buyOrSell"
             style="@style/Widget.AppCompat.Button"
             android:layout_width="190dp"
             android:layout_height="40dp"
-            android:background="#429740"
-            android:textColor="#ffffff"
-            android:text="Buy / Sell"
+
             android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:layout_gravity="center"/>
+            android:background="#429740"
+            android:text="Buy / Sell"
+            android:textColor="#ffffff" />
+
 
         <Button
             android:id="@+id/watchOrUnwatch"
             android:layout_width="190dp"
             android:layout_height="40dp"
-            android:background="#429740"
-            android:textColor="#ffffff"
-            android:text="Watch / Unwatch"
+            android:layout_gravity="center"
             android:layout_marginTop="10dp"
+            android:background="#429740"
             android:gravity="center"
-            android:layout_gravity="center"/>
+            android:text="Watch / Unwatch"
+            android:textColor="#ffffff" />
+
         <TextView
             android:id="@+id/news"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="News"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            />
+
+            android:layout_marginTop="20dp" />
+
         <View
-            android:layout_height="0.5dip"
-            android:background="#429740"
             android:layout_width="match_parent"
-            android:layout_marginTop="10dp"/>
+            android:layout_height="0.5dip"
+            android:layout_marginTop="10dp"
+            android:background="#429740" />
+
         <TextView
             android:id="@+id/tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_marginLeft="30dp"
-            android:textSize="15dp"            />
-        />
+            android:textSize="15dp" />
+
+
         <TextView
             android:id="@+id/tv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_marginLeft="30dp"
-            android:textSize="15dp"/>
-        />
+            android:textSize="15dp" />
+
+
         <TextView
             android:id="@+id/tv3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_marginLeft="30dp"
-            android:textSize="15dp"/>
-        />
+            android:textSize="15dp" />
+
         <!-- end  -->
     </LinearLayout>
 </ScrollView>
