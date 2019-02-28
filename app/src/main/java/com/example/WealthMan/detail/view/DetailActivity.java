@@ -1,7 +1,9 @@
 package com.example.WealthMan.detail.view;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -15,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.WealthMan.DatabaseHelper;
 import com.example.WealthMan.R;
 import com.example.WealthMan.TransactionActivity;
 import com.example.WealthMan.detail.bean.DetailLineBean;
@@ -31,6 +34,13 @@ import java.util.Random;
 
 
 public class DetailActivity extends AppCompatActivity implements RequstCallBack, View.OnClickListener {
+
+    //+++++++++++Watch button+++++
+    Button watch;
+    AlertDialog.Builder builder;
+    DatabaseHelper db;
+    int ID;
+    //+++++++++++++++++++++++
     public ArrayList<DetailLineBean> dateBean = new ArrayList<>();
     public float maxAverage = 0;
     public float minAverage = 0;
@@ -56,6 +66,7 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
     private TextView name;
     private String[] dataList={"appl"};
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         beforeInflateView();
@@ -79,6 +90,45 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
             }
 
         });
+
+        // +++++++++++++++++ LOGIC FOR WATCH/UNWATCH BUTTON +++++++++++++++++++++++++
+        watch = (Button)findViewById(R.id.watchOrUnwatch);
+        builder = new AlertDialog.Builder(this);
+        watch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (db.checkSymbol(ID,symbolName)==0) {
+                    db.addWatch(ID,symbolName);//add to watchlist
+                    watch.setText("Unwatch");
+                    Toast.makeText(DetailActivity.this,
+                            "Added to Watch List", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    builder.setMessage("Remove from watch list?")
+                            .setCancelable(false)
+                            .setPositiveButton("Remove", new DialogInterface.OnClickListener(){
+                                public void onClick(DialogInterface dialog, int id) {
+                                    db.remWatch(ID, symbolName);//remove from watchlist
+                                    watch.setText("Watch");
+                                    Toast.makeText(DetailActivity.this,
+                                            "Removed from Watch List", Toast.LENGTH_SHORT).show();
+                                    //finish();
+                                }
+                            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    //Creating dialog box
+                    AlertDialog alert = builder.create();
+                    //Setting the title manually
+                    alert.show();
+                }
+            }
+        });
+        // +++++++++++++++++ LOGIC FOR WATCH/UNWATCH BUTTON +++++++++++++++++++++++++
+
 
         //        new list
         final TextView tv1 = findViewById(R.id.tv1);

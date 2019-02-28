@@ -70,7 +70,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.close();
         return res;
     }
-    public void remWatch(String symbol, int userid){
+    public void remWatch(int userid, String symbol){
         SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME+ " WHERE "+ WL_COL_SYMBOL + " = " + symbol + "AND userid=" + userid +";");
         db.close();
@@ -162,6 +162,19 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             return warn;
         }
     }
+
+    public  int checkSymbol(int ID, String symbol){
+        String[] column_id = {WL_COL_USER};
+        SQLiteDatabase db = getReadableDatabase();
+        String selection = WL_COL_USER + "=?" + " and " + WL_COL_SYMBOL + "=?";
+        String[] selectionArgs = {Integer.toString(ID),symbol};
+        Cursor cursor = db.query(WL_TBL,column_id,selection,selectionArgs,null,null,null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;
+    }
+
     public boolean checkUserExist(String email){
         String[] columns = { COL_1 };
         SQLiteDatabase db = getReadableDatabase();
