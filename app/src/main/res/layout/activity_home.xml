@@ -10,15 +10,7 @@
     tools:context="com.example.WealthMan.HomeActivity">
 
 
-    <EditText
-        android:id="@+id/url_to_fetch"
-        android:layout_width="346dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="50dp"
-        android:autofillHints="@string/symbol_hint"
-        android:contentDescription="@string/stock_symbol"
-        android:paddingLeft="2dp"
-        android:paddingRight="2dp" />
+
 
     <ScrollView
         android:id="@+id/textAreaScroller"
@@ -37,14 +29,7 @@
             android:textAlignment="viewStart" />
     </ScrollView>
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/ok"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="657dp" />
+
 
     <Button
         android:id="@+id/button2"

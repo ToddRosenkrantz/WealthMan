@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
     //public String [] data = {"apple","apple","orange","watermelon","peat","grape","pineapple","strawberry","cherry","mango"};
     EditText mTextURI;
     Button mButtonOk;
-    Button mButtonTest;
+//    Button mButtonTest;
     ArrayList<WatchListData> wl_data = new ArrayList<>();
 
     String jsonData = "";
@@ -110,11 +110,11 @@ public class HomeActivity extends AppCompatActivity {
 //        setContentView(R.layout.activity_home);
 
         mButtonOk = (Button) findViewById(R.id.button);
-        mButtonTest = (Button) findViewById(R.id.button2);
-////        mTextURI = (EditText) findViewById(R.id.url_to_fetch);
+//        mButtonTest = (Button) findViewById(R.id.button2);
+        mTextURI = (EditText) findViewById(R.id.url_to_fetch);
 //        mTextURI.setText(db.getWatchList());
-////        final TextView mTextView = (TextView) findViewById(R.id.text);
-////        mTextURI.append("");
+        final TextView mTextView = (TextView) findViewById(R.id.text);
+       mTextURI.append("");
         final RequestQueue queue = Volley.newRequestQueue(this);
 
 ////        mTextView.setMovementMethod(new ScrollingMovementMethod());
@@ -140,7 +140,9 @@ public class HomeActivity extends AppCompatActivity {
     ////                        mTextView.setText(mTextView.getText() + ("No Data returned.  Did you enter a valid stock symbol?"));
                         else {
         ////                    mTextView.setText("");
-
+                            GsonBuilder gsonBuilder = new GsonBuilder();
+                            gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
+                            Batches myData = gsonBuilder.create().fromJson(jsonData, Batches.class);
 /*                            for (int index = 0; index < myData.batches.size(); index++) {
          ////                       mTextView.append(Integer.toString(index));
          ////                       mTextView.append(" ");
@@ -179,20 +181,20 @@ public class HomeActivity extends AppCompatActivity {
         queue.add(stringRequest);
 
 
-//        mButtonOk.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                Intent intent = getIntent();
-////                String str = intent.getStringExtra("Symbol");
-//                // Enable the following to go to Detail Activity and retrieve the Symbol with the above lines
-//
-//                Intent intent = new Intent(getApplicationContext(), com.example.WealthMan.detail.view.DetailActivity.class);
-//                String symbol = mTextURI.getText().toString().trim();
-//                intent.putExtra("Symbol", symbol);
-//                intent.putExtra("UserID", userid);
-//                startActivity(intent);
-//            }
-//        });
+        mButtonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = getIntent();
+//                String str = intent.getStringExtra("Symbol");
+                // Enable the following to go to Detail Activity and retrieve the Symbol with the above lines
+
+                Intent intent = new Intent(getApplicationContext(), com.example.WealthMan.detail.view.DetailActivity.class);
+                String symbol = mTextURI.getText().toString().trim();
+                intent.putExtra("Symbol", symbol);
+                intent.putExtra("UserID", userid);
+                startActivity(intent);
+            }
+        });
 //        mButtonTest.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -284,12 +286,12 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
+
     private void initData(String jsonData) {
-        final GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
-        Batches myData = gsonBuilder.create().fromJson(jsonData, Batches.class);
-        IconBean symbol=new IconBean("FB","FaceBook",7.77,7.99);
+
+        IconBean symbol = new IconBean("FB","FaceBook",7.77,0.89);
         mIconBeenList.add(symbol);
+        symbol = new IconBean("AAPL","Apple Inc.",140.63,-0.09);
         mIconBeenList.add(symbol);
         mIconBeenList.add(symbol);
         mIconBeenList.add(symbol);

@@ -70,9 +70,6 @@ public class APIInterface {
         public float week52High = 0;
         public float week52Low = 0;
         public float ytdChange = 0;
-        public String getSymbol() {
-            return symbol;
-        }
     }
     public class article {
         public String datetime = null;
@@ -122,10 +119,6 @@ public class APIInterface {
         public Batches(List<Batch> batches) {
             this.batches = batches;
         }
-        public int size(){
-            return batches.size();
-        }
-
     }
     public static class CompanyListDeserializer implements JsonDeserializer<Batches> {
         @Override
