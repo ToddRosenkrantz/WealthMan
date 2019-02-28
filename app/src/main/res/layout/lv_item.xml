@@ -1,6 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/symbol"
+            android:layout_width="291dp"
+            android:layout_height="35dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginBottom="3dp"
+            android:text="@string/stock_symbol"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/companyName"
+            android:layout_width="296dp"
+            android:layout_height="25dp"
+            android:layout_below="@id/symbol"
+            android:layout_alignParentLeft="true"
+            android:text="company" />
+
+        <TextView
+            android:id="@+id/latestPrice"
+            android:layout_width="108dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="3dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginBottom="3dp"
+            android:text="price" />
+
+        <TextView
+            android:id="@+id/change"
+            android:layout_width="109dp"
+            android:layout_height="25dp"
+            android:layout_below="@+id/latestPrice"
+            android:layout_alignParentRight="true"
+            android:text="change" />
+    </RelativeLayout>
+
+
+
 
 </LinearLayout>
