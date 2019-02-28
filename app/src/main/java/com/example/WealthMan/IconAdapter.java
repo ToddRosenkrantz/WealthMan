@@ -39,9 +39,9 @@ public class IconAdapter extends BaseAdapter {
         if(convertView == null){ // 如果为空，就表示是第一次加载，还没有加入到缓存中
             convertView = mLayoutInflater.inflate(R.layout.lv_item,null);
 
-//            viewHolder.symbol =(TextView) convertView.findViewById(R.id.symbol);
-//            viewHolder.companyName =(TextView) convertView.findViewById(R.id.companyName);
-//            viewHolder.latestPrice =(TextView) convertView.findViewById(R.id.latestPrice);
+            viewHolder.symbol =(TextView) convertView.findViewById(R.id.symbol);
+            viewHolder.companyName =(TextView) convertView.findViewById(R.id.companyName);
+            viewHolder.latestPrice =(TextView) convertView.findViewById(R.id.latestPrice);
             viewHolder.change =(TextView) convertView.findViewById(R.id.change);
 
 
