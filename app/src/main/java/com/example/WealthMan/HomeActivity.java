@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -56,7 +57,6 @@ public class HomeActivity extends AppCompatActivity {
 //    Button mButtonTest;
     ArrayList<WatchListData> wl_data = new ArrayList<>();
 
-    int userid = getIntent().getIntExtra("UserID",1);
     DatabaseHelper db;
     boolean dbsuccess = true;
     public static final String MY_PREFS_FILE = "wealthman_prefs";
@@ -66,7 +66,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent = getIntent();
-        final int userid = intent.getIntExtra("UserId", 0);
+        final int userid = intent.getIntExtra("UserId", 1);
         db = new DatabaseHelper(this);
         SharedPreferences preference = getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
         SharedPreferences.Editor editor = preference.edit();
@@ -101,6 +101,18 @@ public class HomeActivity extends AppCompatActivity {
         lv = (ListView)findViewById(R.id.lv);
         //为listview添加adapter
         lv.setAdapter(new IconAdapter(this,mIconBeenList));
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                IconBean stock = mIconBeenList.get(position);
+                Intent intent = new Intent(HomeActivity.this,com.example.WealthMan.detail.view.DetailActivity.class);
+                intent.putExtra("Symbol",stock.symbol);
+                intent.putExtra("UserID",userid);
+                startActivity(intent);
+            }
+        });
+
+
 /*
 //        IconAdapter adapter = new IconAdapter(
 //                MainActivity.this,R.layout.lv_item,data);

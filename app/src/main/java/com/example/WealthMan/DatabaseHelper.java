@@ -47,8 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         onCreate(sqLiteDatabase);
     }
     public long createWatchlist(){
-        String[] wlArray = {"intc","aapl","fb","aal","bac","csc","wfc",
-        "wmt","cof","amzn","vmw","ibm","dell","hpq","msft","jnpr","orcl"};
+        String[] wlArray = {"fb","aal","bac","wfc","wmt","cof","amzn","vmw","ibm","dell","hpq","msft","jnpr","orcl","aapl"};
         SQLiteDatabase db = this.getReadableDatabase();
         long res = 0;
         for (int i = 0 ; i < wlArray.length; i++){
