@@ -58,10 +58,16 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Intent intent = getIntent();
-        int userid = intent.getIntExtra("UserId", 0);        beforeInflateView();
+        beforeInflateView();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        //get symbol from HomeActivity
+
+        Intent intent = getIntent();
+        String symboldata = intent.getStringExtra("Symbol");
+        Logger.addLogAdapter(new AndroidLogAdapter());
+        Logger.d(symboldata);
 
         //click buy or sell to transaction page
         Button buyOrSell= findViewById(R.id.buyOrSell);
@@ -73,9 +79,9 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
             }
 
         });
+
+        //        new list
         final TextView tv1 = findViewById(R.id.tv1);
-
-
         tv1.setMovementMethod(new ScrollingMovementMethod());
         tv1.setText(Html.fromHtml("<a  href='https://api.iextrading.com/1.0/stock/aapl/article/5022287287028639'>Apple: Stress-Valuation</a>"));
         tv1.setMovementMethod(LinkMovementMethod.getInstance());
@@ -88,6 +94,8 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         tv3.setMovementMethod(LinkMovementMethod.getInstance());
 
 
+
+
         initView();
         initListen();
         requstDate(baseUrl + "?symbols=" + symbolName + "&types=quote,news,chart&range=" + dayType);
@@ -98,10 +106,6 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         if (intent != null) {
             symbolName = intent.getStringExtra(SYMBOL_NAME);
             symbolName = "aapl";
-
-            symbolName = intent.getStringExtra("Symbol");
-            Toast.makeText(com.example.WealthMan.detail.view.DetailActivity.this, "Passed symbol: " + symbolName, Toast.LENGTH_LONG).show();
-
         }
     }
 
@@ -174,8 +178,7 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
 
 
 
-        Logger.addLogAdapter(new AndroidLogAdapter());
-        Logger.d(aapl.quote);
+
 
 //        name.setTextColor(textColor);
 
