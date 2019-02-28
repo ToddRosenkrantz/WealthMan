@@ -1,3 +1,4 @@
+
 package com.example.WealthMan.detail.view;
 
 import android.content.DialogInterface;
@@ -23,14 +24,14 @@ import com.example.WealthMan.TransactionActivity;
 import com.example.WealthMan.detail.bean.DetailLineBean;
 import com.example.WealthMan.detail.okhttp.RequestManger;
 import com.example.WealthMan.detail.okhttp.RequstCallBack;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
+import com.example.WealthMan.detail.view.DiscountView;
+//import com.orhanobut.logger.AndroidLogAdapter;
+//import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-
 
 
 public class DetailActivity extends AppCompatActivity implements RequstCallBack, View.OnClickListener {
@@ -64,7 +65,7 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
     private String dayType = "1d";
     private ProgressBar progressBar;
     private TextView name;
-    private String[] dataList={"appl"};
+    private String[] dataList = {"appl"};
 
 
     @Override
@@ -81,32 +82,31 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
 //        Logger.d(symboldata);
 
         //click buy or sell to transaction page
-        Button buyOrSell= findViewById(R.id.buyOrSell);
-        buyOrSell.setOnClickListener(new View.OnClickListener(){
+        Button buyOrSell = findViewById(R.id.buyOrSell);
+        buyOrSell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 Intent intent =new Intent(DetailActivity.this,TransactionActivity.class);
-                 startActivity(intent);
+                Intent intent = new Intent(DetailActivity.this, TransactionActivity.class);
+                startActivity(intent);
             }
 
         });
 
         // +++++++++++++++++ LOGIC FOR WATCH/UNWATCH BUTTON +++++++++++++++++++++++++
-        watch = (Button)findViewById(R.id.watchOrUnwatch);
+        watch = (Button) findViewById(R.id.watchOrUnwatch);
         builder = new AlertDialog.Builder(this);
         watch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (db.checkSymbol(ID,symbolName)==0) {
-                    db.addWatch(ID,symbolName);//add to watchlist
+                if (db.checkSymbol(ID, symbolName) == 0) {
+                    db.addWatch(ID, symbolName);//add to watchlist
                     watch.setText("Unwatch");
                     Toast.makeText(DetailActivity.this,
                             "Added to Watch List", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     builder.setMessage("Remove from watch list?")
                             .setCancelable(false)
-                            .setPositiveButton("Remove", new DialogInterface.OnClickListener(){
+                            .setPositiveButton("Remove", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     db.remWatch(ID, symbolName);//remove from watchlist
                                     watch.setText("Watch");
@@ -144,14 +144,11 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         tv3.setMovementMethod(LinkMovementMethod.getInstance());
 
 
-
-
         initView();
         initListen();
         requstDate(baseUrl + "?symbols=" + symbolName + "&types=quote,news,chart&range=" + dayType);
-        Logger.addLogAdapter(new AndroidLogAdapter());
-        Logger.d(baseUrl + "?symbols=" + symbolName + "&types=quote,news,chart&range=" + dayType);
-
+//        Logger.addLogAdapter(new AndroidLogAdapter());
+//        Logger.d(baseUrl + "?symbols=" + symbolName + "&types=quote,news,chart&range=" + dayType);
 
 
     }
@@ -159,10 +156,10 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
     private void beforeInflateView() {
         Intent intent = getIntent();
         if (intent != null) {
-            symbolName = intent.getStringExtra("SYMBOL_NAME");
+            symbolName = intent.getStringExtra(SYMBOL_NAME);
 //            Logger.addLogAdapter(new AndroidLogAdapter());
 //            Logger.d(symbolName);
-            symbolName = "aapl";
+//            symbolName = "aapl";
         }
     }
 
@@ -203,7 +200,64 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         if (date == null && (((DetailLineBean) date).AAPL == null || ((DetailLineBean) date).AAPL.chart == null))
             return;
 
-        DetailLineBean.Detaildate aapl = detailLineBean.AAPL;
+        DetailLineBean.Detaildate aapl;
+        //choose symbol
+        switch (symbolName.toLowerCase()) {
+            case "aapl":
+                aapl = detailLineBean.AAPL;
+                break;
+            case "fb":
+                aapl = detailLineBean.FB;
+                break;
+            case "aal":
+                aapl = detailLineBean.AAL;
+                break;
+            case "bac":
+                aapl = detailLineBean.BAC;
+                break;
+            case "wfc":
+                aapl = detailLineBean.WFC;
+                break;
+            case "wmt":
+                aapl = detailLineBean.WMT;
+                break;
+            case "cof":
+                aapl = detailLineBean.COF;
+                break;
+            case "amzn":
+                aapl = detailLineBean.AMZN;
+                break;
+            case "vmw":
+                aapl = detailLineBean.VMW;
+                break;
+            case "ibm":
+                aapl = detailLineBean.IBM;
+                break;
+            case "dell":
+                aapl = detailLineBean.DELL;
+                break;
+            case "hpq":
+                aapl = detailLineBean.HPQ;
+                break;
+            case "msft":
+                aapl = detailLineBean.MSFT;
+                break;
+
+            case "jnpr":
+                aapl = detailLineBean.JNPR;
+                break;
+            case "orcl":
+                aapl = detailLineBean.ORCL;
+                break;
+            default:
+                aapl = detailLineBean.AAPL;
+                break;
+
+        }
+        if (aapl == null) {
+            Toast.makeText(this, "data bean is erro", Toast.LENGTH_SHORT).show();
+            return;
+        }
         List<DetailLineBean.Detaildate.DetailLineDate> chart = aapl.chart;
         int textColor;
         if (aapl.quote.changePercent > 0) {
@@ -216,25 +270,22 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         name.setText(aapl.quote.companyName + "close :" + aapl.quote.close + "( " + v + "%)");
         //information
         TextView symbols = findViewById(R.id.symbols);
-        symbols.setText("Symbol: "+aapl.quote.symbol);
+        symbols.setText("Symbol: " + aapl.quote.symbol);
 
         TextView cpName = findViewById(R.id.cpName);
-        cpName.setText("Company name: "+aapl.quote.companyName);
+        cpName.setText("Company name: " + aapl.quote.companyName);
 
         TextView openPrice = findViewById(R.id.openPrice);
-        openPrice.setText("Open: "+aapl.quote.open);
+        openPrice.setText("Open: " + aapl.quote.open);
 
         TextView latestVolume = findViewById(R.id.latestVolume);
-        latestVolume.setText("Volume: "+aapl.quote.latestVolume);
+        latestVolume.setText("Volume: " + aapl.quote.latestVolume);
 
         TextView change = findViewById(R.id.change);
-        change.setText("Change:     "+aapl.quote.change);
+        change.setText("Change:     " + aapl.quote.change);
 
         TextView changePercent = findViewById(R.id.changePercent);
-        changePercent.setText("Change Percent: "+aapl.quote.changePercent);
-
-
-
+        changePercent.setText("Change Percent: " + aapl.quote.changePercent);
 
 
 //        name.setTextColor(textColor);

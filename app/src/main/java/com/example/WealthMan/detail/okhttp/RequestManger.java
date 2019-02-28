@@ -1,3 +1,4 @@
+
 package com.example.WealthMan.detail.okhttp;
 
 import android.os.Handler;
@@ -57,7 +58,13 @@ public class RequestManger {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.i(TAG, "onFailure: ");
-                mCallback.onError("fail");
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mCallback.onError("fail");
+                    }
+                });
+
             }
 
             @Override
@@ -107,3 +114,4 @@ public class RequestManger {
         });
     }
 }
+

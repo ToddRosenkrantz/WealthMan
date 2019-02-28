@@ -1,3 +1,4 @@
+
 package com.example.WealthMan.detail;
 
 import android.text.TextUtils;

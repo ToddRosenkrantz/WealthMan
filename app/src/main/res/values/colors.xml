@@ -13,4 +13,6 @@
     <color name="color_preloader_start">#fdb6b6</color>
     <color name="color_preloader_center">#fdb6b6</color>
     <color name="color_preloader_end">#ffffff</color>
+    <color name="color_preloader_red">#ff00</color>
+    <color name="color_preloader_black">#000</color>
 </resources>
