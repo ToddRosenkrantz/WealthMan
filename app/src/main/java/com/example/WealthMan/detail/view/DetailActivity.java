@@ -11,9 +11,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,14 +22,16 @@ import com.example.WealthMan.TransactionActivity;
 import com.example.WealthMan.detail.bean.DetailLineBean;
 import com.example.WealthMan.detail.okhttp.RequestManger;
 import com.example.WealthMan.detail.okhttp.RequstCallBack;
-import com.example.WealthMan.detail.view.DiscountView;
-//import com.orhanobut.logger.AndroidLogAdapter;
-//import com.orhanobut.logger.Logger;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
+//import com.orhanobut.logger.AndroidLogAdapter;
+//import com.orhanobut.logger.Logger;
 
 
 public class DetailActivity extends AppCompatActivity implements RequstCallBack, View.OnClickListener {
@@ -156,9 +156,11 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
     private void beforeInflateView() {
         Intent intent = getIntent();
         if (intent != null) {
-            symbolName = intent.getStringExtra(SYMBOL_NAME);
-//            Logger.addLogAdapter(new AndroidLogAdapter());
-//            Logger.d(symbolName);
+           // symbolName = intent.getStringExtra(SYMBOL_NAME);
+            symbolName = intent.getStringExtra("Symbol");
+            ID = intent.getIntExtra("UserID",0);
+            Logger.addLogAdapter(new AndroidLogAdapter());
+            Logger.d(symbolName);
 //            symbolName = "aapl";
         }
     }
