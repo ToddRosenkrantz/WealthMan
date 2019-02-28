@@ -1,6 +1,7 @@
 package com.example.WealthMan;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,13 @@ public class IconAdapter extends BaseAdapter {
         viewHolder.companyName.setText(bean.getcompanyName());
         viewHolder.latestPrice.setText(Double.toString(bean.getlatestPrice()));
         viewHolder.change.setText(Double.toString(bean.getchange()));
+        if (bean.getchange()>=0){
+            viewHolder.change.setTextColor(Color.parseColor("#458B00"));
+        }
+        else {
+            viewHolder.change.setTextColor(Color.parseColor("#FF0000"));
+        }
+
 
         return convertView;
 

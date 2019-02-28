@@ -54,6 +54,8 @@ public class HomeActivity extends AppCompatActivity {
     Button mButtonTest;
     ArrayList<WatchListData> wl_data = new ArrayList<>();
 
+    String jsonData = "";
+
     DatabaseHelper db;
     boolean dbsuccess = true;
     public static final String MY_PREFS_FILE = "wealthman_prefs";
@@ -98,7 +100,6 @@ public class HomeActivity extends AppCompatActivity {
         lv = (ListView)findViewById(R.id.lv);
         //为listview添加adapter
         lv.setAdapter(new IconAdapter(this,mIconBeenList));
-
 /*
 //        IconAdapter adapter = new IconAdapter(
 //                MainActivity.this,R.layout.lv_item,data);
@@ -116,7 +117,7 @@ public class HomeActivity extends AppCompatActivity {
 
 ////        mTextView.setMovementMethod(new ScrollingMovementMethod());
 // Gson
-        final GsonBuilder gsonBuilder = new GsonBuilder();
+
 //        String symbols = mTextURI.getText().toString().trim();
         String symbols = db.getWatchList().trim();
         // Instantiate the RequestQueue.
@@ -137,10 +138,8 @@ public class HomeActivity extends AppCompatActivity {
     ////                        mTextView.setText(mTextView.getText() + ("No Data returned.  Did you enter a valid stock symbol?"));
                         else {
         ////                    mTextView.setText("");
-                            initData(response);
-                            gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
-                            Batches myData = gsonBuilder.create().fromJson(response, Batches.class);
-                            for (int index = 0; index < myData.batches.size(); index++) {
+
+/*                            for (int index = 0; index < myData.batches.size(); index++) {
          ////                       mTextView.append(Integer.toString(index));
          ////                       mTextView.append(" ");
          ////                       mTextView.append(myData.batches.get(index).quote.symbol);
@@ -162,7 +161,7 @@ public class HomeActivity extends AppCompatActivity {
                                 //mTextView.append(json);
 
                                 //mTextView.setTextColor(Color.parseColor("#000000"));
-                            }
+                            }*/
                             //mTextView.setText("Response is: " + response);
 
                         }
@@ -205,6 +204,8 @@ public class HomeActivity extends AppCompatActivity {
 //                startActivity(intent);
 //            }
 //        });
+        initData(jsonData);
+
     }
     public boolean updateSymbols() {
         final RequestQueue queue = Volley.newRequestQueue(this);
@@ -262,29 +263,26 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
     private void initData(String jsonData) {
-        GsonBuilder gsonBuilder = new GsonBuilder();
+        final GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
-        Batches watchList = gsonBuilder.create().fromJson(jsonData, Batches.class);
+        Batches myData = gsonBuilder.create().fromJson(jsonData, Batches.class);
+        IconBean symbol=new IconBean("FB","FaceBook",7.77,7.99);
+        mIconBeenList.add(symbol);
+        mIconBeenList.add(symbol);
+        mIconBeenList.add(symbol);
+        mIconBeenList.add(symbol);
+        mIconBeenList.add(symbol);
+        mIconBeenList.add(symbol);
+        mIconBeenList.add(symbol);
+        mIconBeenList.add(symbol);
+        mIconBeenList.add(symbol);
+        mIconBeenList.add(symbol);
+        mIconBeenList.add(symbol);
+        mIconBeenList.add(symbol);
+        mIconBeenList.add(symbol);
+        mIconBeenList.add(symbol);
         System.out.println(jsonData);
-
-//        IconBean displayList = new IconBean("FB","FaceBook",7.77,7.99);
-        for (int i = 0 ; i < watchList.batches.size(); i++) {
-            WatchListData temp = new WatchListData();
-            temp.setChange(watchList.batches.get(i).quote.change);
-            temp.setPrice(watchList.batches.get(i).quote.latestPrice);
-            temp.setName(watchList.batches.get(i).quote.companyName);
-            temp.setSymbol(watchList.batches.get(i).quote.symbol);
-            System.out.println();
-            IconBean displayList = new IconBean(
-                    watchList.batches.get(i).quote.symbol,
-                    watchList.batches.get(i).quote.companyName,
-                    watchList.batches.get(i).quote.latestPrice,
-                    watchList.batches.get(i).quote.change
-            );
-            System.out.println(displayList.getcompanyName());
-            mIconBeenList.add(displayList);
-        }
-        //        private View show_list(){
+//        private View show_list(){
 //        List<String> data_list = new ArrayList<>(Arrays.asList(data));
 //        ArrayAdapter<String> data_adapter = new ArrayAdapter<>(this,R.layout.lv_item,data_list);
 //        ListView data_view = (ListView)this.findViewById(R.id.list_view);
@@ -292,4 +290,3 @@ public class HomeActivity extends AppCompatActivity {
 //        return data_view;
     }
 }
-
