@@ -136,7 +136,7 @@ public class HomeActivity extends AppCompatActivity {
         // Instantiate the RequestQueue.
 //                String url ="https://api.iextrading.com/1.0/stock/market/batch?symbols="+ symbols +"&types=chart&range=1m&last=5";
 //                String url ="https://api.iextrading.com/1.0/stock/market/batch?symbols="+ symbols +"&types=quote,news,chart&range=6m";
-        String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + symbols + "&types=quote";
+        String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + symbols + "&types=quote,news,chart&range=1m&last=5";
 //          Sql query should be like SELECT GROUP_CONCAT(symbol SEPARATOR ',')
 //              or SELECT GROUP_CONCAT(symbol)
 
