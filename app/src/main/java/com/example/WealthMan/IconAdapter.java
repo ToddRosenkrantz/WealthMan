@@ -1,3 +1,4 @@
+
 package com.example.WealthMan;
 
 import android.content.Context;
@@ -80,4 +81,6 @@ public class IconAdapter extends BaseAdapter {
         this.mlist = list;
         mLayoutInflater= LayoutInflater.from(context);
     }
+
+
 }
