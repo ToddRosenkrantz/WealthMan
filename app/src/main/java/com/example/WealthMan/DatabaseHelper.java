@@ -71,7 +71,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
     public void remWatch(int userid, String symbol){
         SQLiteDatabase db = this.getReadableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_NAME+ " WHERE "+ WL_COL_SYMBOL + " = " + symbol + "AND "+WL_COL_USER+ "="+userid+";");
+        db.execSQL("DELETE FROM watchlist WHERE symbol = "+"\'"+symbol+"\'"+" and userid = \"1\";");
         db.close();
     }
     public int getUserId(String Email){
@@ -97,6 +97,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         cursor.moveToFirst();
         result = cursor.getString(cursor.getColumnIndex("symbol"));
         db.close();
+        if(result == null){
+            result = "0";
+        }
         return result;
     }
 
