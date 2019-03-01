@@ -136,7 +136,7 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if (response.equals("{}"))
-                            Toast.makeText(HomeActivity.this, "Nothing Returned", Toast.LENGTH_LONG).show();
+                            Toast.makeText(HomeActivity.this, "No stocks being tracked", Toast.LENGTH_LONG).show();
     ////                        mTextView.setText(mTextView.getText() + ("No Data returned.  Did you enter a valid stock symbol?"));
                         else {
         ////                    mTextView.setText("");

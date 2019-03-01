@@ -10,6 +10,7 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.WealthMan.DatabaseHelper;
+import com.example.WealthMan.HomeActivity;
 import com.example.WealthMan.R;
 import com.example.WealthMan.TransactionActivity;
 import com.example.WealthMan.detail.bean.DetailLineBean;
@@ -73,7 +75,13 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         beforeInflateView();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
+        db = new DatabaseHelper(this);
+        TextView tv = findViewById(R.id.watchOrUnwatch);
+        if(db.checkSymbol(ID, symbolName)==1){
+            tv.setText("Unwatch");
+        }else{
+            tv.setText("Watch");
+        }
         //get symbol from HomeActivity
 //
 //        Intent intent = getIntent();
@@ -133,14 +141,14 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         //        new list
         final TextView tv1 = findViewById(R.id.tv1);
         tv1.setMovementMethod(new ScrollingMovementMethod());
-        tv1.setText(Html.fromHtml("<a  href='https://api.iextrading.com/1.0/stock/aapl/article/5022287287028639'>Apple: Stress-Valuation</a>"));
+        tv1.setText(Html.fromHtml("<a  href='https://www.cnbc.com/quotes/?symbol="+symbolName+"'> "+symbolName+" : CNBC NEWS</a>"));
         tv1.setMovementMethod(LinkMovementMethod.getInstance());
         TextView tv2 = findViewById(R.id.tv2);
-        tv2.setText(Html.fromHtml("<a href='https://api.iextrading.com/1.0/stock/aapl/article/8242749460030043'>Apple's Highest-Ever EPS Shows A New Trend</a>"));
+        tv2.setText(Html.fromHtml("<a href='https://www.marketwatch.com/investing/stock/"+symbolName+"'> "+symbolName+"'s Marketwatch Investing Stocks</a>"));
         tv2.setMovementMethod(LinkMovementMethod.getInstance());
 
         TextView tv3 = findViewById(R.id.tv3);
-        tv3.setText(Html.fromHtml("<a href='https://api.iextrading.com/1.0/stock/aapl/article/5750047012237294'>The diversity challenge facing tech</a>"));
+        tv3.setText(Html.fromHtml("<a href='https://finance.yahoo.com/quote/"+symbolName+"'>"+symbolName+": YAHOO FINANCE</a>"));
         tv3.setMovementMethod(LinkMovementMethod.getInstance());
 
 
@@ -326,6 +334,17 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
     public void onError(Object date) {
         Toast.makeText(this, "加载失败,请求超时", Toast.LENGTH_SHORT).show();
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent Refresh = new Intent(DetailActivity.this, HomeActivity.class);
+            Refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(Refresh);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
