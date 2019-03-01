@@ -6,10 +6,16 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.example.WealthMan.detail.JsonUtils;
+import com.example.WealthMan.detail.bean.DetailLineBean;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +25,7 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class RequestManger {
     private static final String TAG = "RequestManger";
@@ -30,9 +37,9 @@ public class RequestManger {
     private RequestManger() {
         //初始化OkHttpClient
         mOkHttpClient = new OkHttpClient().newBuilder()
-                .connectTimeout(10, TimeUnit.SECONDS)//设置超时时间
-                .readTimeout(10, TimeUnit.SECONDS)//设置读取超时时间
-                .writeTimeout(10, TimeUnit.SECONDS)//设置写入超时时间
+                .connectTimeout(60000, TimeUnit.MILLISECONDS)//设置超时时间
+                .writeTimeout(60000, TimeUnit.MILLISECONDS)
+                .readTimeout(60000, TimeUnit.MILLISECONDS)
                 .build();
         mHandler = new Handler(Looper.getMainLooper());
 
@@ -69,25 +76,64 @@ public class RequestManger {
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(Call call, Response response) {
 
                 Gson gson = new Gson();
                 try {
-                    t = gson.fromJson(response.body().string(), tClass);
+//                    t = gson.fromJson(response.body().string(), tClass);
+                    int code = response.code();
+                    if (response.isSuccessful()) {
+                        ResponseBody body = response.body();
+                        String string = body.string();
+                        Log.e(TAG, "onResponse: " + string);
+                        gsonSpecial(string);
+                    }
+
+                    //最后就可以通过刚刚得到的key值去解析后面的json了
+
                 } catch (Exception e) {
                     e.printStackTrace();
 
                     mCallback.onError("fail");
                 }
 
+//                mHandler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mCallback.onSuccess(t);
+//                    }
+//                });
+            }
+        });
+    }
+
+    private void gsonSpecial(String jsonData) {
+
+        JSONObject jsonObject = null;
+        try {
+            Log.i(TAG, "gsonSpecial: " + jsonData);
+            jsonObject = new JSONObject(jsonData);
+            Log.i(TAG, "gsonSpecial:jsonObject " + jsonObject.toString());
+            //通过迭代器获取这段json当中所有的key值
+            Iterator keys = jsonObject.keys();
+            //然后通过一个循环取出所有的key值
+            while (keys.hasNext()) {
+                String key = String.valueOf(keys.next());
+                JSONObject newJson = jsonObject.getJSONObject(key);
+                final DetailLineBean.Detaildate detaildate = new Gson().fromJson(newJson.toString(), DetailLineBean.Detaildate.class);
+                Log.i(TAG, "gsonSpecial: detailDate = " + detaildate.quote.close);
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mCallback.onSuccess(t);
+                        mCallback.onSuccess(detaildate);
                     }
                 });
+                break;
             }
-        });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public <T extends Type> void requestDate(String url, Map params, final T type) {

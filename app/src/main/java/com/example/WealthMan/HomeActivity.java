@@ -54,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
     //public String [] data = {"apple","apple","orange","watermelon","peat","grape","pineapple","strawberry","cherry","mango"};
     EditText mTextURI;
     Button mButtonOk;
-//    Button mButtonTest;
+    //    Button mButtonTest;
     ArrayList<WatchListData> wl_data = new ArrayList<>();
 
     DatabaseHelper db;
@@ -98,8 +98,9 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_ativity_test_watchlist);
-        lv = (ListView)findViewById(R.id.lv);
+        lv = (ListView) findViewById(R.id.lv);
         //为listview添加adapter
+
         lv.setAdapter(new IconAdapter(this,mIconBeenList));
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
@@ -111,6 +112,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
 
 /*
@@ -125,7 +127,7 @@ public class HomeActivity extends AppCompatActivity {
         mTextURI = (EditText) findViewById(R.id.url_to_fetch);
 //        mTextURI.setText(db.getWatchList());
         final TextView mTextView = (TextView) findViewById(R.id.text);
-       mTextURI.append("");
+        mTextURI.append("");
         final RequestQueue queue = Volley.newRequestQueue(this);
 
 ////        mTextView.setMovementMethod(new ScrollingMovementMethod());
@@ -148,9 +150,9 @@ public class HomeActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         if (response.equals("{}"))
                             Toast.makeText(HomeActivity.this, "Nothing Returned", Toast.LENGTH_LONG).show();
-    ////                        mTextView.setText(mTextView.getText() + ("No Data returned.  Did you enter a valid stock symbol?"));
+                            ////                        mTextView.setText(mTextView.getText() + ("No Data returned.  Did you enter a valid stock symbol?"));
                         else {
-        ////                    mTextView.setText("");
+                            ////                    mTextView.setText("");
                             GsonBuilder gsonBuilder = new GsonBuilder();
                             gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
                             Batches myData = gsonBuilder.create().fromJson(response, Batches.class);
@@ -186,7 +188,7 @@ public class HomeActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-         ////       mTextView.setText("That didn't work! Do you have an internet connection?");
+                ////       mTextView.setText("That didn't work! Do you have an internet connection?");
             }
         });
 
@@ -203,7 +205,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
                 String symbol = mTextURI.getText().toString().trim();
-                intent.putExtra("Symbol", symbol);
+                intent.putExtra(DetailActivity.SYMBOL_NAME, symbol);
                 intent.putExtra("UserID", userid);
                 startActivity(intent);
             }
@@ -334,6 +336,7 @@ public class HomeActivity extends AppCompatActivity {
 //        mIconBeenList.add(symbol);
 //        mIconBeenList.add(symbol);
 //        System.out.println(jsonData);
+
 //        private View show_list(){
 //        List<String> data_list = new ArrayList<>(Arrays.asList(data));
 //        ArrayAdapter<String> data_adapter = new ArrayAdapter<>(this,R.layout.lv_item,data_list);

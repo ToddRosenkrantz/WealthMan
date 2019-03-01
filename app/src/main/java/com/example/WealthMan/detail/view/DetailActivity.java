@@ -198,96 +198,96 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
 
     @Override
     public void onSuccess(Object date) {
-        DetailLineBean detailLineBean = (DetailLineBean) date;
-        if (date == null && (((DetailLineBean) date).AAPL == null || ((DetailLineBean) date).AAPL.chart == null))
+        DetailLineBean.Detaildate detailLineBean = (DetailLineBean.Detaildate) date;
+        if (date == null )
             return;
 
-        DetailLineBean.Detaildate aapl;
-        //choose symbol
-        switch (symbolName.toLowerCase()) {
-            case "aapl":
-                aapl = detailLineBean.AAPL;
-                break;
-            case "fb":
-                aapl = detailLineBean.FB;
-                break;
-            case "aal":
-                aapl = detailLineBean.AAL;
-                break;
-            case "bac":
-                aapl = detailLineBean.BAC;
-                break;
-            case "wfc":
-                aapl = detailLineBean.WFC;
-                break;
-            case "wmt":
-                aapl = detailLineBean.WMT;
-                break;
-            case "cof":
-                aapl = detailLineBean.COF;
-                break;
-            case "amzn":
-                aapl = detailLineBean.AMZN;
-                break;
-            case "vmw":
-                aapl = detailLineBean.VMW;
-                break;
-            case "ibm":
-                aapl = detailLineBean.IBM;
-                break;
-            case "dell":
-                aapl = detailLineBean.DELL;
-                break;
-            case "hpq":
-                aapl = detailLineBean.HPQ;
-                break;
-            case "msft":
-                aapl = detailLineBean.MSFT;
-                break;
-
-            case "jnpr":
-                aapl = detailLineBean.JNPR;
-                break;
-            case "orcl":
-                aapl = detailLineBean.ORCL;
-                break;
-            default:
-                aapl = detailLineBean.AAPL;
-                break;
-
-        }
-        if (aapl == null) {
+//        DetailLineBean.Detaildate aapl;
+//        //choose symbol
+//        switch (symbolName.toLowerCase()) {
+//            case "aapl":
+//                aapl = detailLineBean.AAPL;
+//                break;
+//            case "fb":
+//                aapl = detailLineBean.FB;
+//                break;
+//            case "aal":
+//                aapl = detailLineBean.AAL;
+//                break;
+//            case "bac":
+//                aapl = detailLineBean.BAC;
+//                break;
+//            case "wfc":
+//                aapl = detailLineBean.WFC;
+//                break;
+//            case "wmt":
+//                aapl = detailLineBean.WMT;
+//                break;
+//            case "cof":
+//                aapl = detailLineBean.COF;
+//                break;
+//            case "amzn":
+//                aapl = detailLineBean.AMZN;
+//                break;
+//            case "vmw":
+//                aapl = detailLineBean.VMW;
+//                break;
+//            case "ibm":
+//                aapl = detailLineBean.IBM;
+//                break;
+//            case "dell":
+//                aapl = detailLineBean.DELL;
+//                break;
+//            case "hpq":
+//                aapl = detailLineBean.HPQ;
+//                break;
+//            case "msft":
+//                aapl = detailLineBean.MSFT;
+//                break;
+//
+//            case "jnpr":
+//                aapl = detailLineBean.JNPR;
+//                break;
+//            case "orcl":
+//                aapl = detailLineBean.ORCL;
+//                break;
+//            default:
+//                aapl = detailLineBean.AAPL;
+//                break;
+//
+//        }
+        if (detailLineBean == null) {
             Toast.makeText(this, "data bean is erro", Toast.LENGTH_SHORT).show();
             return;
         }
-        List<DetailLineBean.Detaildate.DetailLineDate> chart = aapl.chart;
+        List<DetailLineBean.Detaildate.DetailLineDate> chart = detailLineBean.chart;
         int textColor;
-        if (aapl.quote.changePercent > 0) {
+        if (detailLineBean.quote.changePercent > 0) {
             textColor = getResources().getColor(android.R.color.holo_red_light);
         } else {
 
             textColor = getResources().getColor(R.color.colorPrimary);
         }
-        float v = aapl.quote.changePercent * 100;
-        name.setText(aapl.quote.companyName + "close :" + aapl.quote.close + "( " + v + "%)");
+        float v = detailLineBean.quote.changePercent * 100;
+        name.setText(detailLineBean.quote.companyName + "close :" + detailLineBean.quote.close + "( " + v + "%)");
         //information
         TextView symbols = findViewById(R.id.symbols);
-        symbols.setText("Symbol: " + aapl.quote.symbol);
+        symbols.setText("Symbol: " + detailLineBean.quote.symbol);
 
         TextView cpName = findViewById(R.id.cpName);
-        cpName.setText("Company name: " + aapl.quote.companyName);
+        cpName.setText("Company name: " + detailLineBean.quote.companyName);
 
         TextView openPrice = findViewById(R.id.openPrice);
-        openPrice.setText("Open: " + aapl.quote.open);
+        openPrice.setText("Open: " + detailLineBean.quote.open);
 
         TextView latestVolume = findViewById(R.id.latestVolume);
-        latestVolume.setText("Volume: " + aapl.quote.latestVolume);
+        latestVolume.setText("Volume: " + detailLineBean.quote.latestVolume);
 
         TextView change = findViewById(R.id.change);
-        change.setText("Change:     " + aapl.quote.change);
+        change.setText("Change:     " + detailLineBean.quote.change);
 
         TextView changePercent = findViewById(R.id.changePercent);
-        changePercent.setText("Change Percent: " + aapl.quote.changePercent);
+        changePercent.setText("Change Percent: " + detailLineBean.quote.changePercent);
 
 
 //        name.setTextColor(textColor);
