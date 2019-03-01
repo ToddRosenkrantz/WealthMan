@@ -205,7 +205,8 @@ public class HomeActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
                 String symbol = mTextURI.getText().toString().trim();
-                intent.putExtra(DetailActivity.SYMBOL_NAME, symbol);
+                //intent.putExtra(DetailActivity.SYMBOL_NAME, symbol);
+                intent.putExtra("Symbol", symbol);
                 intent.putExtra("UserID", userid);
                 startActivity(intent);
             }
