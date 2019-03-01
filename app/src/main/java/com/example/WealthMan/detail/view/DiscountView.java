@@ -47,9 +47,10 @@ public class DiscountView extends View {
     }
 
     private void initPaint() {
+        int proj_green = Color.rgb(66,151,64);
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         linPaint = new Paint();
-        linPaint.setColor(Color.BLUE);
+        linPaint.setColor(proj_green);
         linPaint.setAntiAlias(true);
         linPaint.setStrokeWidth(3);
         linPaint.setTextSize(30);

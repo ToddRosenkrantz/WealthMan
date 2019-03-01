@@ -111,21 +111,10 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-/*
-//        IconAdapter adapter = new IconAdapter(
-//                MainActivity.this,R.layout.lv_item,data);
-//        ListView listView = lv;
-///////////////////*/
-//        setContentView(R.layout.activity_home);
-
         mButtonOk = (Button) findViewById(R.id.button);
-//        mButtonTest = (Button) findViewById(R.id.button2);
         mTextURI = (EditText) findViewById(R.id.url_to_fetch);
-//        mTextURI.setText(db.getWatchList());
         final TextView mTextView = (TextView) findViewById(R.id.text);
-       mTextURI.append("");
+        mTextURI.append("");
         final RequestQueue queue = Volley.newRequestQueue(this);
 
 ////        mTextView.setMovementMethod(new ScrollingMovementMethod());
@@ -158,35 +147,13 @@ public class HomeActivity extends AppCompatActivity {
                             String json = gsonPretty.toJson(myData);
                             System.out.println(json);
                             initData(myData);
-
-                            //System.out.println("JSON = " + json);
-/*                            for (int index = 0; index < myData.batches.size(); index++) {
-         ////                       mTextView.append(Integer.toString(index));
-         ////                       mTextView.append(" ");
-         ////                       mTextView.append(myData.batches.get(index).quote.symbol);
-         ////                       mTextView.append(" ");
-         ////                       mTextView.append(Float.toString(myData.batches.get(index).quote.latestPrice));
-         ////                       mTextView.append(" ");
-                                if (myData.batches.get(index).quote.change < 0) {
-                                    //mTextView.setTextColor(Color.parseColor("#FF0000"));
-         ////                           mTextView.append(Float.toString(myData.batches.get(index).quote.change));
-                                } else {
-                                    //mTextView.setTextColor(Color.parseColor("#00FF00"));
-         ////                           mTextView.append(Float.toString(myData.batches.get(index).quote.change));
-                                }
-         ////                       mTextView.append("\n");
-                                //mTextView.append(json);
-
-                                //mTextView.setTextColor(Color.parseColor("#000000"));
-                            }*/
-                            //mTextView.setText("Response is: " + response);
-
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
          ////       mTextView.setText("That didn't work! Do you have an internet connection?");
+                Toast.makeText(HomeActivity.this, "That didn't work! Do you have internet?", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -208,39 +175,6 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-//        mButtonTest.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                Intent intent = getIntent();
-////                String str = intent.getStringExtra("Symbol");
-//                // Enable the following to go to Detail Activity and retrieve the Symbol with the above lines
-//
-//                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                String symbol = mTextURI.getText().toString().trim();
-//                intent.putExtra("Symbol", symbol);
-//                intent.putExtra("UserID", userid);
-//                startActivity(intent);
-//            }
-//        });
-
-
-
-//        mButtonOk.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                Intent intent = getIntent();
-////                String str = intent.getStringExtra("Symbol");
-//                // Enable the following to go to Detail Activity and retrieve the Symbol with the above lines
-//
-//                Intent intent = new Intent(getApplicationContext(), com.example.WealthMan.detail.view.DetailActivity.class);
-//                String symbol = mTextURI.getText().toString().trim();
-//                intent.putExtra(DetailActivity.SYMBOL_NAME, symbol);
-//                intent.putExtra("Symbol", symbol);
-//                intent.putExtra("UserID", userid);
-//                startActivity(intent);
-//            }
-//        });
-
     }
 
     public boolean updateSymbols() {

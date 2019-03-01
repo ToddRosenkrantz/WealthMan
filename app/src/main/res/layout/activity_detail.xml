@@ -262,8 +262,8 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_marginTop="20dp"
-            android:background="#429740"
-            android:text="Buy / Sell"
+            android:background="@drawable/rounded_button"
+            android:text="Bought/Sold"
             android:textColor="#ffffff" />
 
 
@@ -273,7 +273,7 @@
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:background="#429740"
+            android:background="@drawable/rounded_button"
             android:gravity="center"
             android:text="Watch / Unwatch"
             android:textColor="#ffffff" />

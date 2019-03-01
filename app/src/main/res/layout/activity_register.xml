@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#85bb65"
+    android:background="@color/color_project_bg_green"
     android:orientation="vertical"
     android:gravity="center_horizontal"
     tools:context="com.example.WealthMan.RegisterActivity">
@@ -70,7 +70,7 @@
         android:layout_width="206dp"
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
-        android:background="#429740"
+        android:background="@drawable/rounded_button"
         android:textColor="#ffffff"
         android:text="@string/register"/>
 
@@ -92,7 +92,7 @@
             android:layout_height="35dp"
             android:paddingLeft="10dp"
             android:textStyle="bold"
-            android:textColor="#429740"
+            android:textColor="@color/color_project_dk_green"
             android:textSize="16sp"
             android:text="@string/login"/>
 
