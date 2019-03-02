@@ -122,6 +122,7 @@ public class HomeActivity extends AppCompatActivity {
 
 //        String symbols = mTextURI.getText().toString().trim();
         String symbols = db.getWatchList().trim();
+        System.out.println(symbols);
         // Instantiate the RequestQueue.
 //                String url ="https://api.iextrading.com/1.0/stock/market/batch?symbols="+ symbols +"&types=chart&range=1m&last=5";
 //                String url ="https://api.iextrading.com/1.0/stock/market/batch?symbols="+ symbols +"&types=quote,news,chart&range=6m";
