@@ -31,11 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-
-//import com.orhanobut.logger.AndroidLogAdapter;
-//import com.orhanobut.logger.Logger;
-
-
 public class DetailActivity extends AppCompatActivity implements RequstCallBack, View.OnClickListener {
 
     //+++++++++++Watch button+++++
@@ -76,21 +71,9 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         db = new DatabaseHelper(this);
-        TextView tv = findViewById(R.id.watchOrUnwatch);
-        if(db.checkSymbol(ID, symbolName)==1){
-            tv.setText("Unwatch");
-        }else{
-            tv.setText("Watch");
-        }
-        //get symbol from HomeActivity
-//
-//        Intent intent = getIntent();
-//        String symboldata = intent.getStringExtra("Symbol");
-//        Logger.addLogAdapter(new AndroidLogAdapter());
-//        Logger.d(symboldata);
 
-        //click buy or sell to transaction page
-        Button buyOrSell = findViewById(R.id.buyOrSell);
+        // +++++++++++++++++ LOGIC FOR BUY/SELL BUTTON +++++++++++++++++++++++++
+       Button buyOrSell = findViewById(R.id.buyOrSell);
         buyOrSell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +84,13 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         });
 
         // +++++++++++++++++ LOGIC FOR WATCH/UNWATCH BUTTON +++++++++++++++++++++++++
-        watch = (Button) findViewById(R.id.watchOrUnwatch);
+        TextView tv = findViewById(R.id.watchOrUnwatch);
+        if(db.checkSymbol(ID, symbolName)==1){
+            tv.setText("Unwatch");
+        }else{
+            tv.setText("Watch");
+        }
+        watch = findViewById(R.id.watchOrUnwatch);
         builder = new AlertDialog.Builder(this);
         watch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,10 +128,11 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
 
 
         //        new list
-        final TextView tv1 = findViewById(R.id.tv1);
+        TextView tv1 = findViewById(R.id.tv1);
         tv1.setMovementMethod(new ScrollingMovementMethod());
         tv1.setText(Html.fromHtml("<a  href='https://www.cnbc.com/quotes/?symbol="+symbolName+"'> "+symbolName+" : CNBC NEWS</a>"));
         tv1.setMovementMethod(LinkMovementMethod.getInstance());
+
         TextView tv2 = findViewById(R.id.tv2);
         tv2.setText(Html.fromHtml("<a href='https://www.marketwatch.com/investing/stock/"+symbolName+"'> "+symbolName+"'s Marketwatch Investing Stocks</a>"));
         tv2.setMovementMethod(LinkMovementMethod.getInstance());
@@ -164,12 +154,10 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
     private void beforeInflateView() {
         Intent intent = getIntent();
         if (intent != null) {
-           // symbolName = intent.getStringExtra(SYMBOL_NAME);
             symbolName = intent.getStringExtra("Symbol");
             ID = intent.getIntExtra("UserID",0);
             Logger.addLogAdapter(new AndroidLogAdapter());
             Logger.d(symbolName);
-//            symbolName = "aapl";
         }
     }
 
@@ -210,62 +198,8 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         if (date == null )
             return;
 
-//        DetailLineBean.Detaildate aapl;
-//        //choose symbol
-//        switch (symbolName.toLowerCase()) {
-//            case "aapl":
-//                aapl = detailLineBean.AAPL;
-//                break;
-//            case "fb":
-//                aapl = detailLineBean.FB;
-//                break;
-//            case "aal":
-//                aapl = detailLineBean.AAL;
-//                break;
-//            case "bac":
-//                aapl = detailLineBean.BAC;
-//                break;
-//            case "wfc":
-//                aapl = detailLineBean.WFC;
-//                break;
-//            case "wmt":
-//                aapl = detailLineBean.WMT;
-//                break;
-//            case "cof":
-//                aapl = detailLineBean.COF;
-//                break;
-//            case "amzn":
-//                aapl = detailLineBean.AMZN;
-//                break;
-//            case "vmw":
-//                aapl = detailLineBean.VMW;
-//                break;
-//            case "ibm":
-//                aapl = detailLineBean.IBM;
-//                break;
-//            case "dell":
-//                aapl = detailLineBean.DELL;
-//                break;
-//            case "hpq":
-//                aapl = detailLineBean.HPQ;
-//                break;
-//            case "msft":
-//                aapl = detailLineBean.MSFT;
-//                break;
-//
-//            case "jnpr":
-//                aapl = detailLineBean.JNPR;
-//                break;
-//            case "orcl":
-//                aapl = detailLineBean.ORCL;
-//                break;
-//            default:
-//                aapl = detailLineBean.AAPL;
-//                break;
-//
-//        }
         if (detailLineBean == null) {
-            Toast.makeText(this, "data bean is erro", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "data bean is error", Toast.LENGTH_SHORT).show();
             return;
         }
         List<DetailLineBean.Detaildate.DetailLineDate> chart = detailLineBean.chart;

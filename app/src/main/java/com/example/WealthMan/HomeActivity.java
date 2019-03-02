@@ -52,14 +52,13 @@ public class HomeActivity extends AppCompatActivity {
     private ListView lv;
     private String latestprice;
     private IconAdapter sa;
-    private DatabaseHelper DatabaseHelper;
+    private DatabaseHelper db;
     //public String [] data = {"apple","apple","orange","watermelon","peat","grape","pineapple","strawberry","cherry","mango"};
     EditText mTextURI;
     Button mButtonOk;
 //    Button mButtonTest;
     ArrayList<WatchListData> wl_data = new ArrayList<>();
 
-    DatabaseHelper db;
     boolean dbsuccess = true;
     public static final String MY_PREFS_FILE = "wealthman_prefs";
 
@@ -140,9 +139,7 @@ public class HomeActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         if (response.equals("{}"))
                             Toast.makeText(HomeActivity.this, "No stocks being tracked", Toast.LENGTH_LONG).show();
-    ////                        mTextView.setText(mTextView.getText() + ("No Data returned.  Did you enter a valid stock symbol?"));
                         else {
-        ////                    mTextView.setText("");
                             GsonBuilder gsonBuilder = new GsonBuilder();
                             gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
                             Batches myData = gsonBuilder.create().fromJson(response, Batches.class);
