@@ -8,9 +8,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.util.Log;
+import android.util.Pair;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
     public static final String DATABASE_NAME ="register.db";
@@ -192,5 +195,27 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             return  true;
         else
             return  false;
+    }
+    public void populateSymbols(List<Pair> SymbolList){
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL("DROP TABLE " + SYM_TBL);   // Remove any existing Symbol Table & Names to remove old and not have conficts if exists
+        db.execSQL("CREATE TABLE IF NOT EXISTS symbols (ID INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT, symbol TEXT)");
+        db.beginTransaction();
+        Iterator<Pair> symIterator = SymbolList.iterator();
+        int count = 0;
+        for (int i =0 ; i < SymbolList.size() ; i ++) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("name", (String) SymbolList.get(i).first);
+            contentValues.put("symbol", (String) SymbolList.get(i).second);
+            db.insert(SYM_TBL,null, contentValues);
+            count++;
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        Log.d("DB","Added " + count + " symbols to database");
+    }
+    public String searchNameSymbol(String searchKey){
+//        select symbol as t1 from symbols as a where symbol like 'ap%' union all select name as t1 from symbols as b where name like '%ap%' order by t1 COLLATE NOCASE ASC;
+        return "not set";
     }
 }

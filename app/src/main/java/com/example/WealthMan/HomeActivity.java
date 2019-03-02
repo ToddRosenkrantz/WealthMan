@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -42,6 +43,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -189,19 +191,14 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         stockSym[] mySyms = gsonSymbols.create().fromJson(response, stockSym[].class);
-                        // Make two DB entries, one for symbol-symbol lookup
-                        // Other for name-symbol lookup
+                        List<Pair> SymbolList = new ArrayList<Pair>();
                         System.out.println("Length = " + mySyms.length);
                         long val = 0;
                         for (int i = 0; i < mySyms.length; i++) {
-                            val += db.addSymbol(mySyms[i].symbol, mySyms[i].symbol);
-                            val += db.addSymbol(mySyms[i].name, mySyms[i].symbol);
-                            //System.out.println(mySyms[i].name +"   ,  " +mySyms[i].symbol);
+                            Pair temp = new Pair(mySyms[i].name, mySyms[i].symbol);
+                            SymbolList.add(temp);
                         }
-//                if (val <= mySyms.length) {
-//                    Toast.makeText(HomeActivity.this, "Symbol Database Error", Toast.LENGTH_LONG).show();
-//                    dbsuccess = false;
-//                }
+                        db.populateSymbols(SymbolList);
                     }
                 }, new Response.ErrorListener() {
             @Override
