@@ -218,7 +218,10 @@ public class HomeActivity extends AppCompatActivity {
 //        String json = gsonPretty.toJson(watchList);
 //        System.out.println("JSON = " + json);
         for (int index = 0; index < watchList.batches.size(); index++) {
-            System.out.println(index + "\t" + watchList.batches.get(index).quote.symbol + "\t" + watchList.batches.get(index).quote.latestPrice + "\t" + watchList.batches.get(index).quote.change);
+            System.out.println(index
+                    + "\t" + watchList.batches.get(index).quote.symbol
+                    + "\t" + watchList.batches.get(index).quote.latestPrice
+                    + "\t" + watchList.batches.get(index).quote.change);
             for (int i = 0; i < watchList.batches.size(); i++) {
                 WatchListData temp = new WatchListData();
                 temp.setChange(watchList.batches.get(i).quote.change);

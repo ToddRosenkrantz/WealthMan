@@ -64,6 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return res;
     }
     public long addWatch(int userid, String symbol){
+        //symbol = symbol.toLowerCase();
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(WL_COL_USER, userid);
