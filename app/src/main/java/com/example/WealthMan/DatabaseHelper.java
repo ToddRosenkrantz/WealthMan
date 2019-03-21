@@ -16,6 +16,9 @@ import java.util.Iterator;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
+    // for our logs
+    public static final String TAG = "DatabaseHandler.java";
+
     public static final String DATABASE_NAME ="register.db";
     public static final String TABLE_NAME ="registeruser";
     public static final String COL_1 ="ID";         // AUTOINCREMENT number.  not used yet.... KEY for transactions?
@@ -217,6 +220,59 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
     public String searchNameSymbol(String searchKey){
 //        select symbol as t1 from symbols as a where symbol like 'ap%' union all select name as t1 from symbols as b where name like '%ap%' order by t1 COLLATE NOCASE ASC;
+
         return "not set";
     }
+    // Read records related to the search term
+    public NameSymbol[] read(String searchTerm) {
+//        public static final String SYM_TBL = "symbols";
+//        public static final String SYM_COL_1 = "id";
+//        public static final String SYM_COL_2 = "name";
+//        public static final String SYM_COL_3 = "symbol";
+
+        // select query
+        String sql = "";
+        sql += "SELECT " + SYM_COL_3 +" as column_1, " + SYM_COL_3 + " from  " + SYM_TBL + " AS table_a WHERE " + SYM_COL_3 + " like '" + searchTerm +"%' ";
+        sql += "UNION ALL SELECT " + SYM_COL_2 + " as column_1," + SYM_COL_3 + " from "+ SYM_TBL +" AS table_b WHERE " + SYM_COL_2 + " like '%"+ searchTerm + "%' ORDER BY 2 COLLATE NOCASE ASC ";
+//        sql += "SELECT * FROM " + tableName;
+//        sql += " WHERE " + fieldObjectName + " LIKE '%" + searchTerm + "%'";
+//        sql += " ORDER BY " + fieldObjectId + " DESC";
+        sql += "LIMIT 0,50";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // execute the query
+        Cursor cursor = db.rawQuery(sql, null);
+
+        int recCount = cursor.getCount();
+
+        NameSymbol[] ObjectItemData = new NameSymbol[recCount];
+        int x = 0;
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+//              Column 0 = Combined Names and Symbols, Column 1 = symbols
+                String objectName = cursor.getString(0);
+                String objectSymbol = cursor.getString(1);
+//                String objectSymbol = "sym";
+                Log.e(TAG, "coName: " + objectName);
+                Log.e(TAG, "coSymbol: " + objectSymbol);
+
+                NameSymbol nameSymbol = new NameSymbol(objectName, objectSymbol);
+
+                ObjectItemData[x] = nameSymbol;
+
+                x++;
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return ObjectItemData;
+
+    }
+
 }

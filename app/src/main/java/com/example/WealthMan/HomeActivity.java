@@ -12,21 +12,20 @@ next steps:
 
  */
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,12 +51,24 @@ public class HomeActivity extends AppCompatActivity {
     private ListView lv;
     private String latestprice;
     private IconAdapter sa;
-    private DatabaseHelper db;
+    DatabaseHelper db;
     //public String [] data = {"apple","apple","orange","watermelon","peat","grape","pineapple","strawberry","cherry","mango"};
-    EditText mTextURI;
+//    TextView mTextURI;
     Button mButtonOk;
 //    Button mButtonTest;
     ArrayList<WatchListData> wl_data = new ArrayList<>();
+    /*
+     * Change to type CustomAutoCompleteView instead of AutoCompleteTextView
+     * since we are extending to customize the view and disable filter
+     * The same with the XML view, type will be CustomAutoCompleteView
+     */
+    CustomAutoCompleteView myAutoComplete;
+
+    // adapter for auto-complete
+    ArrayAdapter<NameSymbol> myAdapter;
+
+    String stringToSend = "";
+    String companyToSend = "";
 
     boolean dbsuccess = true;
     public static final String MY_PREFS_FILE = "wealthman_prefs";
@@ -98,24 +109,16 @@ public class HomeActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_ativity_test_watchlist);
+        setContentView(R.layout.activity_home);
+
         lv = (ListView)findViewById(R.id.lv);
         //为listview添加adapter
         lv.setAdapter(new IconAdapter(this,mIconBeenList));
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                IconBean stock = mIconBeenList.get(position);
-                Intent intent = new Intent(HomeActivity.this,com.example.WealthMan.detail.view.DetailActivity.class);
-                intent.putExtra("Symbol",stock.symbol);
-                intent.putExtra("UserID",userid);
-                startActivity(intent);
-            }
-        });
+
         mButtonOk = (Button) findViewById(R.id.button);
-        mTextURI = (EditText) findViewById(R.id.url_to_fetch);
+//        mTextURI = (EditText) findViewById(R.id.url_to_fetch);
         final TextView mTextView = (TextView) findViewById(R.id.text);
-        mTextURI.append("");
+//        mTextURI.append("");
         final RequestQueue queue = Volley.newRequestQueue(this);
 
 ////        mTextView.setMovementMethod(new ScrollingMovementMethod());
@@ -159,7 +162,57 @@ public class HomeActivity extends AppCompatActivity {
 
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
+        try {
+        // autocompletetextview is in activity_home.xml
+        myAutoComplete = (CustomAutoCompleteView) findViewById(R.id.myautocomplete);
 
+        myAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
+
+                RelativeLayout rl = (RelativeLayout) arg1;
+                LinearLayout Lin1 = (LinearLayout) rl.getChildAt(0);
+                TextView tv = (TextView) Lin1.getChildAt(0);
+                TextView sym = (TextView) Lin1.getChildAt(1);
+                companyToSend = tv.getText().toString();
+                stringToSend = sym.getText().toString();
+                myAutoComplete.setText(tv.getText().toString());
+                Log.e("MAIN", stringToSend);
+                Intent intent = new Intent(HomeActivity.this,com.example.WealthMan.detail.view.DetailActivity.class);
+                intent.putExtra("Symbol",stringToSend);
+                intent.putExtra("UserID",userid);
+                startActivity(intent);
+
+            }
+
+        });
+
+        // add the listener so it will tries to suggest while the user types
+        myAutoComplete.addTextChangedListener(new CustomAutoCompleteTextChangedListener(this));
+
+        // ObjectItemData has no value at first
+        NameSymbol[] ObjectItemData = new NameSymbol[0];
+
+        // set the custom ArrayAdapter
+        myAdapter = new AutocompleteCustomArrayAdapter(this, R.layout.list_view_row_item, ObjectItemData);
+        myAutoComplete.setAdapter(myAdapter);
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                IconBean stock = mIconBeenList.get(position);
+                Intent intent = new Intent(HomeActivity.this,com.example.WealthMan.detail.view.DetailActivity.class);
+                intent.putExtra("Symbol",stock.symbol);
+                intent.putExtra("UserID",userid);
+                startActivity(intent);
+            }
+        });
 
         mButtonOk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,8 +222,9 @@ public class HomeActivity extends AppCompatActivity {
                 // Enable the following to go to Detail Activity and retrieve the Symbol with the above lines
 
                 Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
-                String symbol = mTextURI.getText().toString().trim();
-                intent.putExtra("Symbol", symbol);
+//                String symbol = mTextURI.getText().toString().trim();
+
+                intent.putExtra("Symbol", stringToSend);
                 intent.putExtra("UserID", userid);
                 startActivity(intent);
             }

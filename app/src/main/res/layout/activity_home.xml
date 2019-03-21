@@ -2,40 +2,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="com.example.WealthMan.HomeActivity">
+    tools:context=".HomeActivity">
 
 
-
-
-    <ScrollView
-        android:id="@+id/textAreaScroller"
-        android:layout_width="346dp"
-        android:layout_height="372dp"
+<!--
+    <TextView
+        android:id="@+id/url_to_fetch"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:scrollbars="vertical">
-        <!--    android:layout_x="0px"
-        android:layout_y="300dp"
-    /!-->
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="wrap_content"
-            android:layout_height="398dp"
-            android:text="Hello World!"
-            android:textAlignment="viewStart" />
-    </ScrollView>
+        android:layout_marginRight="10dp"
+        android:autofillHints="@string/symbol_hint"
+        android:contentDescription="@string/stock_symbol"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp" />
+-->
 
 
+    <com.example.WealthMan.CustomAutoCompleteView
+        android:id="@+id/myautocomplete"
+        android:layout_width="fill_parent"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
+        android:completionThreshold="1" >
+    </com.example.WealthMan.CustomAutoCompleteView>
+
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="435dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp">
+
+    </ListView>
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="match_parent"
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Test" />
-
+        android:layout_marginTop="10dp"
+        android:text="@string/ok"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="657dp" />
 
 </LinearLayout>
+

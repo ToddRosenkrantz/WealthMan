@@ -3,13 +3,9 @@ package com.example.WealthMan;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<IconBean> mIconBeenList = new ArrayList<>();
@@ -25,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ativity_test_watchlist);
+        setContentView(R.layout.activity_home);
         lv = (ListView)findViewById(R.id.lv);
         //为listview添加adapter
         lv.setAdapter(new IconAdapter(this,mIconBeenList));
