@@ -232,8 +232,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         // select query
         String sql = "";
-        sql += "SELECT " + SYM_COL_3 +" as column_1, " + SYM_COL_3 + " from  " + SYM_TBL + " AS table_a WHERE " + SYM_COL_3 + " like '" + searchTerm +"%' ";
-        sql += "UNION ALL SELECT " + SYM_COL_2 + " as column_1," + SYM_COL_3 + " from "+ SYM_TBL +" AS table_b WHERE " + SYM_COL_2 + " like '%"+ searchTerm + "%' ORDER BY 2 COLLATE NOCASE ASC ";
+        sql += "SELECT " + SYM_COL_3 +" as column_1, " + SYM_COL_3 + ", LENGTH(" + SYM_COL_3 + ") from  " + SYM_TBL + " AS table_a WHERE " + SYM_COL_3 + " like '" + searchTerm +"%' ";
+        sql += "UNION ALL SELECT " + SYM_COL_2 + " as column_1," + SYM_COL_3 + ", LENGTH(" + SYM_COL_3 + ") from "+ SYM_TBL +" AS table_b WHERE " + SYM_COL_2;
+        sql += " like '%"+ searchTerm + "%' ORDER BY LENGTH("+ SYM_COL_3 + ") COLLATE NOCASE ASC ";
 //        sql += "SELECT * FROM " + tableName;
 //        sql += " WHERE " + fieldObjectName + " LIKE '%" + searchTerm + "%'";
 //        sql += " ORDER BY " + fieldObjectId + " DESC";

@@ -54,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
     DatabaseHelper db;
     //public String [] data = {"apple","apple","orange","watermelon","peat","grape","pineapple","strawberry","cherry","mango"};
 //    TextView mTextURI;
-    Button mButtonOk;
+//    Button mButtonOk;
 //    Button mButtonTest;
     ArrayList<WatchListData> wl_data = new ArrayList<>();
     /*
@@ -115,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
         //为listview添加adapter
         lv.setAdapter(new IconAdapter(this,mIconBeenList));
 
-        mButtonOk = (Button) findViewById(R.id.button);
+//        mButtonOk = (Button) findViewById(R.id.button);
 //        mTextURI = (EditText) findViewById(R.id.url_to_fetch);
         final TextView mTextView = (TextView) findViewById(R.id.text);
 //        mTextURI.append("");
@@ -214,7 +214,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        mButtonOk.setOnClickListener(new View.OnClickListener() {
+/*        mButtonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Intent intent = getIntent();
@@ -228,7 +228,7 @@ public class HomeActivity extends AppCompatActivity {
                 intent.putExtra("UserID", userid);
                 startActivity(intent);
             }
-        });
+        });*/
     }
 
     public boolean updateSymbols() {
