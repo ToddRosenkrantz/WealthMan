@@ -71,6 +71,11 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         final RequestQueue queue = Volley.newRequestQueue(this);
+        setContentView(R.layout.activity_home);
+        lv = (ListView)findViewById(R.id.lv);
+        //为listview添加adapter
+        lv.setAdapter(new IconAdapter(this,mIconBeenList));
+        sa = (IconAdapter) lv.getAdapter();
 
         setupApp();
 
@@ -84,6 +89,7 @@ public class HomeActivity extends AppCompatActivity {
                             Toast.makeText(HomeActivity.this, "No stocks being tracked", Toast.LENGTH_LONG).show();
                         else {
                             getData(response);
+                            sa.notifyDataSetChanged();
 
                         }
                     }
@@ -96,11 +102,6 @@ public class HomeActivity extends AppCompatActivity {
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
-
-        setContentView(R.layout.activity_home);
-        lv = (ListView)findViewById(R.id.lv);
-        //为listview添加adapter
-        lv.setAdapter(new IconAdapter(this,mIconBeenList));
 
 //        mButtonOk = (Button) findViewById(R.id.button);
 //        mTextURI = (EditText) findViewById(R.id.url_to_fetch);
