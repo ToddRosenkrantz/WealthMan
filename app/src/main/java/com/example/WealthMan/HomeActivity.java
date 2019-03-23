@@ -52,34 +52,108 @@ public class HomeActivity extends AppCompatActivity {
     private String latestprice;
     private IconAdapter sa;
     DatabaseHelper db;
-    //public String [] data = {"apple","apple","orange","watermelon","peat","grape","pineapple","strawberry","cherry","mango"};
-//    TextView mTextURI;
-//    Button mButtonOk;
-//    Button mButtonTest;
-    ArrayList<WatchListData> wl_data = new ArrayList<>();
     /*
      * Change to type CustomAutoCompleteView instead of AutoCompleteTextView
      * since we are extending to customize the view and disable filter
      * The same with the XML view, type will be CustomAutoCompleteView
      */
     CustomAutoCompleteView myAutoComplete;
-
     // adapter for auto-complete
     ArrayAdapter<NameSymbol> myAdapter;
-
-    String stringToSend = "";
-    String companyToSend = "";
-
     boolean dbsuccess = true;
     public static final String MY_PREFS_FILE = "wealthman_prefs";
-
-//    final TextView mTextView = (TextView)findViewById(R.id.text);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent = getIntent();
         final int userid = intent.getIntExtra("UserId", 1);
         db = new DatabaseHelper(this);
+
+        super.onCreate(savedInstanceState);
+
+        final RequestQueue queue = Volley.newRequestQueue(this);
+
+        setupApp();
+
+        String symbols = db.getWatchList().trim();
+        String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + symbols + "&types=quote,news,chart&range=1m&last=5";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.equals("{}"))
+                            Toast.makeText(HomeActivity.this, "No stocks being tracked", Toast.LENGTH_LONG).show();
+                        else {
+                            getData(response);
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HomeActivity.this, "That didn't work! Do you have internet?", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
+        setContentView(R.layout.activity_home);
+        lv = (ListView)findViewById(R.id.lv);
+        //为listview添加adapter
+        lv.setAdapter(new IconAdapter(this,mIconBeenList));
+
+//        mButtonOk = (Button) findViewById(R.id.button);
+//        mTextURI = (EditText) findViewById(R.id.url_to_fetch);
+        final TextView mTextView = (TextView) findViewById(R.id.text);
+//        mTextURI.append("");
+        try {
+            // autocompletetextview is in activity_home.xml
+            myAutoComplete = (CustomAutoCompleteView) findViewById(R.id.myautocomplete);
+
+            myAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
+                    RelativeLayout rl = (RelativeLayout) arg1;
+                    LinearLayout Lin1 = (LinearLayout) rl.getChildAt(0);
+                    TextView tv = (TextView) Lin1.getChildAt(0);
+                    TextView sym = (TextView) Lin1.getChildAt(1);
+    //                String companyToSend = tv.getText().toString();
+                    String stringToSend = sym.getText().toString();
+                    myAutoComplete.setText(tv.getText().toString());
+                    Log.e("MAIN", stringToSend);
+                    nextActivity(stringToSend, userid);
+                }
+
+            });
+            // add the listener so it will tries to suggest while the user types
+            myAutoComplete.addTextChangedListener(new CustomAutoCompleteTextChangedListener(this));
+            // ObjectItemData has no value at first
+            NameSymbol[] ObjectItemData = new NameSymbol[0];
+            // set the custom ArrayAdapter
+            myAdapter = new AutocompleteCustomArrayAdapter(this, R.layout.list_view_row_item, ObjectItemData);
+            myAutoComplete.setAdapter(myAdapter);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                IconBean stock = mIconBeenList.get(position);
+                nextActivity(stock.symbol, userid);
+            }
+        });
+    }
+    public void nextActivity(String symbol, Integer ID){
+        Intent intent = new Intent(HomeActivity.this,com.example.WealthMan.detail.view.DetailActivity.class);
+        intent.putExtra("Symbol",symbol);
+        intent.putExtra("UserID",ID);
+        startActivity(intent);
+    }
+
+    public void setupApp(){
         SharedPreferences preference = getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
         SharedPreferences.Editor editor = preference.edit();
         long now = System.currentTimeMillis();
@@ -106,133 +180,8 @@ public class HomeActivity extends AppCompatActivity {
             } else
                 Toast.makeText(HomeActivity.this, "Database Error creating Watch List", Toast.LENGTH_LONG).show();
         }
-
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_home);
-
-        lv = (ListView)findViewById(R.id.lv);
-        //为listview添加adapter
-        lv.setAdapter(new IconAdapter(this,mIconBeenList));
-
-//        mButtonOk = (Button) findViewById(R.id.button);
-//        mTextURI = (EditText) findViewById(R.id.url_to_fetch);
-        final TextView mTextView = (TextView) findViewById(R.id.text);
-//        mTextURI.append("");
-        final RequestQueue queue = Volley.newRequestQueue(this);
-
-////        mTextView.setMovementMethod(new ScrollingMovementMethod());
-// Gson
-
-//        String symbols = mTextURI.getText().toString().trim();
-        String symbols = db.getWatchList().trim();
-        System.out.println(symbols);
-        // Instantiate the RequestQueue.
-//                String url ="https://api.iextrading.com/1.0/stock/market/batch?symbols="+ symbols +"&types=chart&range=1m&last=5";
-//                String url ="https://api.iextrading.com/1.0/stock/market/batch?symbols="+ symbols +"&types=quote,news,chart&range=6m";
-        String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + symbols + "&types=quote,news,chart&range=1m&last=5";
-//          Sql query should be like SELECT GROUP_CONCAT(symbol SEPARATOR ',')
-//              or SELECT GROUP_CONCAT(symbol)
-
-//                String url ="https://api.iextrading.com/1.0/stock/"+ symbols +"/quote";
-// Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (response.equals("{}"))
-                            Toast.makeText(HomeActivity.this, "No stocks being tracked", Toast.LENGTH_LONG).show();
-                        else {
-                            GsonBuilder gsonBuilder = new GsonBuilder();
-                            gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
-                            Batches myData = gsonBuilder.create().fromJson(response, Batches.class);
-                            Gson gsonPretty = new GsonBuilder().setPrettyPrinting().create();
-                            String json = gsonPretty.toJson(myData);
-                            System.out.println(json);
-                            initData(myData);
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-         ////       mTextView.setText("That didn't work! Do you have an internet connection?");
-                Toast.makeText(HomeActivity.this, "That didn't work! Do you have internet?", Toast.LENGTH_LONG).show();
-            }
-        });
-
-// Add the request to the RequestQueue.
-        queue.add(stringRequest);
-        try {
-        // autocompletetextview is in activity_home.xml
-        myAutoComplete = (CustomAutoCompleteView) findViewById(R.id.myautocomplete);
-
-        myAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
-
-                RelativeLayout rl = (RelativeLayout) arg1;
-                LinearLayout Lin1 = (LinearLayout) rl.getChildAt(0);
-                TextView tv = (TextView) Lin1.getChildAt(0);
-                TextView sym = (TextView) Lin1.getChildAt(1);
-                companyToSend = tv.getText().toString();
-                stringToSend = sym.getText().toString();
-                myAutoComplete.setText(tv.getText().toString());
-                Log.e("MAIN", stringToSend);
-                Intent intent = new Intent(HomeActivity.this,com.example.WealthMan.detail.view.DetailActivity.class);
-                intent.putExtra("Symbol",stringToSend);
-                intent.putExtra("UserID",userid);
-                startActivity(intent);
-
-            }
-
-        });
-
-        // add the listener so it will tries to suggest while the user types
-        myAutoComplete.addTextChangedListener(new CustomAutoCompleteTextChangedListener(this));
-
-        // ObjectItemData has no value at first
-        NameSymbol[] ObjectItemData = new NameSymbol[0];
-
-        // set the custom ArrayAdapter
-        myAdapter = new AutocompleteCustomArrayAdapter(this, R.layout.list_view_row_item, ObjectItemData);
-        myAutoComplete.setAdapter(myAdapter);
-
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                IconBean stock = mIconBeenList.get(position);
-                Intent intent = new Intent(HomeActivity.this,com.example.WealthMan.detail.view.DetailActivity.class);
-                intent.putExtra("Symbol",stock.symbol);
-                intent.putExtra("UserID",userid);
-                startActivity(intent);
-            }
-        });
-
-/*        mButtonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = getIntent();
-//                String str = intent.getStringExtra("Symbol");
-                // Enable the following to go to Detail Activity and retrieve the Symbol with the above lines
-
-                Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
-//                String symbol = mTextURI.getText().toString().trim();
-
-                intent.putExtra("Symbol", stringToSend);
-                intent.putExtra("UserID", userid);
-                startActivity(intent);
-            }
-        });*/
     }
-
     public boolean updateSymbols() {
-
         final RequestQueue queue = Volley.newRequestQueue(this);
         System.out.println("Updating Symbols now");
         String symbolUrl = "https://api.iextrading.com/1.0/ref-data/symbols";
@@ -272,30 +221,24 @@ public class HomeActivity extends AppCompatActivity {
 //        String json = gsonPretty.toJson(watchList);
 //        System.out.println("JSON = " + json);
         for (int index = 0; index < watchList.batches.size(); index++) {
+//            String coSym = watchList.batches.get(index).coSym;
             System.out.println(index
+//                    + "\t" + coSym
                     + "\t" + watchList.batches.get(index).quote.symbol
                     + "\t" + watchList.batches.get(index).quote.latestPrice
                     + "\t" + watchList.batches.get(index).quote.change);
-            for (int i = 0; i < watchList.batches.size(); i++) {
-                WatchListData temp = new WatchListData();
-                temp.setChange(watchList.batches.get(i).quote.change);
-                temp.setPrice(watchList.batches.get(i).quote.latestPrice);
-                temp.setName(watchList.batches.get(i).quote.companyName);
-                temp.setSymbol(watchList.batches.get(i).quote.symbol);
-                wl_data.add(temp);
-            }
-        }
+                IconBean symbol = new IconBean(
+                        watchList.batches.get(index).quote.symbol,
+                        watchList.batches.get(index).quote.companyName,
+                        watchList.batches.get(index).quote.latestPrice,
+                        watchList.batches.get(index).quote.change
+                );
+                mIconBeenList.add(symbol); }
     }
 
     private void initData(Batches jsonData) {
 
         for (int i = 0 ; i < jsonData.batches.size(); i++) {
-//            WatchListData temp = new WatchListData();
-//            temp.setChange(jsonData.quotes.get(i).change);
-//            temp.setPrice(jsonData.quotes.get(i).latestPrice);
-//            temp.setName(jsonData.quotes.get(i).companyName);
-//            temp.setSymbol(jsonData.quotes.get(i).symbol);
-//            System.out.println();
             IconBean symbol = new IconBean(
                     jsonData.batches.get(i).quote.symbol.trim(),
                     jsonData.batches.get(i).quote.companyName.trim(),

@@ -217,6 +217,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.setTransactionSuccessful();
         db.endTransaction();
         Log.d("DB","Added " + count + " symbols to database");
+        db.close();
     }
     public String searchNameSymbol(String searchKey){
 //        select symbol as t1 from symbols as a where symbol like 'ap%' union all select name as t1 from symbols as b where name like '%ap%' order by t1 COLLATE NOCASE ASC;
