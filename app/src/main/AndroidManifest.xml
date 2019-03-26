@@ -12,11 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".ForgotActivity" />
-        <!--<activity android:name=".HomeActivity" />-->
+        <!-- <activity android:name=".HomeActivity" /> -->
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,16 +23,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity
             android:name=".detail.view.DetailActivity"
             android:exported="true" />
         <activity
             android:name=".HomeActivity"
             android:exported="true" />
-        <activity android:name=".TransactionActivity"></activity>
-
+        <activity android:name=".TransactionActivity" />
+        <activity
+            android:name=".detail.view.SharesListActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
