@@ -131,6 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -165,7 +166,7 @@
                 android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:layout_marginLeft="10dp" />
         </LinearLayout>
 
@@ -214,6 +215,6 @@
             android:id="@+id/insert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="insert" />
+            android:text="Add" />
     </LinearLayout>
 </LinearLayout>

@@ -14,8 +14,8 @@
 
         <View
             android:layout_width="1dp"
-            android:layout_height="30dp"
-            android:background="@color/color_preloader_black" />
+            android:layout_height="30dp"/>
+            <!--android:background="@color/color_preloader_black" />-->
 
         <TextView
             android:id="@+id/stock"
@@ -27,8 +27,8 @@
 
         <View
             android:layout_width="1dp"
-            android:layout_height="30dp"
-            android:background="@color/color_preloader_black" />
+            android:layout_height="30dp"/>
+            <!--android:background="@color/color_preloader_black" />-->
 
         <TextView
             android:id="@+id/shares"
@@ -40,8 +40,8 @@
 
         <View
             android:layout_width="1dp"
-            android:layout_height="30dp"
-            android:background="@color/color_preloader_black" />
+            android:layout_height="30dp"/>
+            <!--android:background="@color/color_preloader_black" />-->
 
         <TextView
             android:id="@+id/price"
@@ -53,8 +53,8 @@
 
         <View
             android:layout_width="1dp"
-            android:layout_height="30dp"
-            android:background="@color/color_preloader_black" />
+            android:layout_height="30dp"/>
+            <!--android:background="@color/color_preloader_black" />-->
 
         <TextView
             android:id="@+id/date"
@@ -66,8 +66,8 @@
 
         <View
             android:layout_width="1dp"
-            android:layout_height="30dp"
-            android:background="@color/color_preloader_black" />
+            android:layout_height="30dp"/>
+            <!--android:background="@color/color_preloader_black" />-->
 
         <TextView
             android:id="@+id/buy_type"
@@ -79,8 +79,8 @@
 
         <View
             android:layout_width="1dp"
-            android:layout_height="30dp"
-            android:background="@color/color_preloader_black" />
+            android:layout_height="30dp"/>
+            <!--android:background="@color/color_preloader_black" />-->
     </LinearLayout>
 
     <View
