@@ -268,7 +268,7 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
 
     @Override
     public void onError(Object date) {
-        Toast.makeText(this, "加载失败,请求超时", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Error: Request timed out", Toast.LENGTH_SHORT).show();
 
     }
 
