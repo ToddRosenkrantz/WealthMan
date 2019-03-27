@@ -141,7 +141,10 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
                     value.put("date", startTime);
                     value.put("bought", buyType);
                     db.insertDateToTable(DatabaseHelper.SHARES_LIST_NAME, value);
-                    sharesListAdapter.addDate(new SharesStockBean(stockS, sharesS, priceS, dateS, buyType));
+                    //int ID= db.insertDateToTable(DatabaseHelper.SHARES_LIST_NAME, value);
+                    int ID=1;//default
+                    String dateshow=dateS.substring(0,dateS.length()-6);
+                    sharesListAdapter.addDate(new SharesStockBean(ID,stockS, sharesS, priceS, dateshow, buyType));
                 }else {
                     Toast.makeText(SharesListActivity.this,"stock is erro",Toast.LENGTH_LONG).show();
                 }

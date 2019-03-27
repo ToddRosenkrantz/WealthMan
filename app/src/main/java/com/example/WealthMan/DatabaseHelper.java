@@ -90,7 +90,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public long insertDateToTable(String tableName, ContentValues params) {
         SQLiteDatabase readableDatabase = this.getReadableDatabase();
         long insert = readableDatabase.insert(tableName, null, params);
+        //long temp = readableDatabase.execSQL("SELECT last_insert_rowid()");
         readableDatabase.close();
+        //return temp;
         return insert;
     }
 
@@ -129,6 +131,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             person.price = c.getString(c.getColumnIndex("price"));
             person.date = c.getString(c.getColumnIndex("date"));
             person.buy_type = c.getString(c.getColumnIndex("bought"));
+            person.ID = c.getInt((c.getColumnIndex("ID")));
             persons.add(person);
         }
         c.close();
