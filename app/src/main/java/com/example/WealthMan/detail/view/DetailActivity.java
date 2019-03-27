@@ -74,11 +74,12 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         db = new DatabaseHelper(this);
 
         // +++++++++++++++++ LOGIC FOR BUY/SELL BUTTON +++++++++++++++++++++++++
-       Button buyOrSell = findViewById(R.id.buyOrSell);
+        Button buyOrSell = findViewById(R.id.buyOrSell);
         buyOrSell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DetailActivity.this, SharesListActivity.class);
+                Intent intent = new Intent(DetailActivity.this,com.example.WealthMan.detail.view.SharesListActivity.class);
+                intent.putExtra("Symbol",symbolName);
                 startActivity(intent);
             }
 
