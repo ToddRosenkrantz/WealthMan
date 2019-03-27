@@ -124,9 +124,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Stock" />
+                android:text="StockID" />
 
-            <EditText
+            <TextView
                 android:id="@+id/stock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

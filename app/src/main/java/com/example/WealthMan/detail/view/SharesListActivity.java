@@ -1,6 +1,7 @@
 package com.example.WealthMan.detail.view;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,11 +30,14 @@ import com.example.WealthMan.detail.picker.config.PickerConfig;
 import com.example.WealthMan.detail.picker.data.Type;
 import com.example.WealthMan.detail.picker.data.WheelCalendar;
 import com.example.WealthMan.detail.wheeldialog.NumberWheelDialog;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 
 public class SharesListActivity extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimerSelcetCloseListener, CompoundButton.OnCheckedChangeListener {
 
     private RecyclerView rc;
-    private EditText stockEt;
+    //private EditText stockEt;
+    private TextView stockEt;
     private EditText sharesEt;
     private EditText priceEt;
     private TextView dateEt;
@@ -48,17 +52,29 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
     public static String TAG_PICK_TIME = "tag_pick_time";
     private long mStartMillis;
     private String startTime;
+    private String symbolName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shares_list);
+        beforeInflateView();
         initDb();
         initView();
         initRc();
         initListen();
+
     }
 
+    private void beforeInflateView() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            symbolName = intent.getStringExtra("Symbol");
+            symbolName = symbolName.toUpperCase();
+            Logger.addLogAdapter(new AndroidLogAdapter());
+            Logger.d(symbolName);
+        }
+    }
     private void initListen() {
         button.setOnClickListener(this);
         dateEt.setOnClickListener(this);
@@ -68,7 +84,7 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
 
     private void initDb() {
         db = new DatabaseHelper(this);
-        date = db.queryAllSharesList();
+        date = db.queryAllSharesList(symbolName);
         Log.i(TAG, "initDb: date size =  " + date.size());
     }
 
@@ -87,6 +103,7 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
         boughtCb = findViewById(R.id.bought);
         soldCb = findViewById(R.id.sold);
         button = findViewById(R.id.insert);
+        stockEt.setText(symbolName);
     }
 
     @Override
@@ -109,7 +126,7 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
                     db.insertDateToTable(DatabaseHelper.SHARES_LIST_NAME, value);
                     sharesListAdapter.addDate(new SharesStockBean(stockS, sharesS, priceS, dateS, buyType));
                 }else {
-                    Toast.makeText(SharesListActivity.this,"stock is erro",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SharesListActivity.this,"stock is erro",Toast.LENGTH_LONG).show();
                 }
                 break;
             case R.id.date:
@@ -146,8 +163,8 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onTimeClose(String tag, long startTimeMillis, String startTimeStr, long endTimeMillis, String endTimeStr) {
-dateEt.setText(startTimeStr);
-this.startTime = startTimeStr;
+        dateEt.setText(startTimeStr);
+        this.startTime = startTimeStr;
     }
 
     @Override
@@ -157,19 +174,19 @@ this.startTime = startTimeStr;
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-switch (buttonView.getId()){
-    case R.id.bought:
-        if (isChecked){
-            buyType = "1";
-        soldCb.setChecked(false);
+        switch (buttonView.getId()){
+            case R.id.bought:
+                if (isChecked){
+                    buyType = "B";
+                    soldCb.setChecked(false);
+                }
+                break;
+            case R.id.sold:
+                if (isChecked){
+                    boughtCb.setChecked(false);
+                    buyType = "S";
+                }
+                break;
         }
-        break;
-    case R.id.sold:
-        if (isChecked){
-            boughtCb.setChecked(false);
-            buyType = "0";
-        }
-        break;
-}
     }
 }
