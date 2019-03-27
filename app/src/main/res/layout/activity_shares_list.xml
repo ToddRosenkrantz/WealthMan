@@ -147,6 +147,7 @@
                 android:id="@+id/shares"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:inputType="number"
                 android:layout_marginLeft="10dp" />
         </LinearLayout>
 
@@ -164,6 +165,7 @@
                 android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:inputType="number"
                 android:layout_marginLeft="10dp" />
         </LinearLayout>
 
@@ -181,6 +183,7 @@
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:hint=": place choose Time"
                 android:layout_marginLeft="10dp" />
         </LinearLayout>
 

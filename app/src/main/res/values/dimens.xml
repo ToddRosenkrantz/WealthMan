@@ -1,0 +1,8 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="top_margin">0dp</dimen>
+    <dimen name="textview_default_padding">10dp</dimen>
+    <dimen name="picker_line_mar">15dp</dimen>
+    <dimen name="default_corner_radius">4dp</dimen>
+    <dimen name="default_shadow_radius">4dp</dimen>
+</resources>

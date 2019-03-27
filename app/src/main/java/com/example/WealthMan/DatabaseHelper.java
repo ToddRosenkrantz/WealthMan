@@ -103,8 +103,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         public boolean queryStockDate(String[] selectionArgs) {
             String[] columns = {COL_1};
             SQLiteDatabase db = getReadableDatabase();
-            String selection = "stock=?";
-            Cursor cursor = db.query(SHARES_LIST_NAME, columns, selection, selectionArgs, null, null, null);
+            String selection = "symbol=?";
+            Cursor cursor = db.query(SYM_TBL, columns, selection, selectionArgs, null, null, null);
             int count = cursor.getCount();
             cursor.close();
             db.close();
