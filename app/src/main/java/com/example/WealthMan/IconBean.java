@@ -1,9 +1,15 @@
 package com.example.WealthMan;
+
+import android.util.Pair;
+
+import java.util.ArrayList;
+
 public class IconBean {
     public String symbol;
     public String companyName;
     public double latestPrice;
     public double change;
+    public ArrayList<Pair> cData;
 
 
     public String getsymbol() {
@@ -39,12 +45,12 @@ public class IconBean {
         this.change = change;
     }
 
-    public IconBean(String symbol,String companyName,double latestPrice,double change){
+    public IconBean(String symbol,String companyName,double latestPrice,double change, ArrayList<Pair> cdata){
         this.symbol=symbol;
         this.companyName=companyName;
         this.latestPrice=latestPrice;
         this.change=change;
-
+        this.cData = cdata;
     }
 
 }

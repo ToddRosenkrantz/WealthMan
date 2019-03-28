@@ -223,52 +223,26 @@ public class HomeActivity extends AppCompatActivity {
 //        System.out.println("JSON = " + json);
         for (int index = 0; index < watchList.batches.size(); index++) {
 //            String coSym = watchList.batches.get(index).coSym;
+            ArrayList<Pair> chartData = new ArrayList<>();
             System.out.println(index
 //                    + "\t" + coSym
                     + "\t" + watchList.batches.get(index).quote.symbol
                     + "\t" + watchList.batches.get(index).quote.latestPrice
                     + "\t" + watchList.batches.get(index).quote.change);
+            for (int i = 0 ; i < watchList.batches.get(index).chart.size(); i++){
+//                float xValue = Float.valueOf(watchList.batches.get(index).chart.get(i).date.replace("-",""));
+                float xValue = Float.valueOf(i+1);
+                float yValue = (float)watchList.batches.get(index).chart.get(i).close;
+                Pair data = new Pair(xValue, yValue);
+                chartData.add(data);
+            }
                 IconBean symbol = new IconBean(
                         watchList.batches.get(index).quote.symbol,
                         watchList.batches.get(index).quote.companyName,
                         watchList.batches.get(index).quote.latestPrice,
-                        watchList.batches.get(index).quote.change
+                        watchList.batches.get(index).quote.change,
+                        chartData
                 );
                 mIconBeenList.add(symbol); }
-    }
-
-    private void initData(Batches jsonData) {
-
-        for (int i = 0 ; i < jsonData.batches.size(); i++) {
-            IconBean symbol = new IconBean(
-                    jsonData.batches.get(i).quote.symbol.trim(),
-                    jsonData.batches.get(i).quote.companyName.trim(),
-                    jsonData.batches.get(i).quote.latestPrice,
-                    jsonData.batches.get(i).quote.change
-                );
-//            IconBean symbol = new IconBean("FB","FaceBook",7.77,0.89);
-            mIconBeenList.add(symbol);
-        }
-//        symbol = new IconBean("AAPL","Apple Inc.",140.63,-0.09);
-//        mIconBeenList.add(symbol);
-//        mIconBeenList.add(symbol);
-//        mIconBeenList.add(symbol);
-//        mIconBeenList.add(symbol);
-//        mIconBeenList.add(symbol);
-//        mIconBeenList.add(symbol);
-//        mIconBeenList.add(symbol);
-//        mIconBeenList.add(symbol);
-//        mIconBeenList.add(symbol);
-//        mIconBeenList.add(symbol);
-//        mIconBeenList.add(symbol);
-//        mIconBeenList.add(symbol);
-//        mIconBeenList.add(symbol);
-//        System.out.println(jsonData);
-//        private View show_list(){
-//        List<String> data_list = new ArrayList<>(Arrays.asList(data));
-//        ArrayAdapter<String> data_adapter = new ArrayAdapter<>(this,R.layout.lv_item,data_list);
-//        ListView data_view = (ListView)this.findViewById(R.id.list_view);
-//        data_view.setAdapter(data_adapter);
-//        return data_view;
     }
 }
