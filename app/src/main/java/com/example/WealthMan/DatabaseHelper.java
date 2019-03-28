@@ -5,20 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteStatement;
-import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.util.Log;
 import android.util.Pair;
 
+import com.example.WealthMan.detail.adapter.SharesListAdapter;
 import com.example.WealthMan.detail.bean.SharesStockBean;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -49,6 +44,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
     }
+    /*public DatabaseHelper(SharesListAdapter context) {
+        super(context, DATABASE_NAME, null, 1);
+    }*/
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -94,6 +92,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         readableDatabase.close();
         //return temp;
         return insert;
+    }
+    public void DeleteTable(int ID) {
+        SQLiteDatabase readableDatabase = this.getReadableDatabase();
+        Log.e("大都带上!!!!", "的撒记得");
+        //long insert = readableDatabase.insert(tableName, null, params);
+        readableDatabase.delete("shareslist", "ID = ?", new String[] { String.valueOf(ID) });
+        //long temp = readableDatabase.execSQL("SELECT last_insert_rowid()");
+        readableDatabase.close();
+        //return temp;
+        //return insert;
     }
 
     /**

@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.WealthMan.DatabaseHelper;
 import com.example.WealthMan.R;
 import com.example.WealthMan.detail.bean.SharesStockBean;
+import com.example.WealthMan.detail.view.SharesListActivity;
 
 import java.util.List;
 
@@ -19,9 +21,19 @@ public class SharesListAdapter extends RecyclerView.Adapter<SharesListAdapter.Sh
     private List<SharesStockBean> sharesStockBeans;
     private final LayoutInflater mInflater;
 
-    public SharesListAdapter(Context context, List<SharesStockBean> sharesStocklist) {
+    SharesListActivity mContext ;
+
+    public  void  MyBaseAdapter(SharesListActivity context) {
+
+        this.mContext = context;
+    }
+    //private DatabaseHelper db = new DatabaseHelper();
+    public SharesListAdapter(/*Context*/SharesListActivity context, List<SharesStockBean> sharesStocklist) {
         this.sharesStockBeans = sharesStocklist;
+        /* db = new DatabaseHelper(this); */
+        this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
+
     }
 
     @NonNull
@@ -78,8 +90,12 @@ public class SharesListAdapter extends RecyclerView.Adapter<SharesListAdapter.Sh
                 @Override
                 public void onClick(View v) {
 
-                    SharesStockBean sharesStockBean = sharesStockBeans.get(getAdapterPosition());
 
+                    SharesStockBean sharesStockBean = sharesStockBeans.get(getAdapterPosition());
+                    Log.e("的撒娇地计算WHATever!!!!", String.valueOf(sharesStockBean.ID));
+
+                    mContext.delete(sharesStockBean.ID);
+                  //  db.DeleteTable(sharesStockBean.ID);
                     Log.e("WHATever!!!!", String.valueOf(sharesStockBean.ID));
                 }
             });

@@ -102,6 +102,11 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
         rc.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    public  void delete(int ID){
+        Log.e("大奖赛的就!!!!", "的撒记得");
+        db = new DatabaseHelper(this);
+        db.DeleteTable(ID);
+    }
     private void initView() {
         rc = findViewById(R.id.rc);
         stockEt = findViewById(R.id.stock);
