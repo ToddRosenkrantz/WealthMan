@@ -60,6 +60,7 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
     private String startTime;
     private String symbolName;
     private Calendar cal;
+    private SharesListAdapter sa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,10 +142,21 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
                     value.put("date", startTime);
                     value.put("bought", buyType);
                     db.insertDateToTable(DatabaseHelper.SHARES_LIST_NAME, value);
+
+                    //sa = (SharesListAdapter)rc.getAdapter();
+                    //sa.notifyDataSetChanged();
                     //int ID= db.insertDateToTable(DatabaseHelper.SHARES_LIST_NAME, value);
-                    int ID=1;//default
+                    //int ID=1;//default
+                    //db = new DatabaseHelper(this);
+                    int ID= db.querylastSharesList();
                     String dateshow=dateS.substring(0,dateS.length()-6);
+
                     sharesListAdapter.addDate(new SharesStockBean(ID,stockS, sharesS, priceS, dateshow, buyType));
+
+                    //initDb();
+                   // initView();
+                    //initRc();
+                    //sa.notifyDataSetChanged();
                 }else {
                     Toast.makeText(SharesListActivity.this,"stock is erro",Toast.LENGTH_LONG).show();
                 }
