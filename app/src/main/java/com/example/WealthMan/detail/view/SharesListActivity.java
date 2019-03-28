@@ -1,14 +1,17 @@
 package com.example.WealthMan.detail.view;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -20,6 +23,7 @@ import java.time.Year;
 import java.util.Calendar;
 import java.util.TimeZone;
 import com.example.WealthMan.DatabaseHelper;
+import com.example.WealthMan.TransactionActivity;
 import com.example.WealthMan.detail.adapter.SharesListAdapter;
 import com.example.WealthMan.detail.bean.SharesStockBean;
 
@@ -61,11 +65,15 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
     private String symbolName;
     private Calendar cal;
     private SharesListAdapter sa;
+    private List<SharesStockBean> sharesStockBeans;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shares_list);
+        rc = (RecyclerView) findViewById(R.id.rc);
+        rc.setAdapter(new SharesListAdapter(this,date));
         beforeInflateView();
         initDb();
         initView();
@@ -102,10 +110,30 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
         rc.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public  void delete(int ID){
-        Log.e("大奖赛的就!!!!", "的撒记得");
+    public  void delete(final int ID){
+
         db = new DatabaseHelper(this);
-        db.DeleteTable(ID);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Remove this Transaction item ?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        db.DeleteTable(ID);
+                        Toast.makeText(SharesListActivity.this,
+                                "This transaction item has been removed.", Toast.LENGTH_SHORT).show();
+                        //startActivity(intent);
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        //create dialog box
+        AlertDialog alert =builder.create();
+        //pop up the dialogbox
+        alert.show();
     }
     private void initView() {
         rc = findViewById(R.id.rc);
@@ -131,6 +159,7 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
+
         switch (v.getId()) {
             case R.id.insert:
                 String stock = stockEt.getText().toString().trim();
@@ -148,22 +177,12 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
                     value.put("bought", buyType);
                     db.insertDateToTable(DatabaseHelper.SHARES_LIST_NAME, value);
 
-                    //sa = (SharesListAdapter)rc.getAdapter();
-                    //sa.notifyDataSetChanged();
-                    //int ID= db.insertDateToTable(DatabaseHelper.SHARES_LIST_NAME, value);
-                    //int ID=1;//default
-                    //db = new DatabaseHelper(this);
                     int ID= db.querylastSharesList();
                     String dateshow=dateS.substring(0,dateS.length()-6);
 
                     sharesListAdapter.addDate(new SharesStockBean(ID,stockS, sharesS, priceS, dateshow, buyType));
-
-                    //initDb();
-                   // initView();
-                    //initRc();
-                    //sa.notifyDataSetChanged();
                 }else {
-                    Toast.makeText(SharesListActivity.this,"stock is erro",Toast.LENGTH_LONG).show();
+                    Toast.makeText(SharesListActivity.this,"stock is error",Toast.LENGTH_LONG).show();
                 }
                 break;
             case R.id.date:
@@ -206,7 +225,6 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClose() {
-
     }
 
     @Override

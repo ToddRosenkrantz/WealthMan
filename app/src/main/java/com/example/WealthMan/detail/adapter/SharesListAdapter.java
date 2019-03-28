@@ -1,6 +1,7 @@
 package com.example.WealthMan.detail.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,12 +12,14 @@ import android.widget.TextView;
 
 import com.example.WealthMan.DatabaseHelper;
 import com.example.WealthMan.R;
+import com.example.WealthMan.TransactionActivity;
 import com.example.WealthMan.detail.bean.SharesStockBean;
 import com.example.WealthMan.detail.view.SharesListActivity;
 
 import java.util.List;
 
 public class SharesListAdapter extends RecyclerView.Adapter<SharesListAdapter.SharesListViewHolder> {
+
 
     private List<SharesStockBean> sharesStockBeans;
     private final LayoutInflater mInflater;
@@ -51,15 +54,6 @@ public class SharesListAdapter extends RecyclerView.Adapter<SharesListAdapter.Sh
         sharesListViewHolder.date.setText(sharesStockBean.date);
         sharesListViewHolder.buy_type.setText(sharesStockBean.buy_type);
         sharesListViewHolder.shares.setText(sharesStockBean.shares);
-        //sharesListViewHolder.textView.setText(mDatas.get(postion));
-        /*sharesListViewHolder.stock.setOnClickListener(new OnClickListener() {
-
-            public void onClick(View arg0) {
-                // 点击事件
-                Toast.makeText(mContext,postion + "", 1000).show();
-            }
-        });*/
-
     }
 
     public void addDate(SharesStockBean date) {
@@ -84,18 +78,16 @@ public class SharesListAdapter extends RecyclerView.Adapter<SharesListAdapter.Sh
 
 
         public SharesListViewHolder(View itemView) {
+
             super(itemView);
             this.itemView = itemView;
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-
                     SharesStockBean sharesStockBean = sharesStockBeans.get(getAdapterPosition());
                     Log.e("的撒娇地计算WHATever!!!!", String.valueOf(sharesStockBean.ID));
 
                     mContext.delete(sharesStockBean.ID);
-                  //  db.DeleteTable(sharesStockBean.ID);
                     Log.e("WHATever!!!!", String.valueOf(sharesStockBean.ID));
                 }
             });
@@ -106,8 +98,5 @@ public class SharesListAdapter extends RecyclerView.Adapter<SharesListAdapter.Sh
             buy_type = itemView.findViewById(R.id.buy_type);
 
         }
-
-
-
     }
 }
