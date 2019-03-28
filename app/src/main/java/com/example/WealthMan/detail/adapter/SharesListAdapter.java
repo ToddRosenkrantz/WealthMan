@@ -3,6 +3,7 @@ package com.example.WealthMan.detail.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,15 @@ public class SharesListAdapter extends RecyclerView.Adapter<SharesListAdapter.Sh
         sharesListViewHolder.date.setText(sharesStockBean.date);
         sharesListViewHolder.buy_type.setText(sharesStockBean.buy_type);
         sharesListViewHolder.shares.setText(sharesStockBean.shares);
+        //sharesListViewHolder.textView.setText(mDatas.get(postion));
+        /*sharesListViewHolder.stock.setOnClickListener(new OnClickListener() {
+
+            public void onClick(View arg0) {
+                // 点击事件
+                Toast.makeText(mContext,postion + "", 1000).show();
+            }
+        });*/
+
     }
 
     public void addDate(SharesStockBean date) {
@@ -59,9 +69,20 @@ public class SharesListAdapter extends RecyclerView.Adapter<SharesListAdapter.Sh
         public final TextView price;
         public final TextView buy_type;
 
+
+
         public SharesListViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    SharesStockBean sharesStockBean = sharesStockBeans.get(getAdapterPosition());
+
+                    Log.e("WHATever!!!!", String.valueOf(sharesStockBean.ID));
+                }
+            });
             stock = itemView.findViewById(R.id.stock);
             shares = itemView.findViewById(R.id.shares);
             date = itemView.findViewById(R.id.date);
@@ -69,5 +90,8 @@ public class SharesListAdapter extends RecyclerView.Adapter<SharesListAdapter.Sh
             buy_type = itemView.findViewById(R.id.buy_type);
 
         }
+
+
+
     }
 }

@@ -90,7 +90,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public long insertDateToTable(String tableName, ContentValues params) {
         SQLiteDatabase readableDatabase = this.getReadableDatabase();
         long insert = readableDatabase.insert(tableName, null, params);
+        //long temp = readableDatabase.execSQL("SELECT last_insert_rowid()");
         readableDatabase.close();
+        //return temp;
         return insert;
     }
 
@@ -127,13 +129,59 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             person.stock = c.getString(c.getColumnIndex("stock"));
             person.shares = c.getString(c.getColumnIndex("shares"));
             person.price = c.getString(c.getColumnIndex("price"));
-            person.date = c.getString(c.getColumnIndex("date"));
+
+            person.date = c.getString(c.getColumnIndex("date")).substring(0,c.getString(c.getColumnIndex("date")).length()-6);
+         //   person.date = c.getString(c.getColumnIndex("date"));
             person.buy_type = c.getString(c.getColumnIndex("bought"));
+            person.ID = c.getInt((c.getColumnIndex("ID")));
             persons.add(person);
         }
         c.close();
         return persons;
     }
+    public int querylastSharesList() {
+       // ArrayList<SharesStockBean> persons = new ArrayList<SharesStockBean>();
+        Cursor c =  queryTheCursorLast();
+
+        c.moveToLast();
+        int ID =c.getInt((c.getColumnIndex("ID")));
+        Log.e("啊啊啊啊啊啊WHATever!!!!", String.valueOf(ID));
+        c.close();
+        return ID;
+        /*while (c.moveToNext()) {
+            SharesStockBean person = new SharesStockBean();
+            person.stock = c.getString(c.getColumnIndex("stock"));
+            person.shares = c.getString(c.getColumnIndex("shares"));
+            person.price = c.getString(c.getColumnIndex("price"));
+
+            person.date = c.getString(c.getColumnIndex("date")).substring(0,c.getString(c.getColumnIndex("date")).length()-6);
+            //   person.date = c.getString(c.getColumnIndex("date"));
+            person.buy_type = c.getString(c.getColumnIndex("bought"));
+            person.ID = c.getInt((c.getColumnIndex("ID")));
+            persons.add(person);
+        }
+        c.close();
+        return persons;*/
+    }
+    public Cursor queryTheCursorLast() {
+        SQLiteDatabase db = getReadableDatabase();
+       // String ID =  "SELECT MAX(ID) FROM shareslist" ;
+            /*String[] columns = {COL_1};
+            SQLiteDatabase db = getReadableDatabase();
+            String selection = COL_4 + "=?";
+            String[] selectionArgs = {Email};
+            Cursor cursor = db.query(TABLE_NAME, columns, selection, selectionArgs, null, null, null);
+            cursor.moveToFirst();//***!!!very important
+            int count = cursor.getCount();*/
+        Log.e("前面啊啊啊啊啊啊WHATever!!!!", "dsads!!!!");
+        Cursor c = db.rawQuery("SELECT * FROM shareslist ORDER BY ID", null);
+        return c;
+        //Cursor c = db.rawQuery("SELECT * FROM shareslist", null);
+        //return c;
+    }
+
+
+
 
     /**
      * query all persons, return cursor

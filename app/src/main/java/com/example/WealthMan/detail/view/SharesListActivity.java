@@ -16,6 +16,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.time.Year;
+import java.util.Calendar;
+import java.util.TimeZone;
 import com.example.WealthMan.DatabaseHelper;
 import com.example.WealthMan.detail.adapter.SharesListAdapter;
 import com.example.WealthMan.detail.bean.SharesStockBean;
@@ -47,12 +50,17 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
     public List<SharesStockBean> date = new ArrayList();
     private DatabaseHelper db;
     private Button button;
+    //private String year;
+    //private String month;
+    //private String day;
     private String buyType = "0";
     private SharesListAdapter sharesListAdapter;
     public static String TAG_PICK_TIME = "tag_pick_time";
     private long mStartMillis;
     private String startTime;
     private String symbolName;
+    private Calendar cal;
+    private SharesListAdapter sa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +112,16 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
         soldCb = findViewById(R.id.sold);
         button = findViewById(R.id.insert);
         stockEt.setText(symbolName);
+        cal = Calendar.getInstance();
+        //cal.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DATE);
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE);
+
+        String my_time = String.valueOf(month+1)+ "-" + String.valueOf(day) + "-" + String.valueOf(year)+ " " + String.valueOf(hour)+ ":" + String.valueOf(minute);
+        dateEt.setText(my_time);
     }
 
     @Override
@@ -124,7 +142,21 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
                     value.put("date", startTime);
                     value.put("bought", buyType);
                     db.insertDateToTable(DatabaseHelper.SHARES_LIST_NAME, value);
-                    sharesListAdapter.addDate(new SharesStockBean(stockS, sharesS, priceS, dateS, buyType));
+
+                    //sa = (SharesListAdapter)rc.getAdapter();
+                    //sa.notifyDataSetChanged();
+                    //int ID= db.insertDateToTable(DatabaseHelper.SHARES_LIST_NAME, value);
+                    //int ID=1;//default
+                    //db = new DatabaseHelper(this);
+                    int ID= db.querylastSharesList();
+                    String dateshow=dateS.substring(0,dateS.length()-6);
+
+                    sharesListAdapter.addDate(new SharesStockBean(ID,stockS, sharesS, priceS, dateshow, buyType));
+
+                    //initDb();
+                   // initView();
+                    //initRc();
+                    //sa.notifyDataSetChanged();
                 }else {
                     Toast.makeText(SharesListActivity.this,"stock is erro",Toast.LENGTH_LONG).show();
                 }

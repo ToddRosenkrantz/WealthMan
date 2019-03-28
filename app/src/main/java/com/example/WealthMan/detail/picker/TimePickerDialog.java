@@ -236,7 +236,7 @@ public class TimePickerDialog extends DialogFragment implements OnDataSelectedLi
     public void onDataSelected(long timeMillis, String timeStr) {
         if (mSelectType == 0) {
             startMillis = timeMillis;
-            startTimeStr = ToolsUtil.formatLongTime(startMillis, "yyyy-MM-dd HH:mm");
+            startTimeStr = ToolsUtil.formatLongTime(startMillis, "M-dd-yyyy HH:mm");
             setTitleTime(startTimeRb, timeStr);
             } else {
 //            endMillis = timeMillis;
@@ -246,7 +246,7 @@ public class TimePickerDialog extends DialogFragment implements OnDataSelectedLi
             } else {
                 endMillis = timeMillis + 24 * 60 * 60 * 1000 - 1;
             }
-            endTimeStr = ToolsUtil.formatLongTime(endMillis, "yyyy-MM-dd HH:mm");
+            endTimeStr = ToolsUtil.formatLongTime(endMillis, "M-dd-yyyy HH:mm");
            setTitleTime(endTimeRb, timeStr);
         }
     }
