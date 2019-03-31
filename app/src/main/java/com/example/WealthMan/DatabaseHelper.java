@@ -20,23 +20,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // for our logs
     public static final String TAG = "DatabaseHandler.java";
 
-    public static final String DATABASE_NAME = "register.db";
-    public static final String TABLE_NAME = "registeruser";
-    public static final String COL_1 = "ID";         // AUTOINCREMENT number.  not used yet.... KEY for transactions?
-    public static final String COL_2 = "username";   // TEXT
-    public static final String COL_3 = "password";   // WARNING!!! CLEARTEXT PASSWORD!!!
-    public static final String COL_4 = "email";      // TEXT
-    public static final String COL_5 = "pin";        // Stored as TEXT to preserve any leading Zeros
+    static final String DATABASE_NAME = "register.db";
+    static final String TABLE_NAME = "registeruser";
+    static final String COL_1 = "ID";         // AUTOINCREMENT number.  not used yet.... KEY for transactions?
+    static final String COL_2 = "username";   // TEXT
+    static final String COL_3 = "password";   // WARNING!!! CLEARTEXT PASSWORD!!!
+    static final String COL_4 = "email";      // TEXT
+    static final String COL_5 = "pin";        // Stored as TEXT to preserve any leading Zeros
 
 
-    public static final String SYM_TBL = "symbols";
-    public static final String SYM_COL_1 = "id";
-    public static final String SYM_COL_2 = "name";
-    public static final String SYM_COL_3 = "symbol";
+    static final String SYM_TBL = "symbols";
+    static final String SYM_COL_1 = "id";
+    static final String SYM_COL_2 = "name";
+    static final String SYM_COL_3 = "symbol";
 
-    public static final String WL_TBL = "watchlist";
-    public static final String WL_COL_USER = "userid";
-    public static final String WL_COL_SYMBOL = "symbol";
+    static final String WL_TBL = "watchlist";
+    static final String WL_COL_USER = "userid";
+    static final String WL_COL_SYMBOL = "symbol";
 
 
     public static final String SHARES_LIST_NAME = "shareslist";
@@ -248,10 +248,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return userid;
     }
 
-    public String getWatchList() {
+    public String getWatchList(Integer id) {
         String result;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT GROUP_CONCAT(symbol) as symbol from watchlist", null);
+        String[] selection = { Integer.toString(id) };
+        Cursor cursor = db.rawQuery("SELECT GROUP_CONCAT(symbol) as symbol from watchlist where userid = ?", selection);
         cursor.moveToFirst();
         result = cursor.getString(cursor.getColumnIndex("symbol"));
         db.close();
@@ -400,7 +401,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //        sql += " ORDER BY " + fieldObjectId + " DESC";
         sql += "LIMIT 0,50";
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         // execute the query
         Cursor cursor = db.rawQuery(sql, null);
@@ -417,8 +418,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String objectName = cursor.getString(0);
                 String objectSymbol = cursor.getString(1);
 //                String objectSymbol = "sym";
-                Log.e(TAG, "coName: " + objectName);
-                Log.e(TAG, "coSymbol: " + objectSymbol);
+//                Log.e(TAG, "coName: " + objectName);
+//                Log.e(TAG, "coSymbol: " + objectSymbol);
 
                 NameSymbol nameSymbol = new NameSymbol(objectName, objectSymbol);
 
@@ -434,6 +435,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return ObjectItemData;
 
+    }
+    public ArrayList<?> getShareData(Integer id, String sym){
+        ArrayList<Transaction> tList = new ArrayList<>();
+        // Select * from shareslist where userid = id and symbol = sym;
+
+        return tList;
     }
 
 }

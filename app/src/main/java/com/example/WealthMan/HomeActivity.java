@@ -65,7 +65,11 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent = getIntent();
-        final int userid = intent.getIntExtra("UserId", 1);
+//        final int userid = intent.getIntExtra("UserID", 1);
+        SharedPreferences preference = getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
+        final int userid = preference.getInt("UserID", 1);
+
+        System.out.println("UserID: " + userid);
         db = new DatabaseHelper(this);
 
         super.onCreate(savedInstanceState);
@@ -79,7 +83,7 @@ public class HomeActivity extends AppCompatActivity {
 
         setupApp();
 
-        String symbols = db.getWatchList().trim();
+        String symbols = db.getWatchList(userid).trim();
         String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + symbols + "&types=quote,news,chart&range=1m&last=5";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -149,8 +153,10 @@ public class HomeActivity extends AppCompatActivity {
     }
     public void nextActivity(String symbol, Integer ID){
         Intent intent = new Intent(HomeActivity.this,com.example.WealthMan.detail.view.DetailActivity.class);
+//        Intent intent = new Intent(HomeActivity.this,TransactionLogActivity.class);
         intent.putExtra("Symbol",symbol);
         intent.putExtra("UserID",ID);
+        System.out.println("UserID: " + ID);
         startActivity(intent);
     }
 
@@ -245,4 +251,5 @@ public class HomeActivity extends AppCompatActivity {
                 );
                 mIconBeenList.add(symbol); }
     }
+
 }

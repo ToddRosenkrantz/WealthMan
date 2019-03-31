@@ -63,6 +63,7 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
     private long mStartMillis;
     private String startTime;
     private String symbolName;
+    private int userid;
     private Calendar cal;
     private SharesListAdapter sa;
     private List<SharesStockBean> sharesStockBeans;
@@ -85,6 +86,7 @@ public class SharesListActivity extends AppCompatActivity implements View.OnClic
     private void beforeInflateView() {
         Intent intent = getIntent();
         if (intent != null) {
+            userid = intent.getIntExtra("UserID", 1);
             symbolName = intent.getStringExtra("Symbol");
             symbolName = symbolName.toUpperCase();
             Logger.addLogAdapter(new AndroidLogAdapter());

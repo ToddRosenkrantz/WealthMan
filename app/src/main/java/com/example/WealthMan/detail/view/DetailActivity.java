@@ -80,6 +80,7 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
             public void onClick(View v) {
                 Intent intent = new Intent(DetailActivity.this,com.example.WealthMan.detail.view.SharesListActivity.class);
                 intent.putExtra("Symbol",symbolName);
+                intent.putExtra("UserID",ID);
                 startActivity(intent);
             }
 
@@ -158,7 +159,7 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         if (intent != null) {
             symbolName = intent.getStringExtra("Symbol");
             symbolName = symbolName.toUpperCase();
-            ID = intent.getIntExtra("UserID",0);
+            ID = intent.getIntExtra("UserID",1);
             Logger.addLogAdapter(new AndroidLogAdapter());
             Logger.d(symbolName);
         }

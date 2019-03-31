@@ -70,10 +70,10 @@ public class IconAdapter extends BaseAdapter {
         viewHolder.companyName.setText(bean.getcompanyName());
         viewHolder.latestPrice.setText(Double.toString(bean.getlatestPrice()));
         viewHolder.change.setText(Double.toString(bean.getchange()));
-        List<Entry> entries = new ArrayList<Entry>();
+        List<Entry> entries = new ArrayList<>();
         for (int i = 0 ; i < bean.cData.size(); i++){
             entries.add(new Entry((float)bean.cData.get(i).first, (float)bean.cData.get(i).second));
-            System.out.println(entries.get(i).getY() +", " + entries.get(i).getX());
+//            System.out.println(entries.get(i).getY() +", " + entries.get(i).getX());
         }
         LineDataSet dataSet = new LineDataSet(entries, "Label");
 //        dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
@@ -100,7 +100,7 @@ public class IconAdapter extends BaseAdapter {
         viewHolder.chart.getAxisLeft().setDrawLabels(false);
         viewHolder.chart.getDescription().setEnabled(false);
         viewHolder.chart.invalidate();
-        viewHolder.chart.setVisibility(View.INVISIBLE);
+        viewHolder.chart.setVisibility(View.VISIBLE);
         if (bean.getchange()>=0){
             viewHolder.change.setTextColor(Color.parseColor("#458B00"));
         }
@@ -113,13 +113,13 @@ public class IconAdapter extends BaseAdapter {
 
     }
     public static class ViewHolder{
-        public TextView symbol;
-        public TextView companyName;
-        public TextView latestPrice;
-        public TextView change;
-        public LineChart chart;
+        TextView symbol;
+        TextView companyName;
+        TextView latestPrice;
+        TextView change;
+        LineChart chart;
     }
-    public IconAdapter(Context context, List<IconBean> list){
+    IconAdapter(Context context, List<IconBean> list){
         this.mContext = context;
         this.mlist = list;
         mLayoutInflater= LayoutInflater.from(context);

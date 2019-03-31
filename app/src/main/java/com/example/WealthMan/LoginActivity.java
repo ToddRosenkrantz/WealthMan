@@ -2,6 +2,7 @@ package com.example.WealthMan;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     Button mButtonLogin;
     TextView mTextViewRegister;
     TextView mTextViewForgot;
+    public static final String MY_PREFS_FILE = "wealthman_prefs";
 
     DatabaseHelper db;
 //    ViewGroup progressView;
@@ -71,10 +73,13 @@ public class LoginActivity extends AppCompatActivity {
                 if(res)
                 {
                     Intent HomePage = new Intent(LoginActivity.this,HomeActivity.class);
-                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                     int userid = db.getUserId(email);
-                    intent.putExtra ("UserID", userid);
-
+                    SharedPreferences preference = getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preference.edit();
+                    editor.putInt("UserID", userid);   // Store new time to update
+                    editor.commit();
+                    System.out.println("User ID from DB: " + userid);
+                    HomePage.putExtra ("UserID", userid);
                     startActivity(HomePage);
                 }
                 else if(email.length()==0
