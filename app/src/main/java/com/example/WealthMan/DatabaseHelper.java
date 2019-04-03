@@ -54,6 +54,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS symbols (ID INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT, symbol TEXT)");
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS watchlist (userid TEXT, symbol TEXT)");
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS shareslist (ID INTEGER PRIMARY  KEY AUTOINCREMENT,stock TEXT, shares TEXT,price TEXT,date TEXT,bought Text)");
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS translog(ID INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER, symbol TEXT, price REAL, shares REAL, date TEXT)");
+
     }
 
     @Override
@@ -437,11 +439,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
     public ArrayList<?> getShareData(Integer id, String sym){
+// Select * from shareslist where userid = id and symbol = sym;
+//        translog(ID INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER, symbol TEXT, price REAL, shares REAL, date TEXT)"
+        SQLiteDatabase db = this.getReadableDatabase();
+        String table = "translog";
+        String[] selection = {"ID", "userid", "symbol", "price", "shares", "date"};
+        String whereClause = "userid = ? AND symbol = ?";
+        String[] selctionArgs = {id.toString(), sym};
+        String orderBy = "date";
         ArrayList<Transaction> tList = new ArrayList<>();
-        // Select * from shareslist where userid = id and symbol = sym;
-
+        Cursor c = db.query(table, selection, whereClause, selctionArgs, null, null,orderBy);
+        if (c.moveToFirst()) {
+            do {
+//              Column 0 = Combined Names and Symbols, Column 1 = symbols
+                Integer logId = c.getInt(c.getColumnIndex("ID"));
+                String logSymbol = c.getString(c.getColumnIndex("symbol"));
+                Double logShares = c.getDouble(c.getColumnIndex("shares"));
+                Double logPrice = c.getDouble(c.getColumnIndex("price"));
+                String logDate = c.getString(c.getColumnIndex("date"));
+//                Transaction temp = new Transaction(logId, logSymbol, logShares,logPrice,logDate);
+//                tList.add(temp);
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
         return tList;
     }
-
 }
 

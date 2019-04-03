@@ -21,6 +21,7 @@ import com.example.WealthMan.DatabaseHelper;
 import com.example.WealthMan.HomeActivity;
 import com.example.WealthMan.R;
 import com.example.WealthMan.TransactionActivity;
+import com.example.WealthMan.TransactionLogActivity;
 import com.example.WealthMan.detail.view.SharesListActivity;
 import com.example.WealthMan.detail.bean.DetailLineBean;
 import com.example.WealthMan.detail.okhttp.RequestManger;
@@ -78,7 +79,8 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         buyOrSell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DetailActivity.this,com.example.WealthMan.detail.view.SharesListActivity.class);
+//                Intent intent = new Intent(DetailActivity.this,com.example.WealthMan.detail.view.SharesListActivity.class);
+                Intent intent = new Intent(DetailActivity.this, TransactionLogActivity.class);
                 intent.putExtra("Symbol",symbolName);
                 intent.putExtra("UserID",ID);
                 startActivity(intent);

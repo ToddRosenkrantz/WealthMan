@@ -12,8 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ForgotActivity" />
-        <!-- <activity android:name=".HomeActivity" /> -->
+        <activity android:name=".TransactionEntry"></activity>
+        <activity android:name=".ForgotActivity" /> <!-- <activity android:name=".HomeActivity" /> -->
         <activity android:name=".RegisterActivity" />
         <activity android:name=".TransactionLogActivity" />
         <activity android:name=".LoginActivity">
