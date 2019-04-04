@@ -448,7 +448,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String[] selection = {"ID", "userid", "symbol", "price", "shares", "date"};
         String whereClause = "userid = ? AND symbol = ?";
         String[] selctionArgs = {id.toString(), sym};
-        String orderBy = "date";
+        String orderBy = "date,ID";
         ArrayList<Transaction> tList = new ArrayList<>();
         Cursor c = db.query(table, selection, whereClause, selctionArgs, null, null,orderBy);
         if (c.moveToFirst()) {

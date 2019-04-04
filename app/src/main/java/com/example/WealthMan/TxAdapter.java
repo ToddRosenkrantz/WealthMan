@@ -1,12 +1,14 @@
 package com.example.WealthMan;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,7 +18,6 @@ public class TxAdapter extends RecyclerView.Adapter<TxAdapter.ViewHolder> {
 
     private List<Transaction> mData;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
 
     // data is passed into the constructor
     TxAdapter(Context context, ArrayList<Transaction> data) {
@@ -41,6 +42,12 @@ public class TxAdapter extends RecyclerView.Adapter<TxAdapter.ViewHolder> {
             holder.myPriceView.setBackgroundColor(Color.argb(41,223, 108, 88));
             holder.myDateView.setBackgroundColor(Color.argb(41,223, 108, 88));
         }
+        else {
+            holder.mySymbolView.setBackgroundColor(Color.argb(41,156, 223, 88));
+            holder.mySharesView.setBackgroundColor(Color.argb(41,156, 223, 88));
+            holder.myPriceView.setBackgroundColor(Color.argb(41,156, 223, 88));
+            holder.myDateView.setBackgroundColor(Color.argb(41,156, 223, 88));
+        }
         holder.mySymbolView.setText(mData.get(position).getSymbol());
         holder.mySharesView.setText(mData.get(position).getShares().toString());
         holder.myPriceView.setText(mData.get(position).getPrice().toString());
@@ -55,7 +62,8 @@ public class TxAdapter extends RecyclerView.Adapter<TxAdapter.ViewHolder> {
 
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+//    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder{
 //        TextView myTextView;
         TextView mySymbolView;
         TextView mySharesView;
@@ -69,21 +77,6 @@ public class TxAdapter extends RecyclerView.Adapter<TxAdapter.ViewHolder> {
             mySharesView = itemView.findViewById(R.id.shares);
             myPriceView = itemView.findViewById(R.id.price);
             myDateView = itemView.findViewById(R.id.date);
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    int p=getLayoutPosition();
-                    System.out.println("LongClick: "+ getItem(p).getID());
-
-                    return true;// returning true instead of false, works for me
-                }
-            });
-        }
-
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
     }
 
@@ -92,12 +85,4 @@ public class TxAdapter extends RecyclerView.Adapter<TxAdapter.ViewHolder> {
         return mData.get(id);
     }
 
-    // allows clicks events to be caught
-    void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-    // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
 }

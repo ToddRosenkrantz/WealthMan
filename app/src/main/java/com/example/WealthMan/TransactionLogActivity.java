@@ -1,4 +1,6 @@
 package com.example.WealthMan;
+// Many thanks to http://simpledeveloper.com/how-to-handle-click-events-in-android-recyclerviews/
+// Elisha Chirchir
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,17 +28,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class TransactionLogActivity extends AppCompatActivity implements TxAdapter.ItemClickListener {
+//public class TransactionLogActivity extends AppCompatActivity implements TxAdapter.ItemClickListener {
+public class TransactionLogActivity extends AppCompatActivity{
     TxAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private String m_Text = "";
-    DatabaseHelper db;
+    public DatabaseHelper db;
     public static final String MY_PREFS_FILE = "wealthman_prefs";
 
     private String symbolName = "AAPL";
     private int userid = 1;
 
     private SharedPreferences preference;
+    public ArrayList<Transaction> tList;
 
 
     @Override
@@ -79,10 +83,23 @@ public class TransactionLogActivity extends AppCompatActivity implements TxAdapt
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         if (tList != null) {
             adapter = new TxAdapter(this, tList);
-            adapter.setClickListener(this);
+//            adapter.setClickListener(this);
             recyclerView.setAdapter(adapter);
         }
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener
+                .OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                //handle click events here
+                processClick(position);
+            }
 
+            @Override
+            public void onItemLongClick(View view, int position) {
+                //handle longClick if any
+                processLongClick(position);
+            }
+        }));
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
@@ -97,19 +114,20 @@ public class TransactionLogActivity extends AppCompatActivity implements TxAdapt
             }
         });
     }
-
     /*    @Override
         public boolean onCreateOptionsMenu(Menu menu) {
             // Inflate the menu; this adds items to the action bar if it is present.
             getMenuInflater().inflate(R.menu.menu_transaction, menu);
             return true;
         }*/
+/*
     @Override
     public void onItemClick(View view, int position) {
         Toast.makeText(this, "You clicked " + adapter.getItem(position).getID() + " on row number " + position, Toast.LENGTH_SHORT).show();
         editTx(position);
         adapter.notifyDataSetChanged();
     }
+*/
 
     /*
         @Override
@@ -127,11 +145,22 @@ public class TransactionLogActivity extends AppCompatActivity implements TxAdapt
             return super.onOptionsItemSelected(item);
         }
     */
+    public void processClick(int p){
+        editTx(p);
+        Toast.makeText(this, "You clicked " + adapter.getItem(p).getID() + " on row number " + p, Toast.LENGTH_SHORT).show();
+    }
+    public void processLongClick(int p){
+        Toast.makeText(this, "You Long clicked " + adapter.getItem(p).getID() + " on row number " + p, Toast.LENGTH_SHORT).show();
+//        removeAt(p, tList.indexOf(adapter.getItem(p)), adapter.getItem(p).getID());
+        removeAt(p, adapter.getItem(p).getID());
+    }
+
     public void addTransaction(String sym) {
         Intent intent = new Intent(this,TransactionEntry.class);
         intent.putExtra("Symbol",sym);
         intent.putExtra("UserID",userid);
         startActivity(intent);
+        updateList();
         adapter.notifyDataSetChanged();
     }
     public void editTx(Integer position){
@@ -143,6 +172,19 @@ public class TransactionLogActivity extends AppCompatActivity implements TxAdapt
         intent.putExtra("price", temp.getPrice().toString());
         intent.putExtra("date" , temp.getDate());
         startActivity(intent);
+        updateList();
         adapter.notifyDataSetChanged();
+    }
+    public ArrayList<Transaction> updateList(){
+        return (ArrayList<Transaction>) db.getShareData(userid, symbolName);
+    }
+//    public void removeAt(int p, int i, int id){
+    public void removeAt(int p, int id){
+//        System.out.println("position: " + p + " ,index: " + i + " ,ID#: " + id);
+        System.out.println("position: " + p +  " ,ID#: " + id);
+        db.deleteTx(id);
+//        tList.remove(tList.indexOf(p));
+        adapter.notifyItemRemoved(p);
+//        adapter.notifyItemRangeChanged(p, tList.size());
     }
 }
