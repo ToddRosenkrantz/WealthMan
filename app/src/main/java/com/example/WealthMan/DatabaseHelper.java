@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static java.lang.String.valueOf;
+
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     // for our logs
@@ -99,7 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase readableDatabase = this.getReadableDatabase();
         Log.e("大都带上!!!!", "的撒记得");
         //long insert = readableDatabase.insert(tableName, null, params);
-        readableDatabase.delete("shareslist", "ID = ?", new String[] { String.valueOf(ID) });
+        readableDatabase.delete("shareslist", "ID = ?", new String[] { valueOf(ID) });
         //long temp = readableDatabase.execSQL("SELECT last_insert_rowid()");
         readableDatabase.close();
         //return temp;
@@ -155,7 +157,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         c.moveToLast();
         int ID =c.getInt((c.getColumnIndex("ID")));
-        Log.e("啊啊啊啊啊啊WHATever!!!!", String.valueOf(ID));
+        Log.e("啊啊啊啊啊啊WHATever!!!!", valueOf(ID));
         c.close();
         return ID;
         /*while (c.moveToNext()) {
@@ -457,13 +459,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Double logShares = c.getDouble(c.getColumnIndex("shares"));
                 Double logPrice = c.getDouble(c.getColumnIndex("price"));
                 String logDate = c.getString(c.getColumnIndex("date"));
-//                Transaction temp = new Transaction(logId, logSymbol, logShares,logPrice,logDate);
-//                tList.add(temp);
+                Transaction temp = new Transaction(logId, logSymbol, logShares,logPrice,logDate);
+                tList.add(temp);
             } while (c.moveToNext());
         }
         c.close();
         db.close();
         return tList;
+    }
+    public void enterTx(Integer userid, String symbol, Double qty, Double price, String date){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("userid", userid);
+        contentValues.put("symbol",symbol);
+        contentValues.put("shares", qty);
+        contentValues.put("price", price);
+        contentValues.put("date", date);
+        db.insert("translog",null,contentValues);
+        db.close();
+    }
+
+    public void uptateTx(int txID, int userid, String symbolName, Double s_qty, Double s_price, String date) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("shares",s_qty);
+        contentValues.put("price", s_price);
+        contentValues.put("date", date);
+        String whereClause = "ID = ?";
+        String [] selectionArgs = { valueOf(txID) };
+        db.update("translog", contentValues, whereClause, selectionArgs);
+        db.close();
+    }
+    public void deleteTx(Integer id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] whereArgs = { id.toString()};
+        db.delete("translog", "ID = ?",  whereArgs );
+        db.close();
     }
 }
 

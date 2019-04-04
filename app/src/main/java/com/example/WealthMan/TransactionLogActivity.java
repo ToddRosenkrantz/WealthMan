@@ -36,10 +36,6 @@ public class TransactionLogActivity extends AppCompatActivity implements TxAdapt
     private String symbolName = "AAPL";
     private int userid = 1;
 
-    private Double m_Shares = 0.0;
-    private Double m_Price = 0.0;
-    private String m_Date = "";
-
     private SharedPreferences preference;
 
 
@@ -79,7 +75,7 @@ public class TransactionLogActivity extends AppCompatActivity implements TxAdapt
 */
 
         // set up the RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.rvAnimals);
+        RecyclerView recyclerView = findViewById(R.id.rvTransactions);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         if (tList != null) {
             adapter = new TxAdapter(this, tList);
@@ -97,6 +93,7 @@ public class TransactionLogActivity extends AppCompatActivity implements TxAdapt
                 Snackbar.make(view, "Launch Add Activity", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 addTransaction(symbolName);
+                adapter.notifyDataSetChanged();
             }
         });
     }
@@ -109,8 +106,9 @@ public class TransactionLogActivity extends AppCompatActivity implements TxAdapt
         }*/
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
-
+        Toast.makeText(this, "You clicked " + adapter.getItem(position).getID() + " on row number " + position, Toast.LENGTH_SHORT).show();
+        editTx(position);
+        adapter.notifyDataSetChanged();
     }
 
     /*
@@ -130,57 +128,21 @@ public class TransactionLogActivity extends AppCompatActivity implements TxAdapt
         }
     */
     public void addTransaction(String sym) {
-/*        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final LinearLayout layout = new LinearLayout(TransactionLogActivity.this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        final EditText Shares_Box = new EditText(TransactionLogActivity.this);
-        Shares_Box.setHint("Shares");
-        Shares_Box.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
-        layout.addView(Shares_Box);
-        final EditText Price_Box = new EditText(TransactionLogActivity.this);
-        Price_Box.setHint("Price");
-        Price_Box.setInputType(2002);
-        layout.addView(Price_Box);
-        final EditText Date_Box = new EditText(TransactionLogActivity.this);
-        Date_Box.setHint("Date");
-        Date_Box.setInputType(4);
-        layout.addView(Date_Box);
-        builder.setTitle("Shares Log Entry");
-
-// Set up the input
-//        final EditText input = new EditText(this);
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-//        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        builder.setView(layout);
-
-// Set up the buttons
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                m_Shares = Double.parseDouble(Shares_Box.getText().toString());
-                m_Price = Double.parseDouble(Price_Box.getText().toString());
-                m_Date = Date_Box.getText().toString();
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();*/
-        final Intent intent = getIntent();
-//        final int userid = preference.getInt("UserID", 1);
-//        symbolName = intent.getStringExtra("Symbol");
-        nextActivity(symbolName, userid);
-    }
-    public void nextActivity(String symbol, Integer ID){
         Intent intent = new Intent(this,TransactionEntry.class);
-//        Intent intent = new Intent(HomeActivity.this,TransactionLogActivity.class);
-        intent.putExtra("Symbol",symbol);
-        intent.putExtra("UserID",ID);
-//        System.out.println("UserID: " + ID);
+        intent.putExtra("Symbol",sym);
+        intent.putExtra("UserID",userid);
         startActivity(intent);
+        adapter.notifyDataSetChanged();
+    }
+    public void editTx(Integer position){
+        Intent intent = new Intent(this, TransactionEdit.class);
+        Transaction temp = adapter.getItem(position);
+        intent.putExtra("tx_id", temp.getID());
+        intent.putExtra("symbol", temp.getSymbol());
+        intent.putExtra("quantity", temp.getShares().toString());
+        intent.putExtra("price", temp.getPrice().toString());
+        intent.putExtra("date" , temp.getDate());
+        startActivity(intent);
+        adapter.notifyDataSetChanged();
     }
 }

@@ -3,8 +3,8 @@ package com.example.WealthMan;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class TransactionEntry extends AppCompatActivity {
+public class TransactionEdit extends AppCompatActivity {
     Button svButton;
     TextView m_Symbol;
     EditText m_Date;
@@ -30,6 +30,11 @@ public class TransactionEntry extends AppCompatActivity {
     public static final String MY_PREFS_FILE = "wealthman_prefs";
     private String symbolName = "AAPL";
     private int userid = 1;
+    private String quantity;
+    private String price;
+    private String date;
+    private int txID;
+
     private SharedPreferences preference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +46,18 @@ public class TransactionEntry extends AppCompatActivity {
         preference = getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
         final Intent intent = getIntent();
         userid = preference.getInt("UserID", 1);
-        symbolName = intent.getStringExtra("Symbol");
+
         svButton = (Button) findViewById((R.id.svButton));
         m_Symbol = (TextView) findViewById(R.id.log_symbol);
         m_Date = (EditText) findViewById(R.id.log_date);
         m_Price = (EditText) findViewById(R.id.log_price);
         m_Qty = (EditText) findViewById(R.id.log_qty);
-        m_Symbol.setText(symbolName);
+        m_Symbol.setText(intent.getStringExtra("symbol"));
+        m_Price.setText(intent.getStringExtra("price"));
+        m_Qty.setText(intent.getStringExtra("quantity"));
+        price = intent.getStringExtra("price");
+        m_Date.setText(intent.getStringExtra("date"));
+        txID = intent.getIntExtra("tx_id", -1);
 
         setDateTimeField();
         m_Date.setOnTouchListener(new View.OnTouchListener() {
@@ -72,7 +82,7 @@ public class TransactionEntry extends AppCompatActivity {
                     s_price = Double.valueOf(m_Price.getText().toString().trim());
                 if(m_Qty != null)
                     s_qty = Double.valueOf(m_Qty.getText().toString().trim());
-                db.enterTx(userid,symbolName,s_qty,s_price,m_Date.getText().toString().trim());
+                db.uptateTx(txID, userid,symbolName,s_qty,s_price,m_Date.getText().toString().trim());
                 finish();
             }
         });

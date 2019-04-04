@@ -18,4 +18,6 @@
     <color name="color_project_dk_green">#429740</color>
     <color name="color_project_bg_green">#85bb65</color>
     <color name="colorLine">#F5F5F5</color>
+    <color name="color_green_tint">#689CDF58</color>
+    <color name="color_red_tint">#68DF6C58</color>
 </resources>

@@ -39,9 +39,9 @@
             android:background="@android:color/white" />
 -->
         <TextView
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="30dp"
-            android:text="Shares"
+            android:text="Quantity"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
@@ -53,7 +53,7 @@
             android:background="@android:color/white" />
 -->
         <TextView
-            android:layout_width="75dp"
+            android:layout_width="90dp"
             android:layout_height="30dp"
             android:text="Price"
             android:textSize="24sp"
@@ -67,7 +67,7 @@
             android:background="@android:color/white" />
 -->
         <TextView
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="30dp"
             android:text="Date"
             android:textSize="24sp"
@@ -80,6 +80,7 @@
             android:layout_height="match_parent"
             android:background="@android:color/white" />
 -->
+<!--
         <TextView
             android:layout_width="75dp"
             android:layout_height="30dp"
@@ -88,6 +89,7 @@
             android:textStyle="bold"
             android:textColor="#FFFFFF"
             android:gravity="center_horizontal"/>
+-->
     </LinearLayout>
     <include layout="@layout/content_transaction" />
 

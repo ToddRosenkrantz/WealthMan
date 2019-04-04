@@ -9,18 +9,18 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class Transaction {
+    private int ID;
     private String symbol;
-    private int shareCount;
+    private Double shareCount;
     private Double sharePrice;
-    private String boughtSold;
-    private Calendar date;
+    private String date;
 
-    public Transaction(String symbol, Integer shares, Double price, String b_s, String datetime){
+    public Transaction(Integer ID, String symbol, Double shares, Double price, String datetime){
+        this.ID = ID;
         this.symbol = symbol;
         shareCount = shares;
         sharePrice = price;
-        boughtSold = b_s;
-        date = convert(datetime);
+        date = datetime;
     }
     private Calendar convert (String datetime){
         Calendar cal = Calendar.getInstance();
@@ -32,16 +32,16 @@ public class Transaction {
         }
         return cal;
     }
-    public String getSymbol(){
-        return symbol;
-    }
+    public Integer getID(){ return ID;}
+    public void setID(Integer id) {ID = id;}
+    public String getSymbol(){ return symbol; }
     public void setSymbol(String sym){
         symbol = sym;
     }
-    public Integer getShares(){
+    public Double getShares(){
         return shareCount;
     }
-    public void setShares(Integer num){
+    public void setShares(Double num){
         shareCount = num;
     }
     public Double getPrice(){
@@ -50,26 +50,9 @@ public class Transaction {
     public void setPrice(Double price){
         sharePrice = price;
     }
-    public String getBoughtSold(){
-        return boughtSold;
-    }
-    public void setBoughtSold(String type){
-        switch (type){
-            case "B":
-            case "b":
-            case "S":
-            case "s":
-                boughtSold = type;
-                break;
-            default:
-                Log.e("Transaction", "Unkonwn Transaction type");
 
-        }
-    }
-    public Calendar getDate(){
+    public String getDate(){
         return date;
     }
-    public void setDate(String dt){
-        date = convert(dt);
-    }
+    public void setDate(String dt){ date = dt; }
 }
