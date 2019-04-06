@@ -31,19 +31,20 @@
                 android:text="Shares"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:gravity="center_horizontal"/>
+                android:gravity="end|center_horizontal"/>
             <View
                 android:layout_width="2dp"
                 android:layout_height="match_parent"
                 android:background="@android:color/black" />
+
             <TextView
                 android:id="@id/price"
                 android:layout_width="75dp"
                 android:layout_height="30dp"
+                android:gravity="center_horizontal|end"
                 android:text="Price"
                 android:textSize="24sp"
-                android:textStyle="bold"
-                android:gravity="center_horizontal"/>
+                android:textStyle="bold" />
             <View
                 android:layout_width="2dp"
                 android:layout_height="match_parent"

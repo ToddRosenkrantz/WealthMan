@@ -49,8 +49,10 @@ public class TxAdapter extends RecyclerView.Adapter<TxAdapter.ViewHolder> {
             holder.myDateView.setBackgroundColor(Color.argb(41,156, 223, 88));
         }
         holder.mySymbolView.setText(mData.get(position).getSymbol());
-        holder.mySharesView.setText(mData.get(position).getShares().toString());
-        holder.myPriceView.setText(mData.get(position).getPrice().toString());
+        String shares = String.format("%.1f", mData.get(position).getShares());
+        holder.mySharesView.setText(shares);
+        String price = String.format("%.2f", mData.get(position).getPrice());
+        holder.myPriceView.setText(price);
         holder.myDateView.setText(mData.get(position).getDate());
     }
 
@@ -83,6 +85,14 @@ public class TxAdapter extends RecyclerView.Adapter<TxAdapter.ViewHolder> {
     // convenience method for getting data at click position
     Transaction getItem(int id) {
         return mData.get(id);
+    }
+
+    public void update(ArrayList<Transaction> data){
+        System.out.println("Before update size: " + mData.size());
+        mData.clear();
+        mData = data;
+        this.notifyDataSetChanged();
+        System.out.println("After update size: " + mData.size());
     }
 
 }

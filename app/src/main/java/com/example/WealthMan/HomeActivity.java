@@ -12,16 +12,19 @@ next steps:
 
  */
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -41,8 +44,14 @@ import com.example.WealthMan.detail.view.DetailActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 
@@ -52,6 +61,10 @@ public class HomeActivity extends AppCompatActivity {
     private String latestprice;
     private IconAdapter sa;
     DatabaseHelper db;
+    private EditText p_start;
+    private EditText p_end;
+    private DatePickerDialog sDatePickerDialog, eDatePickerDialog;
+
     /*
      * Change to type CustomAutoCompleteView instead of AutoCompleteTextView
      * since we are extending to customize the view and disable filter
@@ -65,6 +78,12 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent = getIntent();
+        Calendar newDate = Calendar.getInstance();
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        Date startDate = newDate.getTime();
+        String today = sd.format(startDate);
+
+
 //        final int userid = intent.getIntExtra("UserID", 1);
         SharedPreferences preference = getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
         final int userid = preference.getInt("UserID", 1);
@@ -74,15 +93,23 @@ public class HomeActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
+        // ALL findViewById must be after the following line!
         final RequestQueue queue = Volley.newRequestQueue(this);
+
         setContentView(R.layout.activity_home);
+        p_start = (EditText) findViewById(R.id.periodStart);
+        p_start.setText("2016/01/01");
+        p_end = (EditText) findViewById(R.id.periodEnd);
+        p_end.setText(today);
+
         lv = (ListView)findViewById(R.id.lv);
         //为listview添加adapter
         lv.setAdapter(new IconAdapter(this,mIconBeenList));
         sa = (IconAdapter) lv.getAdapter();
 
         setupApp();
-
+        setStartPeriodDate();
+        setEndPeriodDate();
         String symbols = db.getWatchList(userid).trim();
         String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + symbols + "&types=quote,news,chart&range=1m&last=5";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -148,6 +175,20 @@ public class HomeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 IconBean stock = mIconBeenList.get(position);
                 nextActivity(stock.symbol, userid);
+            }
+        });
+        p_start.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                sDatePickerDialog.show();
+                return false;
+            }
+        });
+        p_end.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                eDatePickerDialog.show();
+                return false;
             }
         });
     }
@@ -251,5 +292,42 @@ public class HomeActivity extends AppCompatActivity {
                 );
                 mIconBeenList.add(symbol); }
     }
+    private void setStartPeriodDate() {
 
+        Calendar newCalendar = Calendar.getInstance();
+        sDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                Date startDate = newDate.getTime();
+                String fdate = sd.format(startDate);
+
+                p_start.setText(fdate);
+
+            }
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+//        mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+
+    }
+    private void setEndPeriodDate() {
+
+        Calendar newCalendar = Calendar.getInstance();
+        eDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                Date startDate = newDate.getTime();
+                String fdate = sd.format(startDate);
+
+                p_end.setText(fdate);
+
+            }
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+//        mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+
+    }
 }

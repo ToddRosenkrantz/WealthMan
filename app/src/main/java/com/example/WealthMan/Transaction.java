@@ -22,6 +22,14 @@ public class Transaction {
         sharePrice = price;
         date = datetime;
     }
+    public Transaction(String symbol, Double shares, Double price, String date){
+        this.ID = 0;
+        this.symbol = symbol;
+        shareCount = shares;
+        sharePrice = price;
+        this.date = date;
+    }
+
     private Calendar convert (String datetime){
         Calendar cal = Calendar.getInstance();
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm a", Locale.ENGLISH);
