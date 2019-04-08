@@ -64,10 +64,11 @@ public class HomeActivity extends AppCompatActivity {
     private TextView totalPorfolioValue;
     private DatePickerDialog sDatePickerDialog, eDatePickerDialog;
     private Batches qList;
-    public double sumValue = 9876543.219;
-    public double sumCost = 1234567.89;
+    public double sumValue = 0.0;
+    public double sumCost = 0.0;
     public String sValue;
     public String sCost;
+    int userid;
 
     /*
      * Change to type CustomAutoCompleteView instead of AutoCompleteTextView
@@ -82,6 +83,9 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent = getIntent();
+        //        final int userid = intent.getIntExtra("UserID", 1);
+        SharedPreferences preference = getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
+        final int userid = preference.getInt("UserID", 1);
         Calendar newDate = Calendar.getInstance();
         SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date startDate = newDate.getTime();
@@ -91,11 +95,8 @@ public class HomeActivity extends AppCompatActivity {
         my_format.setGroupingSeparator(',');
         my_format.setDecimalSeparator('.');
 
-        DecimalFormat decimalFormat = new DecimalFormat("$ #,###.##", my_format);
+        final DecimalFormat decimalFormat = new DecimalFormat("$#,###.##", my_format);
 
-//        final int userid = intent.getIntExtra("UserID", 1);
-        SharedPreferences preference = getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
-        final int userid = preference.getInt("UserID", 1);
 
         System.out.println("UserID: " + userid);
         db = new DatabaseHelper(this);
@@ -105,12 +106,14 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         final TextView mTextView = (TextView) findViewById(R.id.text);
         totalPorfolioValue = (TextView) findViewById(R.id.total_value);
-        TextView totalPorfolioCost = (TextView) findViewById(R.id.total_cost);
-        TextView totalGainLoss = (TextView) findViewById(R.id.gain_loss);
+        final TextView totalPorfolioCost = (TextView) findViewById(R.id.total_cost);
+        final TextView totalGainLoss = (TextView) findViewById(R.id.gain_loss);
+/*
         p_start = (EditText) findViewById(R.id.periodStart);
-        p_start.setText("2014/01/01");
+        p_start.setText("2014-01-01");
         p_end = (EditText) findViewById(R.id.periodEnd);
         p_end.setText(today);
+*/
 /*
         p_start.setVisibility(View.INVISIBLE);
         p_end.setVisibility(View.INVISIBLE);
@@ -118,27 +121,22 @@ public class HomeActivity extends AppCompatActivity {
         findViewById(R.id.labelEnd).setVisibility(View.INVISIBLE);
 */
 
-        lv = (ListView)findViewById(R.id.lv);
-        //为listview添加adapter
-        lv.setAdapter(new IconAdapter(this,mIconBeenList));
-        sa = (IconAdapter) lv.getAdapter();
 
         setupApp();
         setStartPeriodDate();
         setEndPeriodDate();
 
         String symbols = db.getWatchList(userid).trim();
+        final String portfolioSymbols = db.getPortfolioSymbols(userid);
+
         // ALL findViewById must be after the following line!
         getWatchListData(symbols);
-        getPortfolioData(userid);
-        System.out.println("Final C: " +sumCost + " , Final V: " + sumValue);
-        sValue = decimalFormat.format(sumValue);
-        sCost = decimalFormat.format((sumCost));
-        Double sumGainLoss = sumValue - sumCost;
-        String sGainLoss = decimalFormat.format(sumGainLoss);
-        totalPorfolioValue.setText("Total Value "+ sValue);
-        totalPorfolioCost.setText("Cost " + sumCost);
-        totalGainLoss.setText("Gain/Loss " + sGainLoss);
+        getPortfolioData(portfolioSymbols, userid);
+
+        lv = (ListView)findViewById(R.id.lv);
+        //为listview添加adapter
+        lv.setAdapter(new IconAdapter(this,mIconBeenList));
+        sa = (IconAdapter) lv.getAdapter();
 
 //  This is the section for the Search bar autocomplete
         try {
@@ -182,11 +180,31 @@ public class HomeActivity extends AppCompatActivity {
                 nextActivity(stock.symbol, userid);
             }
         });
+        totalPorfolioValue.setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch (View v, MotionEvent event){
+                getWatchListData(db.getWatchList(userid).trim());
+                getPortfolioData(db.getPortfolioSymbols(userid), userid);
+//                System.out.println("Portfolio items = " + portfolioValue.size());
+//                System.out.println("Final C: " +sumCost + " , Final V: " + sumValue);
+                sValue = decimalFormat.format(sumValue);
+                sCost = decimalFormat.format((sumCost));
+                Double sumGainLoss = sumValue - sumCost;
+                String sGainLoss = decimalFormat.format(sumGainLoss);
+                totalPorfolioValue.setText("Total Value "+ sValue);
+                totalPorfolioCost.setText("Cost " + sCost);
+                totalGainLoss.setText("Gain/Loss " + sGainLoss);
+                sa.notifyDataSetChanged();
+
+                return false;
+            }
+        });
+/*
         p_start.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 sDatePickerDialog.show();
-                getPortfolioData(userid);
+                getPortfolioData(portfolioSymbols, userid);
                 return false;
             }
         });
@@ -194,10 +212,23 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 eDatePickerDialog.show();
-                getPortfolioData(userid);
+                getPortfolioData(portfolioSymbols, userid);
                 return false;
             }
         });
+*/
+
+        System.out.println("Portfolio items = " + portfolioValue.size());
+        System.out.println("Final C: " +sumCost + " , Final V: " + sumValue);
+        sValue = decimalFormat.format(sumValue);
+        sCost = decimalFormat.format((sumCost));
+        Double sumGainLoss = sumValue - sumCost;
+        String sGainLoss = decimalFormat.format(sumGainLoss);
+        totalPorfolioValue.setText("Touch to update");
+        totalPorfolioCost.setText("Cost ");
+        totalGainLoss.setText("Gain/Loss ");
+
+
     }
 // End Oncreate, begin various support functions
     public void nextActivity(String symbol, Integer ID){
@@ -294,6 +325,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void getData(String jsonData) {
+        mIconBeenList.clear();
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
         Batches watchList = gsonBuilder.create().fromJson(jsonData, Batches.class);
@@ -359,7 +391,7 @@ public class HomeActivity extends AppCompatActivity {
 //        mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
 
     }
-    public void updatePortfolioData(String response, int userid){
+/*    public void updatePortfolioData(String response){
         sumCost = 0.0;
         sumValue = 0.0;
         //qList = null;
@@ -376,7 +408,54 @@ public class HomeActivity extends AppCompatActivity {
             portfolioValue.add(tempStock);
         }
         System.out.println("C: " +sumCost + " , V: " + sumValue);
+    }*/
+    public void getPortfolioData(String syms, int userid){
+        final int uid = userid;
+        final RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + syms + "&types=quote,news,chart&range=1m&last=5";
+//        String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + syms + "&types=quote";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        ArrayList<stockValue> tempPortfolio = new ArrayList<>();
+                        if (response.equals("{}"))
+                            Toast.makeText(HomeActivity.this, "Portfolio is Empty", Toast.LENGTH_LONG).show();
+                        else {
+                            sumCost = 0.0;
+                            sumValue = 0.0;
+                            Calendar newDate = Calendar.getInstance();
+                            SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                            Date startDate = newDate.getTime();
+                            String today = sd.format(startDate);
+                            GsonBuilder gsonBuilder = new GsonBuilder();
+                            gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
+                            qList = gsonBuilder.create().fromJson(response, Batches.class);
+                            for (int i = 0; i < qList.batches.size(); i++) {
+//                                System.out.print(qList.batches.get(i).quote.symbol);
+                                stockValue tempStock = db.getValue(uid, qList.batches.get(i).quote.symbol, "2014-01-01", today);
+//                                tempStock = db.getValue(userid, qList.batches.get(i).quote.symbol);
+//                                System.out.print(uid+","+ qList.batches.get(i).quote.symbol + "," +p_start.getText().toString() + "," +p_end.getText().toString());
+                                tempStock.setCurrentPrice(qList.batches.get(i).quote.delayedPrice);
+                                sumCost += tempStock.getExtendedPrice();
+                                sumValue += tempStock.getCurrentValue();
+                                tempPortfolio.add(tempStock);
+//                                System.out.println(tempStock.getSymbol() + "   C: " +sumCost + " , V: " + sumValue);
+                            }
+                            portfolioValue = tempPortfolio;
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HomeActivity.this, "That didn't work! Do you have internet?", Toast.LENGTH_LONG).show();
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
+
+/*
     public void getPortfolioData(int uid){
         final int userid = uid;
         String symbols = db.getPortfolioSymbols(userid);
@@ -391,6 +470,8 @@ public class HomeActivity extends AppCompatActivity {
                         else {
 //                            System.out.print(response);
                             updatePortfolioData(response, userid);
+                            System.out.println("Done Port update");
+                            System.out.println("Get Data Final C: " +sumCost + " , Final V: " + sumValue);
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -402,6 +483,7 @@ public class HomeActivity extends AppCompatActivity {
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
+*/
     public static class stockValue {
         private String symbol;
         private Double shares;

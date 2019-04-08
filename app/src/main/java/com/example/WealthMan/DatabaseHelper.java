@@ -501,21 +501,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete("translog", "sample=1 and userid =?", whereArgs);
         db.close();
     }
-    public HomeActivity.stockValue getValue(Integer userid, String sym){
+    public HomeActivity.stockValue getValue(Integer userid, String sym, String sDate, String eDate){
         SQLiteDatabase db = this.getReadableDatabase();
         String table = "translog";
 //        String[] selection = {"symbol", "total(shares) as shares" , " total(shares*price) as extPrice", " date"};
 //        String whereClause = "userid = ? and symbol =? and date BETWEEN ? AND ?";
-        String[] selection = {"symbol", "total(shares) as shares" , " total(shares*price) as extPrice"};
-        String whereClause = "userid = ? and symbol =?";
-        String[] selctionArgs = {userid.toString(), sym};
-        String orderBy = "symbol";
-        Cursor c = db.query(table, selection, whereClause, selctionArgs, null, null,orderBy);
+        String sql = "SELECT symbol, TOTAL(shares) AS shares, TOTAL(shares*price) as extPrice, date FROM " + table;
+        sql += " WHERE userid = "+ userid.toString() + " AND symbol = '" + sym +"' AND date BETWEEN '"+ sDate +"' AND '" + eDate +"'";
+//        String[] selection = {"symbol", "total(shares) as shares" , " total(shares*price) as extPrice"};
+//        String whereClause = "userid = ? and symbol =?";
+//        System.out.println(sql);
+//        String[] selctionArgs = {userid.toString(), sym, sDate, eDate};
+//        String orderBy = "symbol";
+//        Cursor c = db.query(table, selection, whereClause, selctionArgs, null, null,orderBy);
+//        Cursor c = db.query(table, selection, whereClause, selctionArgs, null, null,null);
+        Cursor c = db.rawQuery(sql, null);
         c.moveToFirst();
-        String symbol = c.getString(c.getColumnIndex("symbol"));
-        Double shares = c.getDouble(c.getColumnIndex("shares"));
-        Double extprice = c.getDouble(c.getColumnIndex("extPrice"));
-        HomeActivity.stockValue temp = new HomeActivity.stockValue(symbol, shares, extprice);
+            String symbol = c.getString(c.getColumnIndex("symbol"));
+            Double shares = c.getDouble(c.getColumnIndex("shares"));
+            Double extprice = c.getDouble(c.getColumnIndex("extPrice"));
+            HomeActivity.stockValue temp = new HomeActivity.stockValue(symbol, shares, extprice);
         c.close();
         db.close();
         return temp;

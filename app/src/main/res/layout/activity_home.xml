@@ -37,6 +37,7 @@
         android:completionThreshold="1" >
     </com.example.WealthMan.CustomAutoCompleteView>
 
+<!--
     <LinearLayout
         android:layout_width="392dp"
         android:layout_height="14dp"
@@ -98,6 +99,7 @@
             android:textColor="@color/color_preloader_black" />
 
     </LinearLayout>
+-->
 
     <LinearLayout
         android:layout_width="390dp"
