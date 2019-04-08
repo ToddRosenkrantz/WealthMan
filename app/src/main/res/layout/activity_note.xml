@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.WealthMan.LoginActivity"
+    android:orientation="vertical"
+    android:id="@+id/container"
+    android:background="#85bb65"
+    android:gravity="center_horizontal">
+
+
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="#c2ffffff"
+    android:orientation="vertical">
+
+
+
+    <EditText
+        android:id="@+id/editnote"
+        android:layout_width="300dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
+        android:inputType="textMultiLine"
+        android:paddingLeft="2dp"/>
+
+
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="190dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:textColor="#ffffff"
+        android:text="save"
+        android:background="@drawable/rounded_button"
+        />
+
+
+</LinearLayout>

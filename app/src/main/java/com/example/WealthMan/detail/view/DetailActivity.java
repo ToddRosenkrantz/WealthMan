@@ -132,6 +132,21 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         // +++++++++++++++++ LOGIC FOR WATCH/UNWATCH BUTTON +++++++++++++++++++++++++
 
 
+        // +++++++++++++++++ LOGIC FOR NOTE BUTTON +++++++++++++++++++++++++
+        Button note = findViewById(R.id.note);
+        note.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailActivity.this, NoteActivity.class);
+                intent.putExtra("Symbol",symbolName);
+                intent.putExtra("UserID",ID);
+                startActivity(intent);
+            }
+
+        });
+
+
+
         //        new list
         TextView tv1 = findViewById(R.id.tv1);
         tv1.setMovementMethod(new ScrollingMovementMethod());

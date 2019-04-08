@@ -278,6 +278,17 @@
             android:text="Watch / Unwatch"
             android:textColor="#ffffff" />
 
+        <Button
+            android:id="@+id/note"
+            android:layout_width="190dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_button"
+            android:gravity="center"
+            android:text="note"
+            android:textColor="#ffffff" />
+
         <TextView
             android:id="@+id/news"
             android:layout_width="wrap_content"
