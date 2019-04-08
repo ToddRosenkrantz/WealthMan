@@ -12,7 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TransactionEntry" />
+        <activity android:name=".TestActivity"
+            android:parentActivityName=".HomeActivity"/>
+        <activity android:name=".TransactionEntry"
+            android:parentActivityName=".TransactionLogActivity" />
         <activity android:name=".ForgotActivity" /> <!-- <activity android:name=".HomeActivity" /> -->
         <activity android:name=".RegisterActivity" />
         <activity android:name=".TransactionLogActivity" />
@@ -34,7 +37,7 @@
         <activity
             android:name=".detail.view.SharesListActivity"
             android:exported="true" />
-        <activity android:name=".detail.view.NoteActivity"></activity>
+        <activity android:name=".detail.view.NoteActivity" />
     </application>
 
 </manifest>
