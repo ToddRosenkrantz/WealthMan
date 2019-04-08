@@ -15,7 +15,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="244dp"
         android:layout_weight="1"
-        android:hint="2019/03/01"
+        android:hint="2016/03/01"
         android:textColor="@color/color_preloader_black"
         android:inputType="date"
         app:layout_constraintStart_toStartOf="parent"
