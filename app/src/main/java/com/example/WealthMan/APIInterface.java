@@ -105,9 +105,7 @@ public class APIInterface {
     }
     public static class QuoteList {
         List<Quote> quotes;
-        public QuoteList(List<Quote> quotes) {
-            this.quotes = quotes;
-        }
+        public QuoteList(List<Quote> quotes) { this.quotes = quotes; }
     }
     public class Batch{
         public Quote quote;
@@ -176,6 +174,7 @@ public class APIInterface {
             return new QuoteList(quotes);
         }
     }
+
     JsonParser parser = new JsonParser();
     public String returnJson(String inputString){
         JsonElement jsonTree = parser.parse(inputString);

@@ -23,7 +23,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -40,12 +39,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import com.example.WealthMan.APIInterface.*;
-import com.example.WealthMan.detail.view.DetailActivity;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.w3c.dom.Text;
-
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,13 +54,20 @@ import java.util.concurrent.TimeUnit;
 
 public class HomeActivity extends AppCompatActivity {
     private ArrayList<IconBean> mIconBeenList = new ArrayList<>();
+    private ArrayList<stockValue> portfolioValue = new ArrayList<>();
     private ListView lv;
     private String latestprice;
     private IconAdapter sa;
     DatabaseHelper db;
     private EditText p_start;
     private EditText p_end;
+    private TextView totalPorfolioValue;
     private DatePickerDialog sDatePickerDialog, eDatePickerDialog;
+    private Batches qList;
+    public double sumValue = 9876543.219;
+    public double sumCost = 1234567.89;
+    public String sValue;
+    public String sCost;
 
     /*
      * Change to type CustomAutoCompleteView instead of AutoCompleteTextView
@@ -83,6 +87,11 @@ public class HomeActivity extends AppCompatActivity {
         Date startDate = newDate.getTime();
         String today = sd.format(startDate);
 
+        DecimalFormatSymbols my_format = new DecimalFormatSymbols();
+        my_format.setGroupingSeparator(',');
+        my_format.setDecimalSeparator('.');
+
+        DecimalFormat decimalFormat = new DecimalFormat("$ #,###.##", my_format);
 
 //        final int userid = intent.getIntExtra("UserID", 1);
         SharedPreferences preference = getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
@@ -93,14 +102,21 @@ public class HomeActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        // ALL findViewById must be after the following line!
-        final RequestQueue queue = Volley.newRequestQueue(this);
-
         setContentView(R.layout.activity_home);
+        final TextView mTextView = (TextView) findViewById(R.id.text);
+        totalPorfolioValue = (TextView) findViewById(R.id.total_value);
+        TextView totalPorfolioCost = (TextView) findViewById(R.id.total_cost);
+        TextView totalGainLoss = (TextView) findViewById(R.id.gain_loss);
         p_start = (EditText) findViewById(R.id.periodStart);
-        p_start.setText("2016/01/01");
+        p_start.setText("2014/01/01");
         p_end = (EditText) findViewById(R.id.periodEnd);
         p_end.setText(today);
+/*
+        p_start.setVisibility(View.INVISIBLE);
+        p_end.setVisibility(View.INVISIBLE);
+        findViewById(R.id.labelStart).setVisibility(View.INVISIBLE);
+        findViewById(R.id.labelEnd).setVisibility(View.INVISIBLE);
+*/
 
         lv = (ListView)findViewById(R.id.lv);
         //为listview添加adapter
@@ -110,34 +126,21 @@ public class HomeActivity extends AppCompatActivity {
         setupApp();
         setStartPeriodDate();
         setEndPeriodDate();
+
         String symbols = db.getWatchList(userid).trim();
-        String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + symbols + "&types=quote,news,chart&range=1m&last=5";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (response.equals("{}"))
-                            Toast.makeText(HomeActivity.this, "No stocks being tracked", Toast.LENGTH_LONG).show();
-                        else {
-                            getData(response);
-                            sa.notifyDataSetChanged();
+        // ALL findViewById must be after the following line!
+        getWatchListData(symbols);
+        getPortfolioData(userid);
+        System.out.println("Final C: " +sumCost + " , Final V: " + sumValue);
+        sValue = decimalFormat.format(sumValue);
+        sCost = decimalFormat.format((sumCost));
+        Double sumGainLoss = sumValue - sumCost;
+        String sGainLoss = decimalFormat.format(sumGainLoss);
+        totalPorfolioValue.setText("Total Value "+ sValue);
+        totalPorfolioCost.setText("Cost " + sumCost);
+        totalGainLoss.setText("Gain/Loss " + sGainLoss);
 
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(HomeActivity.this, "That didn't work! Do you have internet?", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-
-//        mButtonOk = (Button) findViewById(R.id.button);
-//        mTextURI = (EditText) findViewById(R.id.url_to_fetch);
-        final TextView mTextView = (TextView) findViewById(R.id.text);
-//        mTextURI.append("");
+//  This is the section for the Search bar autocomplete
         try {
             // autocompletetextview is in activity_home.xml
             myAutoComplete = (CustomAutoCompleteView) findViewById(R.id.myautocomplete);
@@ -170,6 +173,8 @@ public class HomeActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+//  End of Search Bar
+// Begin various listeners
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
@@ -181,6 +186,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 sDatePickerDialog.show();
+                getPortfolioData(userid);
                 return false;
             }
         });
@@ -188,10 +194,12 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 eDatePickerDialog.show();
+                getPortfolioData(userid);
                 return false;
             }
         });
     }
+// End Oncreate, begin various support functions
     public void nextActivity(String symbol, Integer ID){
         Intent intent = new Intent(HomeActivity.this,com.example.WealthMan.detail.view.DetailActivity.class);
 //        Intent intent = new Intent(HomeActivity.this,TransactionLogActivity.class);
@@ -213,7 +221,7 @@ public class HomeActivity extends AppCompatActivity {
             updateDue = now + TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS);
             if (updateSymbols()) {
                 editor.putLong("updateDue", updateDue);   // Store new time to update
-                editor.commit();
+                editor.apply();
                 System.out.println("At commit: Now = " + now + " , Due = " + updateDue);
 //                System.out.println("Update was saved");
             } else
@@ -228,6 +236,31 @@ public class HomeActivity extends AppCompatActivity {
             } else
                 Toast.makeText(HomeActivity.this, "Database Error creating Watch List", Toast.LENGTH_LONG).show();
         }
+    }
+    public void getWatchListData(String syms){
+        final RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + syms + "&types=quote,news,chart&range=1m&last=5";
+//        String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + syms + "&types=quote";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.equals("{}"))
+                            Toast.makeText(HomeActivity.this, "No stocks being tracked", Toast.LENGTH_LONG).show();
+                        else {
+                            getData(response);
+                            sa.notifyDataSetChanged();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HomeActivity.this, "That didn't work! Do you have internet?", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
     public boolean updateSymbols() {
         final RequestQueue queue = Volley.newRequestQueue(this);
@@ -271,11 +304,6 @@ public class HomeActivity extends AppCompatActivity {
         for (int index = 0; index < watchList.batches.size(); index++) {
 //            String coSym = watchList.batches.get(index).coSym;
             ArrayList<Pair> chartData = new ArrayList<>();
-            System.out.println(index
-//                    + "\t" + coSym
-                    + "\t" + watchList.batches.get(index).quote.symbol
-                    + "\t" + watchList.batches.get(index).quote.latestPrice
-                    + "\t" + watchList.batches.get(index).quote.change);
             for (int i = 0 ; i < watchList.batches.get(index).chart.size(); i++){
 //                float xValue = Float.valueOf(watchList.batches.get(index).chart.get(i).date.replace("-",""));
                 float xValue = Float.valueOf(i+1);
@@ -290,7 +318,8 @@ public class HomeActivity extends AppCompatActivity {
                         watchList.batches.get(index).quote.change,
                         chartData
                 );
-                mIconBeenList.add(symbol); }
+                mIconBeenList.add(symbol);
+        }
     }
     private void setStartPeriodDate() {
 
@@ -329,5 +358,75 @@ public class HomeActivity extends AppCompatActivity {
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 //        mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
 
+    }
+    public void updatePortfolioData(String response, int userid){
+        sumCost = 0.0;
+        sumValue = 0.0;
+        //qList = null;
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
+        qList = gsonBuilder.create().fromJson(response, Batches.class);
+        for (int i = 0; i < qList.batches.size(); i++) {
+            stockValue tempStock;
+//            tempStock = db.getValue(userid, qList.batches.get(i).quote.symbol, p_start.getText().toString(), p_end.getText().toString());
+            tempStock = db.getValue(userid, qList.batches.get(i).quote.symbol);
+            tempStock.setCurrentPrice(qList.batches.get(i).quote.delayedPrice);
+            sumCost += tempStock.getExtendedPrice();
+            sumValue += tempStock.getCurrentValue();
+            portfolioValue.add(tempStock);
+        }
+        System.out.println("C: " +sumCost + " , V: " + sumValue);
+    }
+    public void getPortfolioData(int uid){
+        final int userid = uid;
+        String symbols = db.getPortfolioSymbols(userid);
+        final RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + symbols + "&types=quote";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.equals("{}"))
+                            Toast.makeText(HomeActivity.this, "No stocks being tracked", Toast.LENGTH_LONG).show();
+                        else {
+//                            System.out.print(response);
+                            updatePortfolioData(response, userid);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HomeActivity.this, "That didn't work! Do you have internet?", Toast.LENGTH_LONG).show();
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+    }
+    public static class stockValue {
+        private String symbol;
+        private Double shares;
+        private Double extendedPrice;
+        private Double currentPrice;
+
+        public stockValue(){
+            symbol = "";
+            shares = 0.0;
+            extendedPrice = 0.0;
+            currentPrice = 0.0;
+        }
+
+        public stockValue(String sym, Double shares, Double extPrice){
+            symbol = sym;
+            this.shares = shares;
+            extendedPrice = extPrice;
+        }
+
+        public void setShares(Double shares){ this.shares = shares;}
+        public double getShares(){ return shares; }
+        public void setSymbol(String symbol){ this.symbol = symbol; }
+        public String getSymbol(){ return symbol; }
+        public double getExtendedPrice(){return extendedPrice;}
+        public double getCurrentValue(){return currentPrice * shares;}
+        public void setCurrentPrice(Double price) {currentPrice = price;}
     }
 }
