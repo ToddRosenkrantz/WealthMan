@@ -15,6 +15,7 @@ next steps:
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -194,6 +195,17 @@ public class HomeActivity extends AppCompatActivity {
                 totalPorfolioValue.setText("Total Value "+ sValue);
                 totalPorfolioCost.setText("Cost " + sCost);
                 totalGainLoss.setText("Gain/Loss " + sGainLoss);
+                if(sumGainLoss < 0){
+                    totalPorfolioValue.setBackgroundColor(Color.argb(41,223, 108, 88));
+                    totalGainLoss.setBackgroundColor(Color.argb(41,223, 108, 88));
+                    totalPorfolioCost.setBackgroundColor(Color.argb(41,223, 108, 88));
+
+                }
+                else {
+                    totalPorfolioValue.setBackgroundColor(Color.argb(41, 156, 223, 88));
+                    totalGainLoss.setBackgroundColor(Color.argb(41, 156, 223, 88));
+                    totalPorfolioCost.setBackgroundColor(Color.argb(41, 156, 223, 88));
+                }
                 sa.notifyDataSetChanged();
 
                 return false;

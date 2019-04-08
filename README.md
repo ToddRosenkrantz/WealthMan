@@ -31,13 +31,13 @@ In the android studio terminal or otehr command prompt:
 	root@generic_x86:/ # cd /data/data/com.example.wealthman/databases
 	cd /data/data/com.example.wealthman/databases
 	
-4. Open the database with sqlite3
+5. Open the database with sqlite3
 	root@generic_x86:/data/data/com.example.wealthman/databases # sqlite3 register.db
 	qlite3 register.db                                                            <
 	SQLite version 3.8.10.2 2015-05-20 18:17:19
 	Enter ".help" for usage hints.
 	
-5. examine the database as needed
+6. examine the database as needed
 	sqlite> .tables
 	.tables
 	android_metadata  registeruser
@@ -46,4 +46,4 @@ In the android studio terminal or otehr command prompt:
 	1|todd|t|todd@someplace.edu|2222
 	sqlite>
 	
-6. use .exit to exit sqlite3
+7. use .exit to exit sqlite3
