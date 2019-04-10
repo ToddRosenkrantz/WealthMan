@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.util.Pair;
 
-import com.example.WealthMan.detail.adapter.SharesListAdapter;
 import com.example.WealthMan.detail.bean.SharesStockBean;
 
 import java.util.ArrayList;
@@ -57,6 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS watchlist (userid TEXT, symbol TEXT)");
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS shareslist (ID INTEGER PRIMARY  KEY AUTOINCREMENT,stock TEXT, shares TEXT,price TEXT,date TEXT,bought Text)");
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS translog(ID INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER, symbol TEXT, price REAL, shares REAL, date TEXT , sample BOOLEAN)");
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS notes(symbol TEXT,userid INTEGER ,note TEXT)");
 
     }
 
@@ -277,6 +277,53 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long res = db.insert("registeruser", null, contentValues);
         db.close();
         return res;
+    }
+
+//    note
+    public long editNote(String note,int user,String sym){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("userid", user);
+        contentValues.put("symbol", sym);
+        contentValues.put("note",note);
+//        long res=db.insert("notes", null, contentValues);
+        long res;
+
+
+        String selection = "userid" + "=?" + " and " + "symbol" + "=?";
+        String[] selectionArgs = {String.valueOf(user), sym};
+        res = db.update("notes", contentValues,selection, selectionArgs);
+        Log.d("NoteActivity","note"+note+"sym"+sym+"user"+user);
+
+        db.close();
+
+        return res;
+    }
+    public String noteDisply(int user,String sym){
+
+        SQLiteDatabase db = getReadableDatabase();
+        String selection = "userid" + "=?" + " and " + "symbol" + "=?";
+        String[] selectionArgs = {String.valueOf(user), sym};
+        Cursor cursor=db.query("notes",null,selection,selectionArgs,null,null,null);
+        cursor.moveToFirst();
+        String dataNote="";
+        Log.d("NoteActivity","cursor"+cursor.getCount());
+        if (cursor.getCount()==0){
+            SQLiteDatabase dbs=this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("userid", user);
+            contentValues.put("symbol", sym);
+            contentValues.put("note","");
+            dbs.insert("notes", null, contentValues);
+            dataNote="";
+        }else {
+            dataNote = cursor.getString(cursor.getColumnIndex("note"));
+        }
+
+        Log.d("NoteActivity","dataNote"+dataNote);
+        db.close();
+        return  dataNote;
+
     }
 
     public long addSymbol(String name, String sym) {
