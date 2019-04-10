@@ -47,7 +47,7 @@ public class NoteActivity extends AppCompatActivity {
 
                 String note = noteEdit.getText().toString().trim();
                 db.editNote(note, userid, symbolName);
-                Toast.makeText(NoteActivity.this,"sucssce",Toast.LENGTH_SHORT).show();
+                Toast.makeText(NoteActivity.this,"Note saved",Toast.LENGTH_SHORT).show();
 
             }
         });
