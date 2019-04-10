@@ -339,7 +339,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean checkUser(String email, String password) {
-        System.out.println("checkuser:::" + email);
+//        System.out.println("checkuser:::" + email);
         String[] columns = {COL_1};
         SQLiteDatabase db = getReadableDatabase();
         String selection = COL_4 + "=?" + " and " + COL_3 + "=?";
@@ -548,13 +548,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete("translog", "sample=1 and userid =?", whereArgs);
         db.close();
     }
-    public HomeActivity.stockValue getValue(Integer userid, String sym, String sDate, String eDate){
+    public HomeActivity.stockValue getValue(Integer userid, String sym, String start, String end){
         SQLiteDatabase db = this.getReadableDatabase();
         String table = "translog";
 //        String[] selection = {"symbol", "total(shares) as shares" , " total(shares*price) as extPrice", " date"};
 //        String whereClause = "userid = ? and symbol =? and date BETWEEN ? AND ?";
         String sql = "SELECT symbol, TOTAL(shares) AS shares, TOTAL(shares*price) as extPrice, date FROM " + table;
-        sql += " WHERE userid = "+ userid.toString() + " AND symbol = '" + sym +"' AND date BETWEEN '"+ sDate +"' AND '" + eDate +"'";
+        sql += " WHERE userid = "+ userid.toString() + " AND symbol = '" + sym + "' AND date BETWEEN '" + start + "' AND '" + end + "'";
 //        String[] selection = {"symbol", "total(shares) as shares" , " total(shares*price) as extPrice"};
 //        String whereClause = "userid = ? and symbol =?";
 //        System.out.println(sql);
@@ -564,25 +564,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //        Cursor c = db.query(table, selection, whereClause, selctionArgs, null, null,null);
         Cursor c = db.rawQuery(sql, null);
         c.moveToFirst();
-            String symbol = c.getString(c.getColumnIndex("symbol"));
-            Double shares = c.getDouble(c.getColumnIndex("shares"));
-            Double extprice = c.getDouble(c.getColumnIndex("extPrice"));
-            HomeActivity.stockValue temp = new HomeActivity.stockValue(symbol, shares, extprice);
+        String symbol = c.getString(c.getColumnIndex("symbol"));
+        Double shares = c.getDouble(c.getColumnIndex("shares"));
+        Double extprice = c.getDouble(c.getColumnIndex("extPrice"));
+        HomeActivity.stockValue temp = new HomeActivity.stockValue(symbol, shares, extprice);
         c.close();
         db.close();
+//        System.out.println(sql);
         return temp;
     }
-    public String getPortfolioSymbols(Integer id) {
+    public String getPortfolioSymbols(Integer id, String start, String end) {
         String result;
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] selection = { Integer.toString(id) };
-        Cursor cursor = db.rawQuery("SELECT GROUP_CONCAT(DISTINCT symbol) as symbol from (select symbol, userid from translog order by symbol) where userid = ? order by symbol", selection);
+        String[] selection = { Integer.toString(id), start, end};
+        String sql = "SELECT GROUP_CONCAT(DISTINCT symbol) as symbol from ";
+        sql+= "(select symbol, userid, date from translog where date BETWEEN '" + start +"' AND '"+ end + "' order by symbol) where userid = "+ Integer.toString(id) + " order by symbol";
+//        sql = "SELECT GROUP_CONCAT(DISTINCT QUOTE(symbol)) as symbol from (select symbol, userid, date from translog where date BETWEEN '" + start + "' AND '"+ end;
+//        sql += "' order by symbol) where userid = "+ Integer.toString(id) + "order by symbol";
+        Cursor cursor = db.rawQuery(sql, null);
         cursor.moveToFirst();
         result = cursor.getString(cursor.getColumnIndex("symbol"));
         db.close();
         if (result == null) {
             result = "0";
         }
+//        System.out.println(sql);
+//        System.out.println("Result: " + result + " , start: " + start + " , end " + end);
         return result;
     }
 

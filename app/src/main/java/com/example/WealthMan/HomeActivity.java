@@ -13,15 +13,15 @@ next steps:
  */
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -72,6 +72,10 @@ public class HomeActivity extends AppCompatActivity {
     public String sValue;
     public String sCost;
     int userid;
+    public final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+    String start_date = "2014-04-01";
+    AlertDialog.Builder confirmExit;
+
 
     /*
      * Change to type CustomAutoCompleteView instead of AutoCompleteTextView
@@ -90,18 +94,17 @@ public class HomeActivity extends AppCompatActivity {
         SharedPreferences preference = getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
         final int userid = preference.getInt("UserID", 1);
         Calendar newDate = Calendar.getInstance();
-        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date startDate = newDate.getTime();
-        String today = sd.format(startDate);
+        String today = sdf.format(startDate);
 
         DecimalFormatSymbols my_format = new DecimalFormatSymbols();
         my_format.setGroupingSeparator(',');
         my_format.setDecimalSeparator('.');
 
-        final DecimalFormat decimalFormat = new DecimalFormat("$#,###.##", my_format);
+        final DecimalFormat decimalFormat = new DecimalFormat("$#,###.00", my_format);
 
 
-        System.out.println("UserID: " + userid);
+//        System.out.println("UserID: " + userid);
         db = new DatabaseHelper(this);
 
         super.onCreate(savedInstanceState);
@@ -111,18 +114,14 @@ public class HomeActivity extends AppCompatActivity {
         totalPorfolioValue = (TextView) findViewById(R.id.total_value);
         final TextView totalPorfolioCost = (TextView) findViewById(R.id.total_cost);
         final TextView totalGainLoss = (TextView) findViewById(R.id.gain_loss);
-/*
         p_start = (EditText) findViewById(R.id.periodStart);
-        p_start.setText("2014-01-01");
+        p_start.setText(start_date);
         p_end = (EditText) findViewById(R.id.periodEnd);
         p_end.setText(today);
-*/
-/*
-        p_start.setVisibility(View.INVISIBLE);
-        p_end.setVisibility(View.INVISIBLE);
-        findViewById(R.id.labelStart).setVisibility(View.INVISIBLE);
-        findViewById(R.id.labelEnd).setVisibility(View.INVISIBLE);
-*/
+        p_start.setVisibility(View.VISIBLE);
+        p_end.setVisibility(View.VISIBLE);
+        findViewById(R.id.labelStart).setVisibility(View.VISIBLE);
+        findViewById(R.id.labelEnd).setVisibility(View.VISIBLE);
 
 
         setupApp();
@@ -130,7 +129,7 @@ public class HomeActivity extends AppCompatActivity {
         setEndPeriodDate();
 
         String symbols = db.getWatchList(userid).trim();
-        final String portfolioSymbols = db.getPortfolioSymbols(userid);
+        String portfolioSymbols = db.getPortfolioSymbols(userid, p_start.getText().toString(), p_end.getText().toString());
 
         // ALL findViewById must be after the following line!
         getWatchListData(symbols);
@@ -183,11 +182,12 @@ public class HomeActivity extends AppCompatActivity {
                 nextActivity(stock.symbol, userid);
             }
         });
+        sDatePickerDialog.updateDate(2014,4,1);
         totalPorfolioValue.setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch (View v, MotionEvent event){
                 getWatchListData(db.getWatchList(userid).trim());
-                getPortfolioData(db.getPortfolioSymbols(userid), userid);
+                getPortfolioData(db.getPortfolioSymbols(userid, p_start.getText().toString(), p_end.getText().toString()), userid);
 //                System.out.println("Portfolio items = " + portfolioValue.size());
 //                System.out.println("Final C: " +sumCost + " , Final V: " + sumValue);
                 sValue = decimalFormat.format(sumValue);
@@ -213,12 +213,11 @@ public class HomeActivity extends AppCompatActivity {
                 return false;
             }
         });
-/*
         p_start.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 sDatePickerDialog.show();
-                getPortfolioData(portfolioSymbols, userid);
+                getPortfolioData(db.getPortfolioSymbols(userid, p_start.getText().toString(), p_end.getText().toString()), userid);
                 return false;
             }
         });
@@ -226,14 +225,13 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 eDatePickerDialog.show();
-                getPortfolioData(portfolioSymbols, userid);
+                getPortfolioData(db.getPortfolioSymbols(userid, p_start.getText().toString(), p_end.getText().toString()), userid);
                 return false;
             }
         });
-*/
 
-        System.out.println("Portfolio items = " + portfolioValue.size());
-        System.out.println("Final C: " +sumCost + " , Final V: " + sumValue);
+//        System.out.println("Portfolio items = " + portfolioValue.size());
+//        System.out.println("Final C: " +sumCost + " , Final V: " + sumValue);
         sValue = decimalFormat.format(sumValue);
         sCost = decimalFormat.format((sumCost));
         Double sumGainLoss = sumValue - sumCost;
@@ -278,7 +276,7 @@ public boolean onOptionsItemSelected(MenuItem item) {
 //        Intent intent = new Intent(HomeActivity.this,TransactionLogActivity.class);
         intent.putExtra("Symbol",symbol);
         intent.putExtra("UserID",ID);
-        System.out.println("UserID: " + ID);
+//        System.out.println("UserID: " + ID);
         startActivity(intent);
     }
 
@@ -288,19 +286,19 @@ public boolean onOptionsItemSelected(MenuItem item) {
         long now = System.currentTimeMillis();
         long updateDue = preference.getLong("updateDue", 0);
 //        if (false) {  // Calc next time to update
-        System.out.println("After Read Prefs: Now = " + now + " , Due = " + updateDue);
+//        System.out.println("After Read Prefs: Now = " + now + " , Due = " + updateDue);
         if (updateDue < now) {  // Calc next time to update
-            System.out.println("Symbol Update due");
+//            System.out.println("Symbol Update due");
             updateDue = now + TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS);
             if (updateSymbols()) {
                 editor.putLong("updateDue", updateDue);   // Store new time to update
                 editor.apply();
-                System.out.println("At commit: Now = " + now + " , Due = " + updateDue);
+//                System.out.println("At commit: Now = " + now + " , Due = " + updateDue);
 //                System.out.println("Update was saved");
             } else
                 Toast.makeText(HomeActivity.this, "Error updating Stock Symbols", Toast.LENGTH_LONG).show();
         } else
-            System.out.println("No Symbol Update is due...");
+//            System.out.println("No Symbol Update is due...");
         if (!preference.getBoolean("setupDone", false)) {
             long res = db.createWatchlist();  //special one time add
             if (res > 0) {
@@ -337,7 +335,7 @@ public boolean onOptionsItemSelected(MenuItem item) {
     }
     public boolean updateSymbols() {
         final RequestQueue queue = Volley.newRequestQueue(this);
-        System.out.println("Updating Symbols now");
+//        System.out.println("Updating Symbols now");
         String symbolUrl = "https://api.iextrading.com/1.0/ref-data/symbols";
         final GsonBuilder gsonSymbols = new GsonBuilder();
         dbsuccess = false;
@@ -347,7 +345,7 @@ public boolean onOptionsItemSelected(MenuItem item) {
                     public void onResponse(String response) {
                         stockSym[] mySyms = gsonSymbols.create().fromJson(response, stockSym[].class);
                         List<Pair> SymbolList = new ArrayList<Pair>();
-                        System.out.println("Length = " + mySyms.length);
+//                        System.out.println("Length = " + mySyms.length);
                         long val = 0;
                         for (int i = 0; i < mySyms.length; i++) {
                             Pair temp = new Pair(mySyms[i].name, mySyms[i].symbol);
@@ -403,15 +401,15 @@ public boolean onOptionsItemSelected(MenuItem item) {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+//                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                 Date startDate = newDate.getTime();
-                String fdate = sd.format(startDate);
+                String fdate = sdf.format(startDate);
 
                 p_start.setText(fdate);
 
             }
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-//        mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+//        eDatePickerDialog.getDatePicker().setMinDate(sdf.parse(p_start.getText().toString()));
 
     }
     private void setEndPeriodDate() {
@@ -422,36 +420,22 @@ public boolean onOptionsItemSelected(MenuItem item) {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+//                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                 Date startDate = newDate.getTime();
-                String fdate = sd.format(startDate);
-
+                String fdate = sdf.format(startDate);
                 p_end.setText(fdate);
-
             }
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-//        mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+//        eDatePickerDialog.getDatePicker().setMinDate(sdf.parse(p_start.getText().toString()));
 
     }
-/*    public void updatePortfolioData(String response){
-        sumCost = 0.0;
-        sumValue = 0.0;
-        //qList = null;
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
-        qList = gsonBuilder.create().fromJson(response, Batches.class);
-        for (int i = 0; i < qList.batches.size(); i++) {
-            stockValue tempStock;
-//            tempStock = db.getValue(userid, qList.batches.get(i).quote.symbol, p_start.getText().toString(), p_end.getText().toString());
-            tempStock = db.getValue(userid, qList.batches.get(i).quote.symbol);
-            tempStock.setCurrentPrice(qList.batches.get(i).quote.delayedPrice);
-            sumCost += tempStock.getExtendedPrice();
-            sumValue += tempStock.getCurrentValue();
-            portfolioValue.add(tempStock);
-        }
-        System.out.println("C: " +sumCost + " , V: " + sumValue);
-    }*/
+
     public void getPortfolioData(String syms, int userid){
+        if (syms == ""){
+            sumValue = 0.0;
+            sumCost = 0.0;
+            Toast.makeText(HomeActivity.this, "No assets in that date range", Toast.LENGTH_LONG).show();
+        }
         final int uid = userid;
         final RequestQueue queue = Volley.newRequestQueue(this);
         String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + syms + "&types=quote,news,chart&range=1m&last=5";
@@ -462,20 +446,16 @@ public boolean onOptionsItemSelected(MenuItem item) {
                     public void onResponse(String response) {
                         ArrayList<stockValue> tempPortfolio = new ArrayList<>();
                         if (response.equals("{}"))
-                            Toast.makeText(HomeActivity.this, "Portfolio is Empty", Toast.LENGTH_LONG).show();
+                            Toast.makeText(HomeActivity.this, "No assets in that date range", Toast.LENGTH_LONG).show();
                         else {
                             sumCost = 0.0;
                             sumValue = 0.0;
-                            Calendar newDate = Calendar.getInstance();
-                            SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                            Date startDate = newDate.getTime();
-                            String today = sd.format(startDate);
                             GsonBuilder gsonBuilder = new GsonBuilder();
                             gsonBuilder.registerTypeAdapter(Batches.class, new CompanyListDeserializer());
                             qList = gsonBuilder.create().fromJson(response, Batches.class);
                             for (int i = 0; i < qList.batches.size(); i++) {
 //                                System.out.print(qList.batches.get(i).quote.symbol);
-                                stockValue tempStock = db.getValue(uid, qList.batches.get(i).quote.symbol, "2014-01-01", today);
+                                stockValue tempStock = db.getValue(uid, qList.batches.get(i).quote.symbol, p_start.getText().toString(), p_end.getText().toString());
 //                                tempStock = db.getValue(userid, qList.batches.get(i).quote.symbol);
 //                                System.out.print(uid+","+ qList.batches.get(i).quote.symbol + "," +p_start.getText().toString() + "," +p_end.getText().toString());
                                 tempStock.setCurrentPrice(qList.batches.get(i).quote.delayedPrice);
@@ -496,7 +476,6 @@ public boolean onOptionsItemSelected(MenuItem item) {
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
-
 /*
     public void getPortfolioData(int uid){
         final int userid = uid;
@@ -526,6 +505,28 @@ public boolean onOptionsItemSelected(MenuItem item) {
         queue.add(stringRequest);
     }
 */
+public void onBackPressed(){
+    confirmExit = new AlertDialog.Builder(this);
+//        Toast.makeText(this, "You Long clicked " + adapter.getItem(p).getID() + " on row number " + p, Toast.LENGTH_SHORT).show();
+//        removeAt(p, tList.indexOf(adapter.getItem(p)), adapter.getItem(p).getID());
+    confirmExit.setMessage("Logout from Stock Recording System?")
+            .setCancelable(false)
+            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    finish();
+                }
+            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.cancel();
+        }
+    });
+    //Creating dialog box
+    AlertDialog alert = confirmExit.create();
+    //Setting the title manually
+    alert.show();
+
+}
     public static class stockValue {
         private String symbol;
         private Double shares;
