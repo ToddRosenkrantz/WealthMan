@@ -32,7 +32,8 @@
             android:exported="true" />
         <activity
             android:name=".HomeActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name=".TransactionActivity" />
         <activity
             android:name=".detail.view.SharesListActivity"

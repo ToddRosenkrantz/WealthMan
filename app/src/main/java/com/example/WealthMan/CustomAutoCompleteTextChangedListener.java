@@ -7,9 +7,11 @@ import android.util.Log;
     public class CustomAutoCompleteTextChangedListener implements TextWatcher {
 
         public static final String TAG = "CustomTextListener";
+        private HomeFragment homeFragment;
         Context context;
 
-        public CustomAutoCompleteTextChangedListener(Context context){
+        public CustomAutoCompleteTextChangedListener(HomeFragment fragment, Context context){
+            this.homeFragment = fragment;
             this.context = context;
         }
 
@@ -34,18 +36,16 @@ import android.util.Log;
                 // if you want to see in the logcat what the user types
                 Log.e(TAG, "User input: " + userInput);
 
-                HomeActivity homeActivity = ((HomeActivity) context);
-
                 // update the adapater
-                homeActivity.myAdapter.notifyDataSetChanged();
+                homeFragment.myAdapter.notifyDataSetChanged();
 
                 // get suggestions from the database
-                NameSymbol[] myObjs = homeActivity.db.read(userInput.toString());
+                NameSymbol[] myObjs = homeFragment.db.read(userInput.toString());
 
                 // update the adapter
-                homeActivity.myAdapter = new AutocompleteCustomArrayAdapter(homeActivity, R.layout.list_view_row_item, myObjs);
+                homeFragment.myAdapter = new AutocompleteCustomArrayAdapter(context, R.layout.list_view_row_item, myObjs);
 
-                homeActivity.myAutoComplete.setAdapter(homeActivity.myAdapter);
+                homeFragment.myAutoComplete.setAdapter(homeFragment.myAdapter);
 
             } catch (NullPointerException e) {
                 e.printStackTrace();

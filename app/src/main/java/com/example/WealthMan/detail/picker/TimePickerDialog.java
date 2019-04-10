@@ -161,9 +161,9 @@ public class TimePickerDialog extends DialogFragment implements OnDataSelectedLi
         mTimeWheel.setOnDataSelectedListener(this);
 
         if (mPickerConfig.mType == Type.YEAR_MONTH_DAY) {
-            ViewGroup.LayoutParams layoutParams = wheelContainer.getLayoutParams();
-            layoutParams.width = ToolsUtil.getWindowHeight(getActivity()) - 100;
-            wheelContainer.setLayoutParams(layoutParams);
+//            ViewGroup.LayoutParams layoutParams = wheelContainer.getLayoutParams();
+//            layoutParams.width = ToolsUtil.getWindowHeight(getActivity()) - 100;
+//            wheelContainer.setLayoutParams(layoutParams);
         }
     }
 
