@@ -85,7 +85,7 @@ public class RequestManger {
                     if (response.isSuccessful()) {
                         ResponseBody body = response.body();
                         String string = body.string();
-                        Log.e(TAG, "onResponse: " + string);
+//                        Log.e(TAG, "onResponse: " + string);
                         gsonSpecial(string);
                     }
 
@@ -111,9 +111,9 @@ public class RequestManger {
 
         JSONObject jsonObject = null;
         try {
-            Log.i(TAG, "gsonSpecial: " + jsonData);
+//            Log.i(TAG, "gsonSpecial: " + jsonData);
             jsonObject = new JSONObject(jsonData);
-            Log.i(TAG, "gsonSpecial:jsonObject " + jsonObject.toString());
+//            Log.i(TAG, "gsonSpecial:jsonObject " + jsonObject.toString());
             //通过迭代器获取这段json当中所有的key值
             Iterator keys = jsonObject.keys();
             //然后通过一个循环取出所有的key值
@@ -121,7 +121,7 @@ public class RequestManger {
                 String key = String.valueOf(keys.next());
                 JSONObject newJson = jsonObject.getJSONObject(key);
                 final DetailLineBean.Detaildate detaildate = new Gson().fromJson(newJson.toString(), DetailLineBean.Detaildate.class);
-                Log.i(TAG, "gsonSpecial: detailDate = " + detaildate.quote.close);
+//                Log.i(TAG, "gsonSpecial: detailDate = " + detaildate.quote.close);
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {

@@ -63,7 +63,7 @@ public class DiscountView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         this.width = w;
         this.height = h;
-        Log.i(TAG, "onSizeChanged:  height = " + height);
+//        Log.i(TAG, "onSizeChanged:  height = " + height);
     }
 
     @Override
@@ -112,7 +112,7 @@ public class DiscountView extends View {
                 float moveY = ((maxAverage - linAverage) / (maxAverage - minAverage)) * maxLinHeight - 30;
 
                 path.lineTo(30 + i * ((width - 30 - 100) / detailLineBeans.size()), moveY);
-                Log.i(TAG, "drawTimeAndMoney:  x = " + (30 + i * ((width - 30 - 100) / detailLineBeans.size())) + "y = " + moveY);
+//                Log.i(TAG, "drawTimeAndMoney:  x = " + (30 + i * ((width - 30 - 100) / detailLineBeans.size())) + "y = " + moveY);
             }
             canvas.drawPath(path, linPaint);
             //money
