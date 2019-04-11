@@ -1,6 +1,5 @@
 package com.example.WealthMan;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,7 +35,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Logger;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -64,9 +61,8 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
     private List<Transaction> mData = new ArrayList<>();
     private GainLossAdapter mAdapter;
     private long startMillis;
-    private String mSelectStartTime;
-    private String mSelectEndTime;
-    private DatePickerDialog mDatePickerDialog;
+    private long mSelectStartMillis;
+    private long mSelectEndMillis;
 
     public static CapitalGainFragment getInstance() {
         if (instance == null) {
@@ -124,7 +120,7 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
                     Toast.makeText(getContext(), "Please select date!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (mSelectStartTime.compareTo(mSelectEndTime) > 0) {
+                if (mSelectStartMillis > mSelectEndMillis) {
                     Toast.makeText(getContext(), "Invalid date, select again!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -133,41 +129,13 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
                 break;
 
             case R.id.tv_start_date:
-                Calendar newCalendar = Calendar.getInstance();
-                mDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        Calendar newDate = Calendar.getInstance();
-                        newDate.set(year, monthOfYear, dayOfMonth);
-                        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                        final Date startDate = newDate.getTime();
-                        String fdate = sd.format(startDate);
-
-                        tvStartDate.setText(fdate);
-                        mSelectStartTime = fdate;
-
-                    }
-                }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-                mDatePickerDialog.show();
+                TimePickerDialog.newInstance(null, true, buildStartPickerConfig()).show(getFragmentManager(), "start");
+                TimePickerDialog.setListener(new MyTimerSelectClose(0));
                 break;
 
             case R.id.tv_end_date:
-                Calendar endCalendar = Calendar.getInstance();
-                mDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        Calendar newDate = Calendar.getInstance();
-                        newDate.set(year, monthOfYear, dayOfMonth);
-                        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                        final Date startDate = newDate.getTime();
-                        String fdate = sd.format(startDate);
-
-                        tvEndDate.setText(fdate);
-                        mSelectEndTime = fdate;
-
-                    }
-                }, endCalendar.get(Calendar.YEAR), endCalendar.get(Calendar.MONTH), endCalendar.get(Calendar.DAY_OF_MONTH));
-                mDatePickerDialog.show();
+                TimePickerDialog.newInstance(null, true, buildStartPickerConfig()).show(getFragmentManager(), "start");
+                TimePickerDialog.setListener(new MyTimerSelectClose(1));
                 break;
         }
     }
@@ -216,16 +184,16 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
 
         @Override
         public void onTimeClose(String tag, long startTimeMillis, String startTimeStr, long endTimeMillis, String endTimeStr) {
-//            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
-//            Date date = new Date(startTimeMillis);
-//            String forDate = df.format(date);
-//            if (0 == Index) {
-//                tvStartDate.setText(forDate);
-//                mSelectStartMillis = startTimeMillis;
-//            } else {
-//                tvEndDate.setText(forDate);
-//                mSelectEndMillis = startTimeMillis;
-//            }
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+            Date date = new Date(startTimeMillis);
+            String forDate = df.format(date);
+            if (0 == Index) {
+                tvStartDate.setText(forDate);
+                mSelectStartMillis = startTimeMillis;
+            } else {
+                tvEndDate.setText(forDate);
+                mSelectEndMillis = startTimeMillis;
+            }
         }
 
         @Override
@@ -251,8 +219,8 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
             if (mAdapter != null) {
                 mAdapter.notifyDataSetChanged();
             }
-            Log.e("TAG", gainData.size() + "");
-            DecimalFormat decimalFormat = new DecimalFormat("0.0000");
+            Log.e("TAG", gainData.size()+"");
+            DecimalFormat decimalFormat =new DecimalFormat("0.0000");
             Double totalGain = db.getTotalGain(userid, startDate, endDate);
             String str = decimalFormat.format(totalGain);
             tvTotal.setText(str);
