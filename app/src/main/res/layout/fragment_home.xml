@@ -37,7 +37,6 @@
         android:hint="Stock Symbol or Company Name"
         android:textColor="@color/color_preloader_black"/>
 
-    <!--
         <LinearLayout
             android:layout_width="392dp"
             android:layout_height="14dp"
@@ -72,7 +71,7 @@
 
         <LinearLayout
             android:layout_width="392dp"
-            android:layout_height="34dp"
+            android:layout_height="26dp"
             android:orientation="horizontal">
 
 
@@ -99,7 +98,6 @@
                 android:textColor="@color/color_preloader_black" />
 
         </LinearLayout>
-    -->
 
     <LinearLayout
         android:layout_width="390dp"
@@ -109,7 +107,7 @@
         <TextView
             android:id="@+id/total_value"
             android:layout_width="390dp"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:gravity="center_horizontal|center_vertical"
@@ -128,7 +126,7 @@
         <TextView
             android:id="@+id/total_cost"
             android:layout_width="195dp"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_gravity="left"
             android:gravity="center_horizontal|center_vertical"
             android:text="Cost $45,000,000.00"
@@ -138,7 +136,7 @@
         <TextView
             android:id="@+id/gain_loss"
             android:layout_width="200dp"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_gravity="right"
             android:gravity="center_horizontal|center_vertical"
             android:text="Gain/Loss $421.65.00"
@@ -150,7 +148,7 @@
     <ListView
         android:id="@+id/lv"
         android:layout_width="match_parent"
-        android:layout_height="435dp"
+        android:layout_height="375dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp">
