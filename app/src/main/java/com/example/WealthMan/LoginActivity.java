@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 //LoginActivity
 public class LoginActivity extends AppCompatActivity {
     //EditText mTextUsername;
@@ -38,24 +39,24 @@ public class LoginActivity extends AppCompatActivity {
 */
 
         db = new DatabaseHelper(this);
-       //mTextUsername = (EditText)findViewById(R.id.edittext_username);
-        mTextEmail = (EditText)findViewById(R.id.edittext_useremail);
-        mTextPassword = (EditText)findViewById(R.id.edittext_password);
-        mButtonLogin = (Button)findViewById(R.id.button_login);
-        mTextViewRegister = (TextView)findViewById(R.id.textview_register);
-        mTextViewForgot = (TextView)findViewById(R.id.textview_forgot);
+        //mTextUsername = (EditText)findViewById(R.id.edittext_username);
+        mTextEmail = (EditText) findViewById(R.id.edittext_useremail);
+        mTextPassword = (EditText) findViewById(R.id.edittext_password);
+        mButtonLogin = (Button) findViewById(R.id.button_login);
+        mTextViewRegister = (TextView) findViewById(R.id.textview_register);
+        mTextViewForgot = (TextView) findViewById(R.id.textview_forgot);
 
         mTextViewRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent registerIntent = new Intent(LoginActivity.this,RegisterActivity.class);
+                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(registerIntent);
             }
         });
         mTextViewForgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent forgotIntent = new Intent(LoginActivity.this,ForgotActivity.class);
+                Intent forgotIntent = new Intent(LoginActivity.this, ForgotActivity.class);
                 startActivity(forgotIntent);
             }
         });
@@ -70,28 +71,25 @@ public class LoginActivity extends AppCompatActivity {
                 mTextEmail.getText().clear();
                 mTextPassword.getText().clear();
                 Boolean res = db.checkUser(email, pwd);
-                if(res)
-                {
-                    Intent HomePage = new Intent(LoginActivity.this,HomeActivity.class);
+                if (res) {
+                    Intent HomePage = new Intent(LoginActivity.this, HomeActivity.class);
                     int userid = db.getUserId(email);
                     SharedPreferences preference = getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
                     SharedPreferences.Editor editor = preference.edit();
                     editor.putInt("UserID", userid);   // Store new time to update
                     editor.commit();
                     System.out.println("User ID from DB: " + userid);
-                    HomePage.putExtra ("UserID", userid);
+
+                    HomePage.putExtra("UserID", userid);
+                    startActivity(HomePage);
                     finish();
-//                    startActivity(HomePage);
-                }
-                else if(email.length()==0
-                        || pwd.length() == 0)
-                {
+
+                } else if (email.length() == 0
+                        || pwd.length() == 0) {
                     Toast.makeText(LoginActivity.this,
                             "Please Enter ALL fields", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Toast.makeText(LoginActivity.this,"Login Error",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Login Error", Toast.LENGTH_SHORT).show();
                 }
 
 
