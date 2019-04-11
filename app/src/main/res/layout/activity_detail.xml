@@ -13,11 +13,11 @@
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="300dp"
-            android:layout_height="30dp"
+            android:layout_width="401dp"
+            android:layout_height="wrap_content"
             android:text="name :"
             android:textColor="#000000"
-            android:textSize="20dp"/>
+            android:textSize="20dp" />
 
 
         <RelativeLayout
@@ -27,7 +27,9 @@
             <com.example.WealthMan.detail.view.DiscountView
                 android:id="@+id/discount_view"
                 android:layout_width="match_parent"
-                android:layout_height="300dp" />
+                android:layout_height="292dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="8dp" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"
@@ -174,19 +176,24 @@
         <!--<include layout="@layout/detail_content_index" />--><!--here keep for you   start --><!--<include--><!--layout="@layout/detail_content_index"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--/>-->
 
         <!--<ListView--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"></ListView>-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:background="#429740" />
         <TextView
             android:id="@+id/symbols"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="20dp"
-            android:text="News"
+            android:text="symbol"
+            android:textColor="@color/color_preloader_black"
             android:textSize="18dp" />
 
-        <View
+<!--        <View
             android:layout_width="match_parent"
             android:layout_height="0.5dip"
-            android:background="#429740" />
+            android:background="#429740" />-->
 
         <TextView
             android:id="@+id/cpName"
@@ -194,59 +201,68 @@
 
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:text="News"
+            android:text="Company"
+            android:textColor="@color/color_preloader_black"
             android:textSize="18dp" />
 
+<!--
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dip"
             android:background="#429740" />
+-->
 
         <TextView
             android:id="@+id/openPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:text="News"
+            android:text="Open Price"
+            android:textColor="@color/color_preloader_black"
             android:textSize="18dp" />
 
+<!--
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dip"
             android:background="#429740" />
+-->
 
         <TextView
             android:id="@+id/latestVolume"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:text="News"
+            android:text="Latest Volume"
+            android:textColor="@color/color_preloader_black"
             android:textSize="18dp" />
 
-        <View
+<!--        <View
             android:layout_width="match_parent"
             android:layout_height="0.5dip"
-            android:background="#429740" />
+            android:background="#429740" />-->
 
         <TextView
             android:id="@+id/change"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:text="News"
+            android:text="Price Change"
+            android:textColor="@color/color_preloader_black"
             android:textSize="18dp" />
 
-        <View
+<!--        <View
             android:layout_width="match_parent"
             android:layout_height="0.5dip"
-            android:background="#429740" />
+            android:background="#429740" />-->
 
         <TextView
             android:id="@+id/changePercent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:text="News"
+            android:text="Percent Change"
+            android:textColor="@color/color_preloader_black"
             android:textSize="18dp" />
 
         <View

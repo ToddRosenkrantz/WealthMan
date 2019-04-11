@@ -261,7 +261,7 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         Random random = new Random(4);
         for (DetailLineBean.Detaildate.DetailLineDate newDetailLineBean : chart) {
             float average = newDetailLineBean.close;
-            Log.i(TAG, "onSuccess:  average = " + average);
+//            Log.i(TAG, "onSuccess:  average = " + average);
 
             if (maxAverage == 0 && minAverage == 0) {
                 maxAverage = average;

@@ -6,7 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.CoordinatorLayout;
+import com.example.WealthMan.MovableFloatingActionButton;
+//import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +39,7 @@ public class TransactionLogActivity extends AppCompatActivity{
     private String symbolName = "AAPL";
     private int userid = 1;
 
+    MovableFloatingActionButton fab;
     private SharedPreferences preference;
     public ArrayList<Transaction> tList;
 
@@ -48,6 +51,9 @@ public class TransactionLogActivity extends AppCompatActivity{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
+        fab = (MovableFloatingActionButton) findViewById(R.id.fab);
+        CoordinatorLayout.LayoutParams lp  = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+        fab.setCoordinatorLayout(lp);
         db = new DatabaseHelper(this);
         // data to populate the RecyclerView with
 //        ArrayList<Transaction> tList;
@@ -83,14 +89,13 @@ public class TransactionLogActivity extends AppCompatActivity{
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Launch Add Activity", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 addTransaction(symbolName);
-//                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             }
         });
     }
@@ -119,30 +124,31 @@ public class TransactionLogActivity extends AppCompatActivity{
             //noinspection SimplifiableIfStatement
             if (id == R.id.action_sample) {
                 db.addSampleData(userid);
+                updateList();
                 return true;
             }
             else if (id == R.id.action_rm_sample) {
                 db.removeSample(userid);
+                updateList();
                 return true;
             }
             return super.onOptionsItemSelected(item);
         }
     public void processClick(int p){
         editTx(p);
-        Toast.makeText(this, "You clicked " + adapter.getItem(p).getID() + " on row number " + p, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "You clicked " + adapter.getItem(p).getID() + " on row number " + p, Toast.LENGTH_SHORT).show();
         updateList();
     }
     public void processLongClick(final int p){
         confirmDialog = new AlertDialog.Builder(this);
-        Toast.makeText(this, "You Long clicked " + adapter.getItem(p).getID() + " on row number " + p, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "You Long clicked " + adapter.getItem(p).getID() + " on row number " + p, Toast.LENGTH_SHORT).show();
 //        removeAt(p, tList.indexOf(adapter.getItem(p)), adapter.getItem(p).getID());
             confirmDialog.setMessage("Delete Transaction?")
                 .setCancelable(false)
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         removeAt(p, adapter.getItem(p).getID());
-                        Toast.makeText(TransactionLogActivity.this,
-                                "Removed from transaction log", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TransactionLogActivity.this,"Removed from transaction log", Toast.LENGTH_SHORT).show();
                         //finish();
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -155,9 +161,17 @@ public class TransactionLogActivity extends AppCompatActivity{
         AlertDialog alert = confirmDialog.create();
         //Setting the title manually
         alert.show();
-
+        updateList();
+//        adapter.notifyDataSetChanged();
     }
-
+    @Override
+    public void onResume(){
+            super.onResume();
+        System.out.println("We got HERE!");
+        updateList();
+        adapter.notifyDataSetChanged();
+        System.out.println("Then HERE!");
+    }
     public void addTransaction(String sym) {
         Intent intent = new Intent(this,TransactionEntry.class);
         intent.putExtra("Symbol",sym);
@@ -174,15 +188,15 @@ public class TransactionLogActivity extends AppCompatActivity{
         intent.putExtra("price", temp.getPrice().toString());
         intent.putExtra("date" , temp.getDate());
         startActivity(intent);
-        updateList();
     }
 //    public void removeAt(int p, int i, int id){
     public void removeAt(int p, int id){
 //        System.out.println("position: " + p + " ,index: " + i + " ,ID#: " + id);
         System.out.println("position: " + p +  " ,ID#: " + id);
         db.deleteTx(id);
+        updateList();
 //        tList.remove(tList.indexOf(p));
-        adapter.notifyItemRangeRemoved(p, 1);
+//        adapter.notifyItemRangeRemoved(p, 1);
 //        adapter.notifyItemRemoved(p);
 //        adapter.notifyItemRangeChanged(p, tList.size());
     }
@@ -191,5 +205,6 @@ public class TransactionLogActivity extends AppCompatActivity{
         newList = (ArrayList<Transaction>) db.getShareData(userid, symbolName);
         adapter.update(newList);
         recyclerView.getRecycledViewPool().clear();
+        adapter.notifyDataSetChanged();
     }
 }
