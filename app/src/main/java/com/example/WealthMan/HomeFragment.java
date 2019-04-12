@@ -38,6 +38,8 @@ import com.google.gson.GsonBuilder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -56,6 +58,7 @@ import static android.content.Context.MODE_PRIVATE;
  */
 public class HomeFragment extends Fragment {
 
+    public static final String MY_PREFS_FILE = "wealthman_prefs";
     private static HomeFragment instance;
     private ArrayList<IconBean> mIconBeenList = new ArrayList<>();
     private ArrayList<stockValue> portfolioValue = new ArrayList<>();
@@ -75,6 +78,8 @@ public class HomeFragment extends Fragment {
     int userid;
     public final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     String start_date = "2014-04-01";
+    ZoneId zoneId = ZoneId.systemDefault() ;  // Or ZoneOffset.UTC or ZoneId.systemDefault()
+    String today = LocalDate.now( zoneId ).toString() ;
     AlertDialog.Builder confirmExit;
 
 
@@ -87,7 +92,6 @@ public class HomeFragment extends Fragment {
     // adapter for auto-complete
     ArrayAdapter<NameSymbol> myAdapter;
     boolean dbsuccess = true;
-    public static final String MY_PREFS_FILE = "wealthman_prefs";
 
     public static HomeFragment getInstance(){
         if (instance == null) {
@@ -112,9 +116,9 @@ public class HomeFragment extends Fragment {
         //        final int userid = intent.getIntExtra("UserID", 1);
         SharedPreferences preference = getContext().getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
         final int userid = preference.getInt("UserID", 1);
-        Calendar newDate = Calendar.getInstance();
-        Date startDate = newDate.getTime();
-        String today = sdf.format(startDate);
+//        Calendar newDate = Calendar.getInstance();
+//        Date startDate = newDate.getTime();
+//        String today = sdf.format(startDate);
 
         DecimalFormatSymbols my_format = new DecimalFormatSymbols();
         my_format.setGroupingSeparator(',');

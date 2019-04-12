@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint_Layout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="0dp"
+    android:layout_marginTop="0dp"
     android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:paddingLeft="0dp"
+    android:paddingTop="0dp"
     tools:context="com.example.WealthMan.HomeActivity">
 
 
@@ -26,132 +31,128 @@
 
     <com.example.WealthMan.CustomAutoCompleteView
         android:id="@+id/myautocomplete"
-        android:layout_width="fill_parent"
+        android:layout_width="390dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="2dp"
         android:completionThreshold="1"
         android:drawableLeft="@android:drawable/ic_menu_search"
         android:hint="Stock Symbol or Company Name"
-        android:textColor="@color/color_preloader_black"/>
-
-        <LinearLayout
-            android:layout_width="392dp"
-            android:layout_height="14dp"
-            android:layout_marginTop="2dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/labelStart"
-                android:layout_width="196dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:background="@null"
-                android:gravity="left"
-                android:inputType="date"
-                android:text="Period Start"
-                android:textColor="@color/color_preloader_black"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/labelEnd"
-                android:layout_width="186dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:background="@null"
-                android:gravity="right"
-                android:inputType="date"
-                android:text="Period End"
-                android:textColor="@color/color_preloader_black"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="392dp"
-            android:layout_height="26dp"
-            android:orientation="horizontal">
+        android:textColor="@color/color_preloader_black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-            <EditText
-                android:id="@+id/periodStart"
-                android:layout_width="202dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:background="@null"
-                android:gravity="left"
-                android:inputType="date"
-                android:text="StartDate"
-                android:textColor="@color/color_preloader_black" />
+    <TextView
+        android:id="@+id/labelStart"
+        android:layout_width="205dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="8dp"
+        android:background="@null"
+        android:gravity="left"
+        android:inputType="date"
+        android:text="Period Start"
+        android:textColor="@color/color_preloader_black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myautocomplete" />
 
-            <EditText
-                android:id="@+id/periodEnd"
-                android:layout_width="189dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:background="@null"
-                android:gravity="right"
-                android:inputType="date"
-                android:text="EndDate"
-                android:textColor="@color/color_preloader_black" />
+    <TextView
+        android:id="@+id/labelEnd"
+        android:layout_width="180dp"
+        android:layout_height="14dp"
+        android:layout_marginEnd="8dp"
+        android:background="@null"
+        android:gravity="right"
+        android:inputType="date"
+        android:text="Period End"
+        android:textColor="@color/color_preloader_black"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/labelStart"
+        app:layout_constraintTop_toBottomOf="@+id/myautocomplete" />
 
-        </LinearLayout>
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/periodStart"
+        android:layout_width="212dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:background="@null"
+        android:gravity="left"
+        android:inputType="date"
+        android:text="StartDate"
+        android:textColor="@color/color_preloader_black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelStart" />
+
+    <EditText
+        android:id="@+id/periodEnd"
+        android:layout_width="184dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        android:background="@null"
+        android:gravity="right"
+        android:inputType="date"
+        android:text="EndDate"
+        android:textColor="@color/color_preloader_black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/periodStart"
+        app:layout_constraintTop_toBottomOf="@+id/labelStart" />
+
+
+    <TextView
+        android:id="@+id/total_value"
         android:layout_width="390dp"
-        android:layout_height="50dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Total Value: $1,123,000.00"
+        android:textColor="@color/color_preloader_black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/periodStart" />
 
-        <TextView
-            android:id="@+id/total_value"
-            android:layout_width="390dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="Total Value: $1,123,000.00"
-            android:textColor="@color/color_preloader_black"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/textbox"
-        android:layout_width="390dp"
-        android:layout_height="33dp"
-        android:orientation="horizontal">
+    <TextView
+        android:id="@+id/total_cost"
+        android:layout_width="204dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Cost $45,000,000.00"
+        android:textColor="@color/color_preloader_black"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/total_value" />
 
-        <TextView
-            android:id="@+id/total_cost"
-            android:layout_width="195dp"
-            android:layout_height="30dp"
-            android:layout_gravity="left"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="Cost $45,000,000.00"
-            android:textColor="@color/color_preloader_black"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/gain_loss"
+        android:layout_width="184dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Gain/Loss $421.65.00"
+        android:textColor="@color/color_preloader_black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/total_cost"
+        app:layout_constraintTop_toTopOf="@+id/total_cost" />
 
-        <TextView
-            android:id="@+id/gain_loss"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
-            android:layout_gravity="right"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="Gain/Loss $421.65.00"
-            android:textColor="@color/color_preloader_black"
-            android:textStyle="bold" />
-
-    </LinearLayout>
 
     <ListView
         android:id="@+id/lv"
-        android:layout_width="wrap_content"
-        android:layout_height="373dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_width="398dp"
+        android:layout_height="395dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:paddingBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gain_loss">
 
     </ListView>
 
@@ -167,5 +168,5 @@
             tools:layout_editor_absoluteY="657dp" />
 
     -->
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
