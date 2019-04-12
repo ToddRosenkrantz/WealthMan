@@ -256,8 +256,13 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
             Log.e("TAG", gainData.size() + "");
             DecimalFormat decimalFormat = new DecimalFormat("0.0000");
             Double totalGain = db.getTotalGain(userid, startDate, endDate);
-            String str = decimalFormat.format(totalGain);
-            tvTotal.setText(str);
+            if (totalGain <= 0) {
+                totalGain = Math.abs(totalGain);
+            } else {
+                totalGain = totalGain * (-1);
+            }
+//            String str = decimalFormat.format(totalGain);
+            tvTotal.setText(totalGain + "");
         }
 
     }
