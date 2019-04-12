@@ -10,14 +10,13 @@
     <EditText
         android:id="@+id/log_date"
         android:layout_width="342dp"
-        android:layout_height="39dp"
+        android:layout_height="44dp"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="244dp"
         android:layout_weight="1"
         android:hint="2019/03/01"
-        android:textColor="@color/color_preloader_black"
         android:inputType="date"
+        android:textColor="@color/color_preloader_black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,14 +49,13 @@
     <EditText
         android:id="@+id/log_qty"
         android:layout_width="342dp"
-        android:layout_height="39dp"
+        android:layout_height="44dp"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="176dp"
         android:layout_weight="1"
         android:hint="100.0"
-        android:textColor="@color/color_preloader_black"
         android:inputType="numberSigned|numberDecimal"
+        android:textColor="@color/color_preloader_black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -103,14 +101,13 @@
     <EditText
         android:id="@+id/log_price"
         android:layout_width="342dp"
-        android:layout_height="39dp"
+        android:layout_height="44dp"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="96dp"
         android:layout_weight="1"
         android:hint="165.71"
-        android:textColor="@color/color_preloader_black"
         android:inputType="numberSigned|numberDecimal"
+        android:textColor="@color/color_preloader_black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

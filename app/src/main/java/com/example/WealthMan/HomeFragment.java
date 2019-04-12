@@ -116,8 +116,8 @@ public class HomeFragment extends Fragment {
         //        final int userid = intent.getIntExtra("UserID", 1);
         SharedPreferences preference = getContext().getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
         final int userid = preference.getInt("UserID", 1);
-//        Calendar newDate = Calendar.getInstance();
-//        Date startDate = newDate.getTime();
+        Calendar newDate = Calendar.getInstance();
+        Date startDate = newDate.getTime();
 //        String today = sdf.format(startDate);
 
         DecimalFormatSymbols my_format = new DecimalFormatSymbols();
@@ -175,7 +175,8 @@ public class HomeFragment extends Fragment {
                     TextView sym = (TextView) Lin1.getChildAt(1);
                     //                String companyToSend = tv.getText().toString();
                     String stringToSend = sym.getText().toString();
-                    myAutoComplete.setText(tv.getText().toString());
+                    myAutoComplete.setText("");
+//                    myAutoComplete.setText(tv.getText().toString());
                     Log.e("MAIN", stringToSend);
                     nextActivity(stringToSend, userid);
                 }
@@ -202,7 +203,7 @@ public class HomeFragment extends Fragment {
                 nextActivity(stock.symbol, userid);
             }
         });
-        sDatePickerDialog.updateDate(2014,4,1);
+        sDatePickerDialog.updateDate(2014,3,1);
         totalPorfolioValue.setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch (View v, MotionEvent event){

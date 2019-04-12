@@ -13,6 +13,7 @@ next steps:
  */
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -22,10 +23,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
     AlertDialog.Builder confirmExit;
+    Button stocks;
+    Button gains;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,8 +61,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void initView() {
         replaceFragment(HomeFragment.getInstance(), R.id.flayout_content);
 
-        (findViewById(R.id.btn_stock)).setOnClickListener(this);
-        (findViewById(R.id.btn_capital_gain)).setOnClickListener(this);
+        stocks = findViewById(R.id.btn_stock);
+        stocks.setOnClickListener(this);
+        gains = findViewById(R.id.btn_capital_gain);
+        gains.setOnClickListener(this);
     }
 
     protected void replaceFragment(Fragment baseFragment, @IdRes int id) {
@@ -74,10 +80,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.btn_stock:
                 replaceFragment(HomeFragment.getInstance(), R.id.flayout_content);
+                stocks.setTextColor(Color.rgb(255, 255, 255));
+                gains.setTextColor(Color.rgb(170, 170, 170));
                 break;
 
             case R.id.btn_capital_gain:
                 replaceFragment(CapitalGainFragment.getInstance(), R.id.flayout_content);
+                stocks.setTextColor(Color.rgb(170, 170, 170));
+                gains.setTextColor(Color.rgb(255, 255, 255));
                 break;
         }
     }

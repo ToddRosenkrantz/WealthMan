@@ -44,58 +44,54 @@
 
     <TextView
         android:id="@+id/labelStart"
-        android:layout_width="205dp"
+        android:layout_width="195dp"
         android:layout_height="15dp"
-        android:layout_marginStart="8dp"
         android:background="@null"
         android:gravity="left"
         android:inputType="date"
         android:text="Period Start"
         android:textColor="@color/color_preloader_black"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/myautocomplete"
         app:layout_constraintTop_toBottomOf="@+id/myautocomplete" />
 
     <TextView
         android:id="@+id/labelEnd"
-        android:layout_width="180dp"
-        android:layout_height="14dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="195dp"
+        android:layout_height="15dp"
         android:background="@null"
         android:gravity="right"
         android:inputType="date"
         android:text="Period End"
         android:textColor="@color/color_preloader_black"
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/myautocomplete"
         app:layout_constraintStart_toEndOf="@+id/labelStart"
         app:layout_constraintTop_toBottomOf="@+id/myautocomplete" />
 
 
     <EditText
         android:id="@+id/periodStart"
-        android:layout_width="212dp"
+        android:layout_width="195dp"
         android:layout_height="24dp"
-        android:layout_marginStart="8dp"
         android:background="@null"
         android:gravity="left"
         android:inputType="date"
         android:text="StartDate"
         android:textColor="@color/color_preloader_black"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/labelStart"
         app:layout_constraintTop_toBottomOf="@+id/labelStart" />
 
     <EditText
         android:id="@+id/periodEnd"
-        android:layout_width="184dp"
+        android:layout_width="195dp"
         android:layout_height="24dp"
-        android:layout_marginEnd="8dp"
         android:background="@null"
         android:gravity="right"
         android:inputType="date"
         android:text="EndDate"
         android:textColor="@color/color_preloader_black"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/myautocomplete"
         app:layout_constraintStart_toEndOf="@+id/periodStart"
         app:layout_constraintTop_toBottomOf="@+id/labelStart" />
 
@@ -109,7 +105,7 @@
         android:gravity="center_horizontal|center_vertical"
         android:text="Total Value: $1,123,000.00"
         android:textColor="@color/color_preloader_black"
-        android:textSize="30sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -118,26 +114,24 @@
 
     <TextView
         android:id="@+id/total_cost"
-        android:layout_width="204dp"
+        android:layout_width="195dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:gravity="center_horizontal|center_vertical"
         android:text="Cost $45,000,000.00"
         android:textColor="@color/color_preloader_black"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/total_value"
         app:layout_constraintTop_toBottomOf="@+id/total_value" />
 
     <TextView
         android:id="@+id/gain_loss"
-        android:layout_width="184dp"
+        android:layout_width="195dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:gravity="center_horizontal|center_vertical"
         android:text="Gain/Loss $421.65.00"
         android:textColor="@color/color_preloader_black"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/total_value"
         app:layout_constraintStart_toEndOf="@+id/total_cost"
         app:layout_constraintTop_toTopOf="@+id/total_cost" />
 
@@ -145,7 +139,7 @@
     <ListView
         android:id="@+id/lv"
         android:layout_width="398dp"
-        android:layout_height="395dp"
+        android:layout_height="511dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:paddingBottom="4dp"
