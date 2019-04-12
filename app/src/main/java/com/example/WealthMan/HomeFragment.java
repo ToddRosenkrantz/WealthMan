@@ -474,8 +474,10 @@ public class HomeFragment extends Fragment {
 //                                tempStock = db.getValue(userid, qList.batches.get(i).quote.symbol);
 //                                System.out.print(uid+","+ qList.batches.get(i).quote.symbol + "," +p_start.getText().toString() + "," +p_end.getText().toString());
                                 tempStock.setCurrentPrice(qList.batches.get(i).quote.delayedPrice);
-                                sumCost += tempStock.getExtendedPrice();
-                                sumValue += tempStock.getCurrentValue();
+                                if (tempStock.shares > 0){
+                                    sumCost += tempStock.getExtendedPrice();
+                                    sumValue += tempStock.getCurrentValue();
+                                }
                                 tempPortfolio.add(tempStock);
 //                                System.out.println(tempStock.getSymbol() + "   C: " +sumCost + " , V: " + sumValue);
                             }
@@ -520,6 +522,7 @@ public class HomeFragment extends Fragment {
             queue.add(stringRequest);
         }
     */
+/*  Moved to HomeActivity after making this a fragment
     public void onBackPressed(){
         confirmExit = new AlertDialog.Builder(getActivity());
 //        Toast.makeText(this, "You Long clicked " + adapter.getItem(p).getID() + " on row number " + p, Toast.LENGTH_SHORT).show();
@@ -541,6 +544,7 @@ public class HomeFragment extends Fragment {
         //Setting the title manually
         alert.show();
     }
+*/
     public static class stockValue {
         private String symbol;
         private Double shares;

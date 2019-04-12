@@ -49,8 +49,8 @@ public class GainLossAdapter extends RecyclerView.Adapter<GainLossAdapter.GainLo
         } else {
             gain = gain * (-1);
         }
-//        String str = decimalFormat.format(gain);
-        holder.tvGain.setText(gain + "");
+        String str = decimalFormat.format(gain);
+        holder.tvGain.setText(str);
     }
 
     public void addDate(Transaction date) {
