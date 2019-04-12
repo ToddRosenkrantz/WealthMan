@@ -31,7 +31,7 @@
         android:layout_marginTop="56dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="2dp"
         android:completionThreshold="1"
         android:drawableLeft="@android:drawable/ic_menu_search"
         android:hint="Stock Symbol or Company Name"
@@ -40,7 +40,7 @@
         <LinearLayout
             android:layout_width="392dp"
             android:layout_height="14dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="2dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -120,7 +120,7 @@
     <LinearLayout
         android:id="@+id/textbox"
         android:layout_width="390dp"
-        android:layout_height="40dp"
+        android:layout_height="33dp"
         android:orientation="horizontal">
 
         <TextView
@@ -147,8 +147,8 @@
 
     <ListView
         android:id="@+id/lv"
-        android:layout_width="match_parent"
-        android:layout_height="375dp"
+        android:layout_width="wrap_content"
+        android:layout_height="373dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp">

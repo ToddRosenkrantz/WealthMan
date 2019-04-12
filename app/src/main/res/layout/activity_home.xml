@@ -3,32 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/color_preloader_black"
     android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/flayout_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/color_preloader_end"
         app:layout_constraintBottom_toTopOf="@+id/btn_stock" />
 
     <Button
         android:id="@+id/btn_stock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="87dp"
+        android:layout_height="38dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginBottom="8dp"
+        android:background="@color/color_preloader_black"
         android:text="Stock"
-        app:layout_constraintEnd_toStartOf="@id/btn_capital_gain"
+        android:textColor="@color/color_preloader_end"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_capital_gain"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_capital_gain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="95dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center_horizontal|center_vertical"
         android:layout_marginLeft="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="2dp"
+        android:background="@color/color_preloader_black"
         android:text="Capital Gain"
+        android:textColor="@color/color_preloader_end"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_stock" />

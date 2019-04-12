@@ -540,7 +540,6 @@ public class HomeFragment extends Fragment {
         AlertDialog alert = confirmExit.create();
         //Setting the title manually
         alert.show();
-
     }
     public static class stockValue {
         private String symbol;

@@ -12,17 +12,20 @@ next steps:
 
  */
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+    AlertDialog.Builder confirmExit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,7 +33,27 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_home);
         initView();
     }
-
+    public void onBackPressed(){
+        confirmExit = new AlertDialog.Builder(this);
+//        Toast.makeText(this, "You Long clicked " + adapter.getItem(p).getID() + " on row number " + p, Toast.LENGTH_SHORT).show();
+//        removeAt(p, tList.indexOf(adapter.getItem(p)), adapter.getItem(p).getID());
+        confirmExit.setMessage("Logout from Stock Recording System?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        //Creating dialog box
+        AlertDialog alert = confirmExit.create();
+        //Setting the title manually
+        alert.show();
+    }
     private void initView() {
         replaceFragment(HomeFragment.getInstance(), R.id.flayout_content);
 

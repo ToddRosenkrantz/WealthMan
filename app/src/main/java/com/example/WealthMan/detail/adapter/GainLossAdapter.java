@@ -42,7 +42,7 @@ public class GainLossAdapter extends RecyclerView.Adapter<GainLossAdapter.GainLo
     public void onBindViewHolder(@NonNull GainLossViewHolder holder, int i) {
         Transaction bean = sharesStockBeans.get(i);
         holder.tvName.setText(bean.getSymbol());
-        DecimalFormat decimalFormat =new DecimalFormat("0.00");
+        DecimalFormat decimalFormat = new DecimalFormat("$#,###.00");
         double gain = bean.getPrice();
         String str = decimalFormat.format(gain);
         holder.tvGain.setText( str);

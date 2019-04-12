@@ -80,8 +80,8 @@ public class LoginActivity extends AppCompatActivity {
                     editor.commit();
                     System.out.println("User ID from DB: " + userid);
                     HomePage.putExtra ("UserID", userid);
-                    finish();
-//                    startActivity(HomePage);
+                    startActivity(HomePage);
+//                    finish();
                 }
                 else if(email.length()==0
                         || pwd.length() == 0)

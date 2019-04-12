@@ -102,11 +102,11 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
         rvContent.setAdapter(mAdapter);
         String minDate = db.getMinDate(userid);
         tvStartDate.setText(minDate);
-        mSelectStartTime = minDate;
+//        mSelectStartTime = minDate;
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
         String current = df.format(new Date());
         tvEndDate.setText(current);
-        mSelectEndTime = current;
+//        mSelectEndTime = current;
         Log.e("TAG", "min == " + minDate);
         Log.e("TAG", "current == " + current);
     }
@@ -222,15 +222,15 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
                 mAdapter.notifyDataSetChanged();
             }
             Log.e("TAG", gainData.size()+"");
-            DecimalFormat decimalFormat =new DecimalFormat("0.0000");
+            DecimalFormat decimalFormat =new DecimalFormat("$#,###.00");
             Double totalGain = db.getTotalGain(userid, startDate, endDate);
             if (totalGain <= 0) {
                 totalGain = Math.abs(totalGain);
             } else {
                 totalGain = totalGain * (-1);
             }
-//            String str = decimalFormat.format(totalGain);
-            tvTotal.setText(totalGain + "");
+            String str = decimalFormat.format(totalGain);
+            tvTotal.setText(str);
         }
 
     }

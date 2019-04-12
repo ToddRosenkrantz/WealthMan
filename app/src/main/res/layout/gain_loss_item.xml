@@ -13,7 +13,7 @@
        android:layout_margin="10dp"
         android:text="TextView"
         android:textSize="16sp"
-        android:textColor="#333333"
+        android:textColor="@color/color_preloader_black"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/tv_gain"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,6 +26,7 @@
         android:layout_margin="10dp"
         android:text="TextView"
         android:textSize="16sp"
+        android:textColor="@color/color_preloader_black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_name"
         app:layout_constraintTop_toTopOf="parent" />
