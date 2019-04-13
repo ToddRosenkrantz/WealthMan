@@ -15,6 +15,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btn_stock"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:navigationBarColor="@color/color_preloader_black"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button

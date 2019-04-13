@@ -125,6 +125,7 @@ public class HomeFragment extends Fragment {
         my_format.setDecimalSeparator('.');
 
         final DecimalFormat decimalFormat = new DecimalFormat("$#,###.00", my_format);
+        final DecimalFormat percentFormat = new DecimalFormat("0.00%");
 
 
 //        System.out.println("UserID: " + userid);
@@ -213,11 +214,11 @@ public class HomeFragment extends Fragment {
 //                System.out.println("Final C: " +sumCost + " , Final V: " + sumValue);
                 sValue = decimalFormat.format(sumValue);
                 sCost = decimalFormat.format((sumCost));
-                Double sumGainLoss = sumValue - sumCost;
-                String sGainLoss = decimalFormat.format(sumGainLoss);
+                Double sumGainLoss = ((sumValue - sumCost)/sumCost);
+                String sGainLoss = percentFormat.format(sumGainLoss);
                 totalPorfolioValue.setText("Total Value "+ sValue);
                 totalPorfolioCost.setText("Cost " + sCost);
-                totalGainLoss.setText("Gain/Loss " + sGainLoss);
+                totalGainLoss.setText("Performance " + sGainLoss);
                 if(sumGainLoss < 0){
                     totalPorfolioValue.setBackgroundColor(Color.argb(41,223, 108, 88));
                     totalGainLoss.setBackgroundColor(Color.argb(41,223, 108, 88));
@@ -259,7 +260,7 @@ public class HomeFragment extends Fragment {
         String sGainLoss = decimalFormat.format(sumGainLoss);
         totalPorfolioValue.setText("Touch to update");
         totalPorfolioCost.setText("Cost ");
-        totalGainLoss.setText("Gain/Loss ");
+        totalGainLoss.setText("Performance ");
     }
 
 // End Oncreate, begin various support functions
