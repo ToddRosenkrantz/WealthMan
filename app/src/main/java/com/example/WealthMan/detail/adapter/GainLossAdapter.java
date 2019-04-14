@@ -1,6 +1,7 @@
 package com.example.WealthMan.detail.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -46,8 +47,10 @@ public class GainLossAdapter extends RecyclerView.Adapter<GainLossAdapter.GainLo
         double gain = bean.getPrice();
         if (gain <= 0) {
             gain = Math.abs(gain);
+            holder.itemView.setBackgroundColor(Color.argb(41,156, 223, 88));
         } else {
             gain = gain * (-1);
+            holder.itemView.setBackgroundColor(Color.argb(41,223, 108, 88));
         }
         String str = decimalFormat.format(gain);
         holder.tvGain.setText(str);
