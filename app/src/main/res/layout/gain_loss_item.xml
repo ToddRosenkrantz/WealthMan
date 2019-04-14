@@ -8,12 +8,13 @@
 
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
-       android:layout_margin="10dp"
+        android:gravity="end"
+        android:layout_margin="10dp"
         android:text="TextView"
-        android:textSize="16sp"
         android:textColor="@color/color_preloader_black"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/tv_gain"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,18 +22,19 @@
 
     <TextView
         android:id="@+id/tv_gain"
-        android:layout_width="wrap_content"
+        android:layout_width="96dp"
         android:layout_height="wrap_content"
+        android:gravity="end"
         android:layout_margin="10dp"
         android:text="TextView"
-        android:textSize="16sp"
         android:textColor="@color/color_preloader_black"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_name"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#666666"
         android:layout_marginTop="10dp"

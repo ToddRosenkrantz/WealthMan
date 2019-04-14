@@ -37,8 +37,10 @@ import com.google.gson.GsonBuilder;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -116,8 +118,13 @@ public class HomeFragment extends Fragment {
         //        final int userid = intent.getIntExtra("UserID", 1);
         SharedPreferences preference = getContext().getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
         final int userid = preference.getInt("UserID", 1);
-        Calendar newDate = Calendar.getInstance();
-        Date startDate = newDate.getTime();
+/*        Calendar newDate = Calendar.getInstance();
+        try {
+            newDate.setTime(sdf.parse(start_date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date startDate = newDate.getTime();*/
 //        String today = sdf.format(startDate);
 
         DecimalFormatSymbols my_format = new DecimalFormatSymbols();
@@ -136,9 +143,13 @@ public class HomeFragment extends Fragment {
         final TextView totalPorfolioCost = (TextView) view.findViewById(R.id.total_cost);
         final TextView totalGainLoss = (TextView) view.findViewById(R.id.gain_loss);
         p_start = (EditText) view.findViewById(R.id.periodStart);
+        start_date = db.getMinDate(userid);
+        System.out.println("Min Date: " + start_date);
         p_start.setText(start_date);
+        p_start.setFocusable(false);
         p_end = (EditText) view.findViewById(R.id.periodEnd);
         p_end.setText(today);
+        p_end.setFocusable(false);
         p_start.setVisibility(View.VISIBLE);
         p_end.setVisibility(View.VISIBLE);
         view.findViewById(R.id.labelStart).setVisibility(View.VISIBLE);
@@ -204,17 +215,16 @@ public class HomeFragment extends Fragment {
                 nextActivity(stock.symbol, userid);
             }
         });
-        sDatePickerDialog.updateDate(2014,3,1);
-        totalPorfolioValue.setOnTouchListener(new View.OnTouchListener(){
+        totalPorfolioValue.setOnClickListener(new View.OnClickListener(){
             @Override
-            public boolean onTouch (View v, MotionEvent event){
+            public void onClick (View v){
                 getWatchListData(db.getWatchList(userid).trim());
                 getPortfolioData(db.getPortfolioSymbols(userid, p_start.getText().toString(), p_end.getText().toString()), userid);
 //                System.out.println("Portfolio items = " + portfolioValue.size());
 //                System.out.println("Final C: " +sumCost + " , Final V: " + sumValue);
                 sValue = decimalFormat.format(sumValue);
                 sCost = decimalFormat.format((sumCost));
-                Double sumGainLoss = ((sumValue - sumCost)/sumCost);
+                double sumGainLoss = ((sumValue - sumCost)/sumCost);
                 String sGainLoss = percentFormat.format(sumGainLoss);
                 totalPorfolioValue.setText("Total Value "+ sValue);
                 totalPorfolioCost.setText("Cost " + sCost);
@@ -232,23 +242,28 @@ public class HomeFragment extends Fragment {
                 }
                 sa.notifyDataSetChanged();
 
-                return false;
+//                return false;
             }
         });
-        p_start.setOnTouchListener(new View.OnTouchListener() {
+        p_start.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View v) {
+                Calendar cldr = myDates(p_start.getText().toString());
+                System.out.println("Starting with this string: " + p_start.getText().toString() + " with a year of: " + cldr.YEAR);
+                sDatePickerDialog.updateDate(cldr.get(Calendar.YEAR),cldr.get(Calendar.MONTH) ,cldr.get(Calendar.DAY_OF_MONTH));
                 sDatePickerDialog.show();
                 getPortfolioData(db.getPortfolioSymbols(userid, p_start.getText().toString(), p_end.getText().toString()), userid);
-                return false;
+              //  return false;
             }
         });
-        p_end.setOnTouchListener(new View.OnTouchListener() {
+        p_end.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View v) {
+                Calendar cldr = myDates(p_start.getText().toString());
+                eDatePickerDialog.updateDate(cldr.get(Calendar.YEAR),cldr.get(Calendar.MONTH) ,cldr.get(Calendar.DAY_OF_MONTH));
                 eDatePickerDialog.show();
                 getPortfolioData(db.getPortfolioSymbols(userid, p_start.getText().toString(), p_end.getText().toString()), userid);
-                return false;
+//                return false;
             }
         });
 
@@ -551,6 +566,17 @@ public class HomeFragment extends Fragment {
         alert.show();
     }
 */
+public Calendar myDates(String date){
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+    Calendar newDate = Calendar.getInstance();
+    System.out.println("String: " + date +" Year: " + newDate.get(Calendar.YEAR) + " Month: " + newDate.get(Calendar.MONTH) + " DoM: " + newDate.get(Calendar.DAY_OF_MONTH));
+    try {
+        newDate.setTime(sdf.parse(date));
+    } catch (ParseException e) {
+        e.printStackTrace();
+    }
+    return newDate;
+}
     public static class stockValue {
         private String symbol;
         private Double shares;
