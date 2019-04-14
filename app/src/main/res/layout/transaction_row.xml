@@ -33,8 +33,9 @@
 -->
         <TextView
             android:id="@+id/stock"
-            android:layout_width="75dp"
+            android:layout_width="80dp"
             android:layout_height="30dp"
+            android:paddingLeft="2dp"
             android:text="Stock"
             android:textSize="24sp"
             android:textStyle="normal"
@@ -44,11 +45,12 @@
 
         <TextView
             android:id="@id/shares"
-            android:layout_width="100dp"
+            android:layout_width="80dp"
             android:layout_height="30dp"
-            android:gravity="left"
+            android:gravity="right"
             android:text="Quantity"
             android:textColor="@color/color_preloader_black"
+            android:paddingRight="5dp"
             android:background="@color/color_green_tint"
             android:textSize="24sp"
             android:textStyle="normal" />
@@ -60,10 +62,11 @@
 -->
         <TextView
             android:id="@id/price"
-            android:layout_width="90dp"
+            android:layout_width="110dp"
             android:layout_height="30dp"
-            android:gravity="left"
+            android:gravity="right"
             android:text="Price"
+            android:paddingRight="10dp"
             android:textColor="@color/color_preloader_black"
             android:background="@color/color_green_tint"
             android:textSize="24sp"
@@ -80,6 +83,7 @@
             android:layout_height="30dp"
             android:gravity="left"
             android:text="Date"
+            android:paddingLeft="5dp"
             android:textColor="@color/color_preloader_black"
             android:background="@color/color_green_tint"
             android:textSize="24sp"

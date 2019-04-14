@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout2"
     android:layout_width="match_parent"
+    android:background="@color/color_project_bg_green"
     android:layout_height="match_parent">
 
     <TextView
@@ -33,7 +34,7 @@
 
     <TextView
         android:id="@+id/tv_start_date"
-        android:layout_width="200dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="25dp"
         android:background="@drawable/shape_text_bg"
@@ -47,7 +48,7 @@
 
     <TextView
         android:id="@+id/tv_end_date"
-        android:layout_width="200dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="25dp"
         android:background="@drawable/shape_text_bg"
@@ -63,39 +64,39 @@
         android:id="@+id/btn_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginRight="8dp"
         android:text="Submit"
-        android:textColor="@color/color_preloader_black"
+        android:background="@drawable/rounded_button"
+        android:textColor="@color/color_preloader_end"
         android:textSize="16sp"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_end_date" />
+        app:layout_constraintStart_toEndOf="@+id/tv_end_date"
+        app:layout_constraintTop_toTopOf="@+id/tv_start_date" />
 
     <TextView
         android:id="@+id/tv_total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="8dp"
-        android:text="Total gain / loss"
+        android:layout_marginTop="16dp"
+        android:text="Total Gain/Loss"
         android:textColor="@color/color_preloader_black"
-        android:textSize="16sp"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_search" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/tv_total_gain"
-        android:layout_width="194dp"
-        android:layout_height="21dp"
+        android:layout_width="182dp"
+        android:layout_height="32dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text=""
         android:textColor="@color/color_preloader_black"
-        android:textSize="16sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_total"
         app:layout_constraintTop_toTopOf="@+id/tv_total" />
@@ -103,8 +104,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_content"
         android:layout_width="match_parent"
-        android:layout_height="416dp"
+        android:layout_height="510dp"
         android:layout_marginTop="32dp"
+        android:background="@color/color_preloader_end"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
