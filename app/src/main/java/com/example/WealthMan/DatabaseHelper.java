@@ -12,8 +12,10 @@ import com.example.WealthMan.detail.bean.SharesStockBean;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.String.copyValueOf;
 import static java.lang.String.valueOf;
@@ -603,12 +605,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return money;
     }
 
-    public ArrayList<?> getGainData(Integer userId, String sDate, String eDate) {
+    public ArrayList<Transaction> getGainData(Integer userId, String sDate, String eDate) {
+        // Use maps to facilitate mapping buy prices and sell prices
+        Map<String, Double> buy_map = new HashMap<>();
+        Map<String, Double> sell_map = new HashMap<>();
+        Map<String, Double> shares_sold = new HashMap<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String table = "translog";
-        String sql = "SELECT symbol, sum(shares* price) AS extMoney FROM " + table;
-        sql += " WHERE userid = " + userId.toString() + " AND date BETWEEN '" + sDate + "' AND '" + eDate + "'" + " GROUP BY symbol";
+//        String sql = "SELECT symbol, sum(shares* price) AS extMoney FROM " + table;
+//        sql += " WHERE userid = " + userId.toString() + " AND date BETWEEN '" + sDate + "' AND '" + eDate + "'" + " GROUP BY symbol";
+// Get COST BASIS
+        String sql = "select symbol, total(shares*price)/total(shares) as av_buy from translog where shares > 0";
+        sql += " AND date BETWEEN (select min(date) from translog where shares > 0) AND \""  + eDate + "\" AND userid = "+ userId.toString() +" GROUP BY symbol";
+        Cursor cost = db.rawQuery(sql, null);
+        if(cost.moveToFirst()){
+            do{
+                buy_map.put(cost.getString(cost.getColumnIndex("symbol")), cost.getDouble(cost.getColumnIndex("av_buy")));
+            } while (cost.moveToNext());
+        }
+        cost.close();
+// Get Sell info
+        sql = "select symbol, total(shares*price)/total(shares) as av_sell, -total(shares) as shares from translog where shares < 0 ";
+        sql+= "AND date BETWEEN \"" + sDate + "\" AND \""  + eDate + "\" AND userid = "+ userId.toString() +" GROUP BY symbol";
+        Cursor sell = db.rawQuery(sql, null);
+        if(sell.moveToFirst()){
+            do{
+                sell_map.put(sell.getString(sell.getColumnIndex("symbol")), sell.getDouble(sell.getColumnIndex("av_sell")));
+                shares_sold.put(sell.getString(sell.getColumnIndex("symbol")), sell.getDouble(sell.getColumnIndex("shares")));
+            } while (sell.moveToNext());
+        }
+        sell.close();
+        db.close();
+// Now we have three maps - make the list to return to the calling function
         ArrayList<Transaction> tList = new ArrayList<>();
+        buy_map.forEach((k,v) ->{
+            Transaction temp = new Transaction(k,0.0,0.0,"");
+            if(sell_map.containsKey(k)){
+                temp.setPrice((sell_map.get(k)-buy_map.get(k))*shares_sold.get(k));
+            }
+            tList.add(temp);
+        });
+
+/*
         Cursor c = db.rawQuery(sql, null);
         if (c.moveToFirst()) {
             do {
@@ -621,6 +659,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         c.close();
         db.close();
+*/
         return tList;
     }
 

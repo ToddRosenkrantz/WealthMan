@@ -211,7 +211,7 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
         if (db != null) {
             String startDate = tvStartDate.getText().toString().trim();
             String endDate = tvEndDate.getText().toString().trim();
-            ArrayList<?> gainData = db.getGainData(userid, startDate, endDate);
+            ArrayList<Transaction> gainData = db.getGainData(userid, startDate, endDate);
             if (gainData.size() == 0) {
                 Toast.makeText(getContext(), "No result.", Toast.LENGTH_SHORT).show();
                 return;
@@ -223,15 +223,24 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
             }
             Log.e("TAG", gainData.size()+"");
             DecimalFormat decimalFormat =new DecimalFormat("$#,###.00");
+/*
             Double totalGain = db.getTotalGain(userid, startDate, endDate);
             if (totalGain <= 0) {
                 totalGain = Math.abs(totalGain);
             } else {
                 totalGain = totalGain * (-1);
             }
-            String str = decimalFormat.format(totalGain);
+*/
+            String str = decimalFormat.format(TotalGains(gainData));
             tvTotal.setText(str);
         }
 
+    }
+    public double TotalGains(ArrayList<Transaction> gList){
+        double sum = 0.0;
+       for (int i = 0; i < gList.size(); i++){
+           sum += gList.get(i).getPrice();
+       }
+        return sum;
     }
 }

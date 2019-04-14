@@ -77,11 +77,18 @@ public class IconAdapter extends BaseAdapter {
         }
         LineDataSet dataSet = new LineDataSet(entries, "Label");
 //        dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+//        if(dataSet.getEntryForIndex(0).getY() > dataSet.getEntryForIndex(dataSet.getEntryCount()-1).getY())
         dataSet.setLineWidth(1f);
-        dataSet.setColor(Color.rgb(69,139,0));
+        if(dataSet.getEntryForIndex(0).getY() < dataSet.getEntryForIndex(dataSet.getEntryCount()-1).getY()) {
+            dataSet.setColor(Color.rgb(69, 139, 0));
+            dataSet.setFillColor(Color.argb(1,69,139,0));
+        }
+        else{
+            dataSet.setColor(Color.rgb(139, 69, 0));
+            dataSet.setFillColor(Color.argb(1,139,69,0));
+        }
         dataSet.setDrawCircles(false);
         dataSet.setDrawFilled(true);
-        dataSet.setFillColor(Color.rgb(69,139,0));
         dataSet.setValueTextColor(Color.rgb(1,1,1));
         dataSet.setDrawValues(false);
         LineData lineData = new LineData(dataSet);

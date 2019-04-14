@@ -45,11 +45,11 @@ public class GainLossAdapter extends RecyclerView.Adapter<GainLossAdapter.GainLo
         holder.tvName.setText(bean.getSymbol());
         DecimalFormat decimalFormat = new DecimalFormat("$#,###.00");
         double gain = bean.getPrice();
-        if (gain <= 0) {
-            gain = Math.abs(gain);
+        if (gain >= 0) {
+//            gain = Math.abs(gain);
             holder.itemView.setBackgroundColor(Color.argb(41,156, 223, 88));
         } else {
-            gain = gain * (-1);
+//            gain = gain * (-1);
             holder.itemView.setBackgroundColor(Color.argb(41,223, 108, 88));
         }
         String str = decimalFormat.format(gain);
