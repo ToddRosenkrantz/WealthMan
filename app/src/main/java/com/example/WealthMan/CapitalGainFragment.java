@@ -110,11 +110,14 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
         String current = df.format(new Date());
         tvEndDate.setText(current);
+        if(minDate == null)
+            tvStartDate.setText(current);
 //        mSelectEndTime = current;
         Log.e("TAG", "min == " + minDate);
         Log.e("TAG", "current == " + current);
         mSelectStartTime = tvStartDate.getText().toString();
         mSelectEndTime = tvEndDate.getText().toString();
+        doSearch();
     }
 
     @Override
@@ -248,6 +251,7 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
             ArrayList<Transaction> gainData = db.getGainData(userid, startDate, endDate);
             if (gainData.size() == 0) {
                 Toast.makeText(getContext(), "No result.", Toast.LENGTH_SHORT).show();
+                mAdapter.clearData();
                 return;
             }
             mData.clear();

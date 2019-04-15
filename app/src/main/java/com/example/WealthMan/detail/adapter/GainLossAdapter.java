@@ -60,6 +60,10 @@ public class GainLossAdapter extends RecyclerView.Adapter<GainLossAdapter.GainLo
         sharesStockBeans.add(date);
         notifyDataSetChanged();
     }
+    public void clearData(){
+        sharesStockBeans.clear();
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {
