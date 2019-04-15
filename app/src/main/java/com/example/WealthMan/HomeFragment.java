@@ -145,6 +145,8 @@ public class HomeFragment extends Fragment {
         p_start = (EditText) view.findViewById(R.id.periodStart);
         start_date = db.getMinDate(userid);
         System.out.println("Min Date: " + start_date);
+        if (start_date == null|| start_date.isEmpty())
+            start_date = sdf.format(new Date());
         p_start.setText(start_date);
         p_start.setFocusable(false);
         p_end = (EditText) view.findViewById(R.id.periodEnd);

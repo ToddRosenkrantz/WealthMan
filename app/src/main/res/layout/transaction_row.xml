@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="1dp">
+    android:layout_height="wrap_content">
 
-<!--    <TextView
+    <!--    <TextView
         android:id="@+id/tvAnimalName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
         android:textSize="20sp"/>-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp">
 
-<!--        <TextView
+
+    <!--        <TextView
             android:id="@+id/tvAnimalName"
             android:layout_width="75dp"
             android:layout_height="30dp"
@@ -25,77 +22,79 @@
             android:textStyle="normal"
             android:textColor="@color/color_preloader_black"
             android:gravity="center_horizontal"/>-->
-<!--
+    <!--
         <View
             android:layout_width="2dp"
             android:layout_height="match_parent"
             android:background="@android:color/black" />
 -->
-        <TextView
-            android:id="@+id/stock"
-            android:layout_width="80dp"
-            android:layout_height="30dp"
-            android:paddingLeft="2dp"
-            android:text="Stock"
-            android:textSize="24sp"
-            android:textStyle="normal"
-            android:textColor="@color/color_preloader_black"
-            android:background="@color/color_green_tint"
-            android:gravity="center_horizontal"/>
+    <TextView
+        android:id="@+id/stock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:paddingLeft="2dp"
+        android:text="Stock"
+        android:textColor="@color/color_preloader_black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@id/shares"
-            android:layout_width="80dp"
-            android:layout_height="30dp"
-            android:gravity="right"
-            android:text="Quantity"
-            android:textColor="@color/color_preloader_black"
-            android:paddingRight="5dp"
-            android:background="@color/color_green_tint"
-            android:textSize="24sp"
-            android:textStyle="normal" />
-<!--
+    <TextView
+        android:id="@id/shares"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="right"
+        android:text="Quantity"
+        android:textColor="@color/color_preloader_black"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toStartOf="@+id/price"
+        app:layout_constraintStart_toEndOf="@+id/stock"
+        app:layout_constraintTop_toTopOf="@+id/stock" />
+    <!--
         <View
             android:layout_width="2dp"
             android:layout_height="match_parent"
             android:background="@android:color/black" />
 -->
-        <TextView
-            android:id="@id/price"
-            android:layout_width="110dp"
-            android:layout_height="30dp"
-            android:gravity="right"
-            android:text="Price"
-            android:paddingRight="10dp"
-            android:textColor="@color/color_preloader_black"
-            android:background="@color/color_green_tint"
-            android:textSize="24sp"
-            android:textStyle="normal" />
-<!--
+    <TextView
+        android:id="@id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:gravity="right"
+        android:text="Price"
+        android:textColor="@color/color_preloader_black"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toStartOf="@+id/date"
+        app:layout_constraintTop_toTopOf="@+id/shares" />
+    <!--
         <View
             android:layout_width="2dp"
             android:layout_height="match_parent"
             android:background="@android:color/black" />
 -->
-        <TextView
-            android:id="@id/date"
-            android:layout_width="150dp"
-            android:layout_height="30dp"
-            android:gravity="left"
-            android:text="Date"
-            android:paddingLeft="5dp"
-            android:textColor="@color/color_preloader_black"
-            android:background="@color/color_green_tint"
-            android:textSize="24sp"
-            android:textStyle="normal" />
-<!--
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@android:color/black" />
--->
+    <TextView
+        android:id="@id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:gravity="left"
+        android:text="Date"
+        android:textColor="@color/color_preloader_black"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/price" />
 
-<!--        <TextView
+    <!--        <TextView
             android:id="@+id/tx_type"
             android:layout_width="75dp"
             android:layout_height="30dp"
@@ -104,5 +103,14 @@
             android:textSize="24sp"
             android:textColor="@color/color_preloader_black"
             android:textStyle="normal"/>-->
-    </LinearLayout>
-</LinearLayout>
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/color_preloader_black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/price" />
+</android.support.constraint.ConstraintLayout>

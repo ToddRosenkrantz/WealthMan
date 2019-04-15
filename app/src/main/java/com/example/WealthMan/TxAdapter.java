@@ -37,16 +37,18 @@ public class TxAdapter extends RecyclerView.Adapter<TxAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
 //        String animal = mData.get(position).getSymbol();
         if (mData.get(position).getShares() <0){
-            holder.mySymbolView.setBackgroundColor(Color.argb(41,223, 108, 88));
-            holder.mySharesView.setBackgroundColor(Color.argb(41,223, 108, 88));
-            holder.myPriceView.setBackgroundColor(Color.argb(41,223, 108, 88));
-            holder.myDateView.setBackgroundColor(Color.argb(41,223, 108, 88));
+            holder.itemView.setBackgroundColor(Color.argb(41,223, 108, 88));
+//            holder.mySymbolView.setBackgroundColor(Color.argb(41,223, 108, 88));
+//            holder.mySharesView.setBackgroundColor(Color.argb(41,223, 108, 88));
+//            holder.myPriceView.setBackgroundColor(Color.argb(41,223, 108, 88));
+//            holder.myDateView.setBackgroundColor(Color.argb(41,223, 108, 88));
         }
         else {
-            holder.mySymbolView.setBackgroundColor(Color.argb(41,156, 223, 88));
-            holder.mySharesView.setBackgroundColor(Color.argb(41,156, 223, 88));
-            holder.myPriceView.setBackgroundColor(Color.argb(41,156, 223, 88));
-            holder.myDateView.setBackgroundColor(Color.argb(41,156, 223, 88));
+              holder.itemView.setBackgroundColor(Color.argb(41,156, 223, 88));
+//            holder.mySymbolView.setBackgroundColor(Color.argb(41,156, 223, 88));
+//            holder.mySharesView.setBackgroundColor(Color.argb(41,156, 223, 88));
+//            holder.myPriceView.setBackgroundColor(Color.argb(41,156, 223, 88));
+//            holder.myDateView.setBackgroundColor(Color.argb(41,156, 223, 88));
         }
         holder.mySymbolView.setText(mData.get(position).getSymbol());
         String shares = String.format("%.1f", mData.get(position).getShares());

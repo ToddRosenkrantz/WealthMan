@@ -16,22 +16,23 @@
                 android:id="@id/stock"
                 android:layout_width="75dp"
                 android:layout_height="30dp"
+                android:gravity="center_horizontal"
                 android:text="Stock"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:gravity="center_horizontal"/>
+                android:textSize="16sp"
+                android:textStyle="bold" />
             <View
                 android:layout_width="2dp"
                 android:layout_height="match_parent"
                 android:background="@android:color/black" />
+
             <TextView
                 android:id="@id/shares"
                 android:layout_width="80dp"
                 android:layout_height="30dp"
+                android:gravity="end|center_horizontal"
                 android:text="Shares"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:gravity="end|center_horizontal"/>
+                android:textSize="16sp"
+                android:textStyle="bold" />
             <View
                 android:layout_width="2dp"
                 android:layout_height="match_parent"
@@ -43,20 +44,21 @@
                 android:layout_height="30dp"
                 android:gravity="center_horizontal|end"
                 android:text="Price"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
             <View
                 android:layout_width="2dp"
                 android:layout_height="match_parent"
                 android:background="@android:color/black" />
+
             <TextView
                 android:id="@id/date"
                 android:layout_width="100dp"
                 android:layout_height="30dp"
+                android:gravity="center_horizontal"
                 android:text="Date"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:gravity="center_horizontal"/>
+                android:textSize="16sp"
+                android:textStyle="bold" />
             <View
                 android:layout_width="2dp"
                 android:layout_height="match_parent"
@@ -68,7 +70,7 @@
                 android:layout_height="30dp"
                 android:gravity="center_horizontal"
                 android:text="B/S"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
