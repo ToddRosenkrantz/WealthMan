@@ -110,7 +110,7 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
         String current = df.format(new Date());
         tvEndDate.setText(current);
-        if(minDate == null)
+        if (minDate == null)
             tvStartDate.setText(current);
 //        mSelectEndTime = current;
         Log.e("TAG", "min == " + minDate);
@@ -252,6 +252,7 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
             if (gainData.size() == 0) {
                 Toast.makeText(getContext(), "No result.", Toast.LENGTH_SHORT).show();
                 mAdapter.clearData();
+                tvTotal.setText("0");
                 return;
             }
             mData.clear();
@@ -259,8 +260,8 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
             if (mAdapter != null) {
                 mAdapter.notifyDataSetChanged();
             }
-            Log.e("TAG", gainData.size()+"");
-            DecimalFormat decimalFormat =new DecimalFormat("$#,###.00");
+            Log.e("TAG", gainData.size() + "");
+            DecimalFormat decimalFormat = new DecimalFormat("$#,###.00");
 /*
             Double totalGain = db.getTotalGain(userid, startDate, endDate);
             if (totalGain <= 0) {
@@ -274,11 +275,12 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
         }
 
     }
-    public double TotalGains(ArrayList<Transaction> gList){
+
+    public double TotalGains(ArrayList<Transaction> gList) {
         double sum = 0.0;
-       for (int i = 0; i < gList.size(); i++){
-           sum += gList.get(i).getPrice();
-       }
+        for (int i = 0; i < gList.size(); i++) {
+            sum += gList.get(i).getPrice();
+        }
         return sum;
     }
 }
