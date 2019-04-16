@@ -5,6 +5,7 @@
 package com.example.WealthMan;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.PatternMatcher;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ public class RegisterActivity extends AppCompatActivity {
     EditText mTextPin;
     Button mButtonRegister;
     TextView mTextViewLogin;
+    public static final String MY_PREFS_FILE = "wealthman_prefs";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +78,20 @@ public class RegisterActivity extends AppCompatActivity {
                     case 0:             // Everything is good => add user to database
                         long val = db.addUser(user, pwd, email, pin);
                         if(val > 0){
+                            int userid = db.getUserId(email);
+                            long result = db.createWatchlist(userid);  //special one time add
+                            SharedPreferences preference = getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preference.edit();
+                            editor.putInt("UserID", userid);   // Store new time to update
+                            editor.commit();
+                            if (result > 0) {
+                                editor.putBoolean("setupDone", true);
+                                editor.commit();
+                            } else
+                                Toast.makeText(RegisterActivity.this, "Database Error creating initial Watch List", Toast.LENGTH_LONG).show();
                             Toast.makeText(RegisterActivity.this,"You have registered",Toast.LENGTH_SHORT).show();
                             Intent moveToLogin = new Intent(RegisterActivity.this, LoginActivity.class);
-                            startActivity(moveToLogin);
+//                            startActivity(moveToLogin);
                             finish();
                         }
                         else

@@ -227,10 +227,14 @@ public class HomeFragment extends Fragment {
                 sValue = decimalFormat.format(sumValue);
                 sCost = decimalFormat.format((sumCost));
                 double sumGainLoss = ((sumValue - sumCost)/sumCost);
-                String sGainLoss = percentFormat.format(sumGainLoss);
-                totalPorfolioValue.setText("Total Value "+ sValue);
-                totalPorfolioCost.setText("Cost " + sCost);
-                totalGainLoss.setText("Performance " + sGainLoss);
+                String sGainLoss;
+                if(Double.isNaN(sumGainLoss))
+                    sGainLoss = "No Data";
+                else
+                    sGainLoss = percentFormat.format(sumGainLoss);
+                totalPorfolioValue.setText("Total Value: "+ sValue);
+                totalPorfolioCost.setText("Cost: " + sCost);
+                totalGainLoss.setText("Performance: " + sGainLoss);
                 if(sumGainLoss < 0){
                     totalPorfolioValue.setBackgroundColor(Color.argb(41,223, 108, 88));
                     totalGainLoss.setBackgroundColor(Color.argb(41,223, 108, 88));
@@ -335,16 +339,7 @@ public class HomeFragment extends Fragment {
 //                System.out.println("Update was saved");
             } else
                 Toast.makeText(getContext(), "Error updating Stock Symbols", Toast.LENGTH_LONG).show();
-        } else
-//            System.out.println("No Symbol Update is due...");
-            if (!preference.getBoolean("setupDone", false)) {
-                long res = db.createWatchlist();  //special one time add
-                if (res > 0) {
-                    editor.putBoolean("setupDone", true);
-                    editor.commit();
-                } else
-                    Toast.makeText(getContext(), "Database Error creating Watch List", Toast.LENGTH_LONG).show();
-            }
+        }
     }
     public void getWatchListData(String syms){
         final RequestQueue queue = Volley.newRequestQueue(getContext());
@@ -484,7 +479,7 @@ public class HomeFragment extends Fragment {
                     public void onResponse(String response) {
                         ArrayList<stockValue> tempPortfolio = new ArrayList<>();
                         if (response.equals("{}"))
-                            Toast.makeText(getContext(), "No assets in that date range", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "No assets in that date range", Toast.LENGTH_LONG).show();
                         else {
                             sumCost = 0.0;
                             sumValue = 0.0;

@@ -121,7 +121,8 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="32dp"
         android:text="Save"
-        android:textColor="@color/color_preloader_black"
+        android:background="@drawable/rounded_button"
+        android:textColor="@color/color_preloader_end"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
