@@ -12,35 +12,48 @@
         android:layout_height="0dp"
         android:layout_marginBottom="2dp"
         android:background="@color/color_preloader_end"
-        app:layout_constraintBottom_toTopOf="@+id/btn_stock"
+        android:navigationBarColor="@color/color_preloader_black"
+        app:layout_constraintBottom_toTopOf="@+id/ll"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:navigationBarColor="@color/color_preloader_black"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btn_stock"
-        android:layout_width="87dp"
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
         android:layout_height="36dp"
-        android:layout_marginStart="24dp"
-        android:background="@color/color_preloader_black"
-        android:text="Stocks"
-        android:textColor="@color/color_preloader_end"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_capital_gain"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <Button
-        android:id="@+id/btn_capital_gain"
-        android:layout_width="112dp"
-        android:layout_height="36dp"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@color/color_preloader_black"
-        android:text="Gains/Losses"
-        android:textColor="#AAAAAA"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_stock" />
+        <Button
+            android:id="@+id/btn_stock"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:background="@color/color_preloader_black"
+            android:text="Stocks"
+            android:textColor="@color/color_preloader_end" />
+
+        <Button
+            android:id="@+id/btn_capital_gain"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_weight="1"
+            android:background="@color/color_preloader_black"
+            android:text="Gains/Losses"
+            android:textColor="#AAAAAA" />
+
+        <Button
+            android:id="@+id/search_btn"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:background="@color/color_preloader_black"
+            android:text="Search"
+            android:textColor="#AAAAAA"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </LinearLayout>
+
+
 </android.support.constraint.ConstraintLayout>

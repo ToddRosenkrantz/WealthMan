@@ -135,7 +135,6 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
                     Toast.makeText(getContext(), "Invalid date, select again!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 doSearch();
                 break;
 

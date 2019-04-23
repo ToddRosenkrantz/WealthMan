@@ -30,6 +30,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     AlertDialog.Builder confirmExit;
     Button stocks;
     Button gains;
+    private Button search;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,7 +38,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_home);
         initView();
     }
-    public void onBackPressed(){
+
+    public void onBackPressed() {
         confirmExit = new AlertDialog.Builder(this);
 //        Toast.makeText(this, "You Long clicked " + adapter.getItem(p).getID() + " on row number " + p, Toast.LENGTH_SHORT).show();
 //        removeAt(p, tList.indexOf(adapter.getItem(p)), adapter.getItem(p).getID());
@@ -58,6 +60,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         //Setting the title manually
         alert.show();
     }
+
     private void initView() {
         replaceFragment(HomeFragment.getInstance(), R.id.flayout_content);
 
@@ -65,6 +68,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         stocks.setOnClickListener(this);
         gains = findViewById(R.id.btn_capital_gain);
         gains.setOnClickListener(this);
+        search = findViewById(R.id.search_btn);
+        search.setOnClickListener(this);
     }
 
     protected void replaceFragment(Fragment baseFragment, @IdRes int id) {
@@ -88,6 +93,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 replaceFragment(CapitalGainFragment.getInstance(), R.id.flayout_content);
                 stocks.setTextColor(Color.rgb(170, 170, 170));
                 gains.setTextColor(Color.rgb(255, 255, 255));
+                break;
+            case R.id.search_btn:
+                replaceFragment(SearchFragment.getInstance(), R.id.flayout_content);
+                stocks.setTextColor(Color.rgb(170, 170, 170));
+
+                gains.setTextColor(Color.rgb(170, 170, 170));
+                search.setTextColor(Color.rgb(255, 255, 255));
                 break;
         }
     }
