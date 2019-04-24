@@ -15,14 +15,14 @@ import com.example.WealthMan.Transaction;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class GainLossAdapterNew extends RecyclerView.Adapter<GainLossAdapterNew.GainLossViewHolder> {
+public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.GainLossViewHolder> {
 
 
     private List<Transaction> sharesStockBeans;
     private final LayoutInflater mInflater;
 
     //private DatabaseHelper db = new DatabaseHelper();
-    public GainLossAdapterNew(/*Context*/Context context, List<Transaction> sharesStocklist) {
+    public SearchListAdapter(/*Context*/Context context, List<Transaction> sharesStocklist) {
         this.sharesStockBeans = sharesStocklist;
         /* db = new DatabaseHelper(this); */
         this.mInflater = LayoutInflater.from(context);
@@ -32,7 +32,7 @@ public class GainLossAdapterNew extends RecyclerView.Adapter<GainLossAdapterNew.
     @NonNull
     @Override
     public GainLossViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new GainLossViewHolder(mInflater.inflate(R.layout.gain_loss_item_new, viewGroup, false));
+        return new GainLossViewHolder(mInflater.inflate(R.layout.search_view_item, viewGroup, false));
 
     }
 
@@ -41,15 +41,15 @@ public class GainLossAdapterNew extends RecyclerView.Adapter<GainLossAdapterNew.
         Transaction bean = sharesStockBeans.get(i);
         holder.stock.setText(bean.getSymbol());
         DecimalFormat decimalFormat = new DecimalFormat("$#,###.00");
-        double gain = bean.getPrice();
-        if (gain >= 0) {
+        double shares = bean.getShares();
+        if (shares >= 0) {
 //            gain = Math.abs(gain);
             holder.itemView.setBackgroundColor(Color.argb(41, 156, 223, 88));
         } else {
 //            gain = gain * (-1);
             holder.itemView.setBackgroundColor(Color.argb(41, 223, 108, 88));
         }
-        String str = decimalFormat.format(gain);
+        String str = decimalFormat.format(shares);
         holder.price.setText(str);
         holder.quantity.setText(bean.getShares() + "");
         holder.date.setText(bean.getDate());
@@ -85,7 +85,7 @@ public class GainLossAdapterNew extends RecyclerView.Adapter<GainLossAdapterNew.
             this.itemView = itemView;
 
             stock = itemView.findViewById(R.id.stock);
-            quantity = itemView.findViewById(R.id.quantity);
+            quantity = itemView.findViewById(R.id.shares);
             price = itemView.findViewById(R.id.price);
             date = itemView.findViewById(R.id.date);
 

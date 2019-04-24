@@ -11,107 +11,104 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
         android:text="Start date"
         android:textColor="#333333"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_start_date"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
         android:text="End   date"
         android:textColor="#333333"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintStart_toStartOf="@+id/tv_end_date"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_start_date"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
+        android:layout_width="120dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/shape_text_bg"
         android:paddingLeft="20dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:textColor="@color/color_preloader_black"
         android:textSize="16sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/textView2"
-        app:layout_constraintLeft_toRightOf="@id/textView2" />
+        app:layout_constraintEnd_toStartOf="@+id/tv_total_gain"
+        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
         android:id="@+id/tv_end_date"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
+        android:layout_width="120dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/shape_text_bg"
         android:paddingLeft="20dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:textColor="@color/color_preloader_black"
         android:textSize="16sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/textView4"
-        app:layout_constraintLeft_toRightOf="@id/textView4" />
-
-    <TextView
-        android:id="@+id/tv_stock_date"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content" />
+        app:layout_constraintEnd_toEndOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_total" />
 
     <Button
         android:id="@+id/btn_search"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/rounded_button"
         android:text="Submit"
         android:textColor="@color/color_preloader_end"
         android:textSize="16sp"
-        app:layout_constraintLeft_toRightOf="@id/tv_total_gain"
+        app:layout_constraintEnd_toEndOf="@+id/title"
+        app:layout_constraintStart_toStartOf="@+id/title"
         app:layout_constraintTop_toBottomOf="@id/tv_end_date" />
 
     <TextView
         android:id="@+id/tv_total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:text="Stock"
         android:textColor="#333333"
         android:textSize="16sp"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintStart_toStartOf="@+id/tv_total_gain"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_total_gain"
-        android:layout_width="130dp"
+        android:layout_width="80dp"
         android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/shape_text_bg"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
+        android:textAlignment="center"
         android:textColor="@color/color_preloader_black"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.289"
-        app:layout_constraintStart_toEndOf="@+id/tv_total"
-        app:layout_constraintTop_toTopOf="@+id/tv_total" />
+        app:layout_constraintEnd_toEndOf="@+id/btn_search"
+        app:layout_constraintStart_toStartOf="@+id/btn_search"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <LinearLayout
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:id="@+id/title"
-        app:layout_constraintTop_toBottomOf="@id/tv_total_gain"
-        android:background="@color/color_project_bg_green">
+        android:layout_marginTop="8dp"
+        android:background="@color/color_project_bg_green"
+        app:layout_constraintTop_toBottomOf="@+id/btn_search">
 
         <TextView
             android:layout_width="75dp"
