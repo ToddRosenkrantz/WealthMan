@@ -87,12 +87,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 replaceFragment(HomeFragment.getInstance(), R.id.flayout_content);
                 stocks.setTextColor(Color.rgb(255, 255, 255));
                 gains.setTextColor(Color.rgb(170, 170, 170));
+                search.setTextColor(Color.rgb(170, 170, 170));
                 break;
 
             case R.id.btn_capital_gain:
                 replaceFragment(CapitalGainFragment.getInstance(), R.id.flayout_content);
                 stocks.setTextColor(Color.rgb(170, 170, 170));
                 gains.setTextColor(Color.rgb(255, 255, 255));
+                search.setTextColor(Color.rgb(170, 170, 170));
                 break;
             case R.id.search_btn:
                 replaceFragment(SearchFragment.getInstance(), R.id.flayout_content);

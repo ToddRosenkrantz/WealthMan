@@ -1,5 +1,6 @@
 package com.example.WealthMan;
 
+import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,18 +16,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.WealthMan.detail.adapter.GainLossAdapter;
+import com.example.WealthMan.detail.adapter.GainLossAdapterNew;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -40,13 +45,13 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private TextView tvEndDate;
     private TextView tv_stock_date;
     private RecyclerView rvContent;
-    private GainLossAdapter mAdapter;
+    private GainLossAdapterNew mAdapter;
     private int userid;
     private String mSelectStartTime;
     private String mSelectEndTime;
     private ArrayList<Transaction> mData = new ArrayList<>();
     private TextView tv_total_gain;
-    private ArrayList<Transaction> popList;
+    private ArrayList<Transaction> popList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -79,11 +84,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         tvEndDate = view.findViewById(R.id.tv_end_date);
         tv_stock_date = view.findViewById(R.id.tv_stock_date);
         (view.findViewById(R.id.btn_search)).setOnClickListener(this);
+
         tvStartDate.setOnClickListener(this);
         tvEndDate.setOnClickListener(this);
         rvContent = view.findViewById(R.id.rv_content);
         rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new GainLossAdapter(getContext(), mData);
+        mAdapter = new GainLossAdapterNew(getContext(), mData);
         rvContent.setAdapter(mAdapter);
         String minDate = db.getMinDate(userid, "translog");
         tvStartDate.setText(minDate);
@@ -116,10 +122,10 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 return;
             }
             mData.clear();
-            if (TextUtils.isEmpty(symbol)) {
-                popList = mData;
-            }
             mData.addAll((Collection<? extends Transaction>) gainData);
+            if (TextUtils.isEmpty(symbol)) {
+                popList.addAll(mData);
+            }
             if (mAdapter != null) {
                 mAdapter.notifyDataSetChanged();
             }
@@ -152,11 +158,47 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getContext(), "Please select date!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                mSelectStartTime = tvStartDate.getText().toString();
+                mSelectEndTime = tvEndDate.getText().toString();
                 if (mSelectStartTime.compareTo(mSelectEndTime) > 0) {
                     Toast.makeText(getContext(), "Invalid date, select again!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 doSearch();
+                break;
+            case R.id.tv_start_date:
+                Calendar newCalendar = Calendar.getInstance();
+                DatePickerDialog mDatePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar newDate = Calendar.getInstance();
+                        newDate.set(year, monthOfYear, dayOfMonth);
+                        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                        final Date startDate = newDate.getTime();
+                        String fdate = sd.format(startDate);
+
+                        tvStartDate.setText(fdate);
+
+                    }
+                }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+                mDatePickerDialog.show();
+                break;
+            case R.id.tv_end_date:
+                Calendar cala = Calendar.getInstance();
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar newDate = Calendar.getInstance();
+                        newDate.set(year, monthOfYear, dayOfMonth);
+                        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                        final Date startDate = newDate.getTime();
+                        String fdate = sd.format(startDate);
+                        tvEndDate.setText(fdate);
+
+                    }
+                }, cala.get(Calendar.YEAR), cala.get(Calendar.MONTH), cala.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.show();
                 break;
         }
     }

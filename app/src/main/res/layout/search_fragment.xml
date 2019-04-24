@@ -106,6 +106,51 @@
         app:layout_constraintStart_toEndOf="@+id/tv_total"
         app:layout_constraintTop_toTopOf="@+id/tv_total" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/title"
+        app:layout_constraintTop_toBottomOf="@id/tv_total_gain"
+        android:background="@color/color_project_bg_green">
+
+        <TextView
+            android:layout_width="75dp"
+            android:layout_height="30dp"
+            android:gravity="center_horizontal"
+            android:text="Stock"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:gravity="right"
+            android:text="Quantity"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="90dp"
+            android:layout_height="30dp"
+            android:gravity="right"
+            android:text="Price"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:gravity="center_horizontal"
+            android:text="Date"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_content"
         android:layout_width="match_parent"
@@ -115,5 +160,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_total_gain" />
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 </androidx.constraintlayout.widget.ConstraintLayout>
