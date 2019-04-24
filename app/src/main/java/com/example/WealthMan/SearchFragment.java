@@ -224,6 +224,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 // TODO Instead of doing this in a function, use proper DB Query with 'DISTINCT"
     private List<String> removeDuplicateString(ArrayList<Transaction> mData) {
         List<String> list = new ArrayList<>();
+        list.add("");
         for (Transaction transaction : mData) {
             list.add(transaction.getSymbol());
         }

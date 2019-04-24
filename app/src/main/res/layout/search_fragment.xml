@@ -11,40 +11,36 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
         android:text="Start date"
         android:textColor="#333333"
         android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_start_date"
         app:layout_constraintStart_toStartOf="@+id/tv_start_date"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/tv_total" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:text="End   date"
+        android:text="End date"
         android:textColor="#333333"
         android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_end_date"
         app:layout_constraintStart_toStartOf="@+id/tv_end_date"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/textView2" />
 
     <TextView
         android:id="@+id/tv_start_date"
         android:layout_width="120dp"
         android:layout_height="30dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:background="@drawable/shape_text_bg"
         android:paddingLeft="20dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:textColor="@color/color_preloader_black"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/tv_total_gain"
-        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintEnd_toEndOf="@+id/btn_search"
+        app:layout_constraintStart_toStartOf="@+id/btn_search"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
@@ -59,7 +55,7 @@
         android:textColor="@color/color_preloader_black"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_total" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <Button
         android:id="@+id/btn_search"
@@ -80,9 +76,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Stock"
-        android:textColor="#333333"
+        android:text="Stock Symbol"
+        android:textColor="@color/color_preloader_black"
         android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_total_gain"
         app:layout_constraintStart_toStartOf="@+id/tv_total_gain"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -90,17 +87,15 @@
         android:id="@+id/tv_total_gain"
         android:layout_width="80dp"
         android:layout_height="30dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="44dp"
         android:background="@drawable/shape_text_bg"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:textAlignment="center"
         android:textColor="@color/color_preloader_black"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/btn_search"
-        app:layout_constraintStart_toStartOf="@+id/btn_search"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintEnd_toStartOf="@+id/tv_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/tv_total" />
 
     <LinearLayout
         android:id="@+id/title"
@@ -115,7 +110,7 @@
             android:layout_height="30dp"
             android:gravity="center_horizontal"
             android:text="Stock"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/color_preloader_end"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -124,7 +119,7 @@
             android:layout_height="30dp"
             android:gravity="right"
             android:text="Quantity"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/color_preloader_end"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -133,7 +128,7 @@
             android:layout_height="30dp"
             android:gravity="right"
             android:text="Price"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/color_preloader_end"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -142,7 +137,7 @@
             android:layout_height="30dp"
             android:gravity="center_horizontal"
             android:text="Date"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/color_preloader_end"
             android:textSize="18sp"
             android:textStyle="bold" />
 
