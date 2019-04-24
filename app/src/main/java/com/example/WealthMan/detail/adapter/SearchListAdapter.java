@@ -40,7 +40,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Ga
     public void onBindViewHolder(@NonNull GainLossViewHolder holder, int i) {
         Transaction bean = sharesStockBeans.get(i);
         holder.stock.setText(bean.getSymbol());
-        DecimalFormat decimalFormat = new DecimalFormat("$#,###.00");
+        DecimalFormat decimalFormat = new DecimalFormat("$#,##0.00");
         double shares = bean.getShares();
         if (shares >= 0) {
 //            gain = Math.abs(gain);
@@ -49,8 +49,8 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Ga
 //            gain = gain * (-1);
             holder.itemView.setBackgroundColor(Color.argb(41, 223, 108, 88));
         }
-        String str = decimalFormat.format(shares);
-        holder.price.setText(str);
+        String price = decimalFormat.format(bean.getPrice());
+        holder.price.setText(price);
         holder.quantity.setText(bean.getShares() + "");
         holder.date.setText(bean.getDate());
     }

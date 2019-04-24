@@ -260,7 +260,7 @@ public class CapitalGainFragment extends Fragment implements View.OnClickListene
                 mAdapter.notifyDataSetChanged();
             }
             Log.e("TAG", gainData.size() + "");
-            DecimalFormat decimalFormat = new DecimalFormat("$#,###.00");
+            DecimalFormat decimalFormat = new DecimalFormat("$#,##0.00");
 /*
             Double totalGain = db.getTotalGain(userid, startDate, endDate);
             if (totalGain <= 0) {
