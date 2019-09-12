@@ -60,7 +60,10 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
     private View max_lin;
     public static final String SYMBOL_NAME = "com.example.WealthMan.detail.view.DetailActivity";
     private String symbolName = "aapl";
-    public static final String baseUrl = "https://api.iextrading.com/1.0/stock/market/batch";
+    //          String url = "https://cloud.iexapis.com/stable/stock/market/batch?symbols=" + syms + "&types=quote,news,chart&range=1m&last=5&token=YOUR_TOKEN;
+//    public static final String baseUrl = "https://api.iextrading.com/1.0/stock/market/batch";
+    public static final String baseUrl = "https://cloud.iexapis.com/stable/stock/market/batch";
+//    private final String token = "&token=" + getString(R.string.TOKEN);
     private String dayType = "1d";
     private ProgressBar progressBar;
     private TextView name;
@@ -76,16 +79,12 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
 
         // +++++++++++++++++ LOGIC FOR BUY/SELL BUTTON +++++++++++++++++++++++++
         Button buyOrSell = findViewById(R.id.buyOrSell);
-        buyOrSell.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        buyOrSell.setOnClickListener(v -> {
 //                Intent intent = new Intent(DetailActivity.this,com.example.WealthMan.detail.view.SharesListActivity.class);
-                Intent intent = new Intent(DetailActivity.this, TransactionLogActivity.class);
-                intent.putExtra("Symbol",symbolName);
-                intent.putExtra("UserID",ID);
-                startActivity(intent);
-            }
-
+            Intent intent = new Intent(DetailActivity.this, TransactionLogActivity.class);
+            intent.putExtra("Symbol",symbolName);
+            intent.putExtra("UserID",ID);
+            startActivity(intent);
         });
 
         // +++++++++++++++++ LOGIC FOR WATCH/UNWATCH BUTTON +++++++++++++++++++++++++
@@ -161,10 +160,10 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
         tv3.setText(Html.fromHtml("<a href='https://finance.yahoo.com/quote/"+symbolName+"'>"+symbolName+": YAHOO FINANCE</a>"));
         tv3.setMovementMethod(LinkMovementMethod.getInstance());
 
-
         initView();
         initListen();
-        requstDate(baseUrl + "?symbols=" + symbolName + "&types=quote,news,chart&range=" + dayType);
+//        requstDate(baseUrl + "?symbols=" + symbolName + "&types=quote,news,chart&range=" + dayType);
+        requstDate(baseUrl + "?symbols=" + symbolName + "&types=quote,news,chart&range=" + dayType + "&token=" + getString(R.string.TOKEN));
 //        Logger.addLogAdapter(new AndroidLogAdapter());
 //        Logger.d(baseUrl + "?symbols=" + symbolName + "&types=quote,news,chart&range=" + dayType);
 
@@ -313,7 +312,7 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
                 one_year_line.setVisibility(View.GONE);
                 five_year_line.setVisibility(View.GONE);
                 max_lin.setVisibility(View.GONE);
-                url = baseUrl + "?symbols=" + symbolName + "&types=quote,chart&range=" + dayType;
+                url = baseUrl + "?symbols=" + symbolName + "&types=quote,chart&range=" + dayType + "&token=" + getString(R.string.TOKEN);
                 break;
             case R.id.one_week_view:
                 one_day_line.setVisibility(View.GONE);
@@ -322,7 +321,7 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
                 one_year_line.setVisibility(View.GONE);
                 five_year_line.setVisibility(View.GONE);
                 max_lin.setVisibility(View.GONE);
-                url = baseUrl + "?symbols=" + symbolName + "&types=quote,chart&range=1m";
+                url = baseUrl + "?symbols=" + symbolName + "&types=quote,chart&range=1m&token=" + getString(R.string.TOKEN);
                 break;
             case R.id.one_month_view:
                 one_day_line.setVisibility(View.GONE);
@@ -331,7 +330,7 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
                 one_year_line.setVisibility(View.GONE);
                 five_year_line.setVisibility(View.GONE);
                 max_lin.setVisibility(View.GONE);
-                url = baseUrl + "?symbols=" + symbolName + "&types=quote,chart&range=3m";
+                url = baseUrl + "?symbols=" + symbolName + "&types=quote,chart&range=3m&token=" + getString(R.string.TOKEN);
                 break;
             case R.id.one_year_view:
                 one_day_line.setVisibility(View.GONE);
@@ -340,7 +339,7 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
                 one_year_line.setVisibility(View.VISIBLE);
                 five_year_line.setVisibility(View.GONE);
                 max_lin.setVisibility(View.GONE);
-                url = baseUrl + "?symbols=" + symbolName + "&types=quote,chart&range=1y";
+                url = baseUrl + "?symbols=" + symbolName + "&types=quote,chart&range=1y&token=" + getString(R.string.TOKEN);
                 break;
             case R.id.five_year:
                 one_day_line.setVisibility(View.GONE);
@@ -349,7 +348,7 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
                 one_year_line.setVisibility(View.GONE);
                 five_year_line.setVisibility(View.VISIBLE);
                 max_lin.setVisibility(View.GONE);
-                url = baseUrl + "?symbols=" + symbolName + "&types=quote,chart&range=1y";
+                url = baseUrl + "?symbols=" + symbolName + "&types=quote,chart&range=5y&token=" + getString(R.string.TOKEN);
                 break;
             case R.id.max_view:
                 one_day_line.setVisibility(View.GONE);
@@ -358,7 +357,7 @@ public class DetailActivity extends AppCompatActivity implements RequstCallBack,
                 one_year_line.setVisibility(View.GONE);
                 five_year_line.setVisibility(View.GONE);
                 max_lin.setVisibility(View.VISIBLE);
-                url = baseUrl + "?symbols=" + symbolName + "&types=quote,chart&range=1y";
+                url = baseUrl + "?symbols=" + symbolName + "&types=quote,chart&range=5y&token=" + getString(R.string.TOKEN);
                 break;
         }
         requstDate(url);

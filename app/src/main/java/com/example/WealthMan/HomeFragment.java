@@ -47,6 +47,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -116,7 +117,7 @@ public class HomeFragment extends Fragment {
 
     private void initView(View view) {
         //        final int userid = intent.getIntExtra("UserID", 1);
-        SharedPreferences preference = getContext().getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
+        SharedPreferences preference = Objects.requireNonNull(getContext()).getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
         final int userid = preference.getInt("UserID", 1);
 /*        Calendar newDate = Calendar.getInstance();
         try {
@@ -138,18 +139,18 @@ public class HomeFragment extends Fragment {
 //        System.out.println("UserID: " + userid);
         db = new DatabaseHelper(getContext());
 
-        final TextView mTextView = (TextView) view.findViewById(R.id.text);
-        totalPorfolioValue = (TextView) view.findViewById(R.id.total_value);
-        final TextView totalPorfolioCost = (TextView) view.findViewById(R.id.total_cost);
-        final TextView totalGainLoss = (TextView) view.findViewById(R.id.gain_loss);
-        p_start = (EditText) view.findViewById(R.id.periodStart);
+        final TextView mTextView = view.findViewById(R.id.text);
+        totalPorfolioValue = view.findViewById(R.id.total_value);
+        final TextView totalPorfolioCost = view.findViewById(R.id.total_cost);
+        final TextView totalGainLoss = view.findViewById(R.id.gain_loss);
+        p_start = view.findViewById(R.id.periodStart);
         start_date = db.getMinDate(userid);
         System.out.println("Min Date: " + start_date);
         if (start_date == null || start_date.isEmpty())
             start_date = sdf.format(new Date());
         p_start.setText(start_date);
         p_start.setFocusable(false);
-        p_end = (EditText) view.findViewById(R.id.periodEnd);
+        p_end = view.findViewById(R.id.periodEnd);
         p_end.setText(today);
         p_end.setFocusable(false);
         p_start.setVisibility(View.VISIBLE);
@@ -169,7 +170,7 @@ public class HomeFragment extends Fragment {
         getWatchListData(symbols);
         getPortfolioData(portfolioSymbols, userid);
 
-        lv = (ListView) view.findViewById(R.id.lv);
+        lv = view.findViewById(R.id.lv);
         //为listview添加adapter
         lv.setAdapter(new IconAdapter(getContext(), mIconBeenList));
         sa = (IconAdapter) lv.getAdapter();
@@ -177,24 +178,19 @@ public class HomeFragment extends Fragment {
 //  This is the section for the Search bar autocomplete
         try {
             // autocompletetextview is in activity_home.xml
-            myAutoComplete = (CustomAutoCompleteView) view.findViewById(R.id.myautocomplete);
+            myAutoComplete = view.findViewById(R.id.myautocomplete);
 
-            myAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
-                    RelativeLayout rl = (RelativeLayout) arg1;
-                    LinearLayout Lin1 = (LinearLayout) rl.getChildAt(0);
-                    TextView tv = (TextView) Lin1.getChildAt(0);
-                    TextView sym = (TextView) Lin1.getChildAt(1);
-                    //                String companyToSend = tv.getText().toString();
-                    String stringToSend = sym.getText().toString();
-                    myAutoComplete.setText("");
+            myAutoComplete.setOnItemClickListener((parent, arg1, pos, id) -> {
+                RelativeLayout rl = (RelativeLayout) arg1;
+                LinearLayout Lin1 = (LinearLayout) rl.getChildAt(0);
+                TextView tv = (TextView) Lin1.getChildAt(0);
+                TextView sym = (TextView) Lin1.getChildAt(1);
+                //                String companyToSend = tv.getText().toString();
+                String stringToSend = sym.getText().toString();
+                myAutoComplete.setText("");
 //                    myAutoComplete.setText(tv.getText().toString());
-                    Log.e("MAIN", stringToSend);
-                    nextActivity(stringToSend, userid);
-                }
-
+                Log.e("MAIN", stringToSend);
+                nextActivity(stringToSend, userid);
             });
             // add the listener so it will tries to suggest while the user types
             myAutoComplete.addTextChangedListener(new CustomAutoCompleteTextChangedListener(this, getActivity()));
@@ -210,66 +206,54 @@ public class HomeFragment extends Fragment {
         }
 //  End of Search Bar
 // Begin various listeners
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                IconBean stock = mIconBeenList.get(position);
-                nextActivity(stock.symbol, userid);
-            }
+        lv.setOnItemClickListener((parent, view1, position, id) -> {
+            IconBean stock = mIconBeenList.get(position);
+            nextActivity(stock.symbol, userid);
         });
-        totalPorfolioValue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getWatchListData(db.getWatchList(userid).trim());
-                getPortfolioData(db.getPortfolioSymbols(userid, p_start.getText().toString(), p_end.getText().toString()), userid);
+        totalPorfolioValue.setOnClickListener(v -> {
+            getWatchListData(db.getWatchList(userid).trim());
+            getPortfolioData(db.getPortfolioSymbols(userid, p_start.getText().toString(), p_end.getText().toString()), userid);
 //                System.out.println("Portfolio items = " + portfolioValue.size());
 //                System.out.println("Final C: " +sumCost + " , Final V: " + sumValue);
-                sValue = decimalFormat.format(sumValue);
-                sCost = decimalFormat.format((sumCost));
-                double sumGainLoss = ((sumValue - sumCost) / sumCost);
-                String sGainLoss;
-                if (Double.isNaN(sumGainLoss))
-                    sGainLoss = "No Data";
-                else
-                    sGainLoss = percentFormat.format(sumGainLoss);
-                totalPorfolioValue.setText("Total Value: " + sValue);
-                totalPorfolioCost.setText("Cost: " + sCost);
-                totalGainLoss.setText("Performance: " + sGainLoss);
-                if (sumGainLoss < 0) {
-                    totalPorfolioValue.setBackgroundColor(Color.argb(41, 223, 108, 88));
-                    totalGainLoss.setBackgroundColor(Color.argb(41, 223, 108, 88));
-                    totalPorfolioCost.setBackgroundColor(Color.argb(41, 223, 108, 88));
+            sValue = decimalFormat.format(sumValue);
+            sCost = decimalFormat.format((sumCost));
+            double sumGainLoss = ((sumValue - sumCost) / sumCost);
+            String sGainLoss;
+            if (Double.isNaN(sumGainLoss))
+                sGainLoss = "No Data";
+            else
+                sGainLoss = percentFormat.format(sumGainLoss);
+            totalPorfolioValue.setText("Total Value: " + sValue);
+            totalPorfolioCost.setText("Cost: " + sCost);
+            totalGainLoss.setText("Performance: " + sGainLoss);
+            if (sumGainLoss < 0) {
+                totalPorfolioValue.setBackgroundColor(Color.argb(41, 223, 108, 88));
+                totalGainLoss.setBackgroundColor(Color.argb(41, 223, 108, 88));
+                totalPorfolioCost.setBackgroundColor(Color.argb(41, 223, 108, 88));
 
-                } else {
-                    totalPorfolioValue.setBackgroundColor(Color.argb(41, 156, 223, 88));
-                    totalGainLoss.setBackgroundColor(Color.argb(41, 156, 223, 88));
-                    totalPorfolioCost.setBackgroundColor(Color.argb(41, 156, 223, 88));
-                }
-                sa.notifyDataSetChanged();
+            } else {
+                totalPorfolioValue.setBackgroundColor(Color.argb(41, 156, 223, 88));
+                totalGainLoss.setBackgroundColor(Color.argb(41, 156, 223, 88));
+                totalPorfolioCost.setBackgroundColor(Color.argb(41, 156, 223, 88));
+            }
+            sa.notifyDataSetChanged();
 
 //                return false;
-            }
         });
-        p_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar cldr = myDates(p_start.getText().toString());
-                System.out.println("Starting with this string: " + p_start.getText().toString() + " with a year of: " + cldr.YEAR);
-                sDatePickerDialog.updateDate(cldr.get(Calendar.YEAR), cldr.get(Calendar.MONTH), cldr.get(Calendar.DAY_OF_MONTH));
-                sDatePickerDialog.show();
-                getPortfolioData(db.getPortfolioSymbols(userid, p_start.getText().toString(), p_end.getText().toString()), userid);
-                //  return false;
-            }
+        p_start.setOnClickListener(v -> {
+            Calendar cldr = myDates(p_start.getText().toString());
+            System.out.println("Starting with this string: " + p_start.getText().toString() + " with a year of: " + Calendar.YEAR);
+            sDatePickerDialog.updateDate(cldr.get(Calendar.YEAR), cldr.get(Calendar.MONTH), cldr.get(Calendar.DAY_OF_MONTH));
+            sDatePickerDialog.show();
+            getPortfolioData(db.getPortfolioSymbols(userid, p_start.getText().toString(), p_end.getText().toString()), userid);
+            //  return false;
         });
-        p_end.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar cldr = myDates(p_start.getText().toString());
-                eDatePickerDialog.updateDate(cldr.get(Calendar.YEAR), cldr.get(Calendar.MONTH), cldr.get(Calendar.DAY_OF_MONTH));
-                eDatePickerDialog.show();
-                getPortfolioData(db.getPortfolioSymbols(userid, p_start.getText().toString(), p_end.getText().toString()), userid);
+        p_end.setOnClickListener(v -> {
+            Calendar cldr = myDates(p_start.getText().toString());
+            eDatePickerDialog.updateDate(cldr.get(Calendar.YEAR), cldr.get(Calendar.MONTH), cldr.get(Calendar.DAY_OF_MONTH));
+            eDatePickerDialog.show();
+            getPortfolioData(db.getPortfolioSymbols(userid, p_start.getText().toString(), p_end.getText().toString()), userid);
 //                return false;
-            }
         });
 
 //        System.out.println("Portfolio items = " + portfolioValue.size());
@@ -322,7 +306,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void setupApp() {
-        SharedPreferences preference = getContext().getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
+        SharedPreferences preference = Objects.requireNonNull(getContext()).getSharedPreferences(MY_PREFS_FILE, MODE_PRIVATE);
         SharedPreferences.Editor editor = preference.edit();
         long now = System.currentTimeMillis();
         long updateDue = preference.getLong("updateDue", 0);
@@ -342,57 +326,42 @@ public class HomeFragment extends Fragment {
     }
 
     public void getWatchListData(String syms) {
-        final RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + syms + "&types=quote,news,chart&range=1m&last=5";
+        final RequestQueue queue = Volley.newRequestQueue(Objects.requireNonNull(getContext()));
+        String url = "https://cloud.iexapis.com/stable/stock/market/batch?symbols=" + syms + "&types=quote,news,chart&range=1m&last=5&token=" + getString(R.string.TOKEN);
 //        String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + syms + "&types=quote";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (response.equals("{}"))
-                            Toast.makeText(getContext(), "No stocks being tracked", Toast.LENGTH_LONG).show();
-                        else {
-                            getData(response);
-                            sa.notifyDataSetChanged();
-                        }
+                response -> {
+                    if (response.equals("{}"))
+                        Toast.makeText(getContext(), "No stocks being tracked", Toast.LENGTH_LONG).show();
+                    else {
+                        getData(response);
+//                            System.out.println(response);
+                        sa.notifyDataSetChanged();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity(), "That didn't work! Do you have internet?", Toast.LENGTH_LONG).show();
-            }
-        });
+                }, error -> Toast.makeText(getActivity(), "Error retrieving WatchList Data. Do you have internet?", Toast.LENGTH_LONG).show());
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
 
     public boolean updateSymbols() {
-        final RequestQueue queue = Volley.newRequestQueue(getContext());
+        final RequestQueue queue = Volley.newRequestQueue(Objects.requireNonNull(getContext()));
 //        System.out.println("Updating Symbols now");
-        String symbolUrl = "https://api.iextrading.com/1.0/ref-data/symbols";
+        String symbolUrl = "https://cloud.iexapis.com/stable/ref-data/iex/symbols?token=" + getString(R.string.TOKEN);
         final GsonBuilder gsonSymbols = new GsonBuilder();
         dbsuccess = false;
         StringRequest symbolRequest = new StringRequest(Request.Method.GET, symbolUrl,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        APIInterface.stockSym[] mySyms = gsonSymbols.create().fromJson(response, APIInterface.stockSym[].class);
-                        List<Pair> SymbolList = new ArrayList<Pair>();
+                response -> {
+                    APIInterface.stockSym[] mySyms = gsonSymbols.create().fromJson(response, APIInterface.stockSym[].class);
+                    List<Pair> SymbolList = new ArrayList<Pair>();
 //                        System.out.println("Length = " + mySyms.length);
-                        long val = 0;
-                        for (int i = 0; i < mySyms.length; i++) {
-                            Pair temp = new Pair(mySyms[i].name, mySyms[i].symbol);
-                            SymbolList.add(temp);
-                        }
-                        db.populateSymbols(SymbolList);
+                    long val = 0;
+                    for (int i = 0; i < mySyms.length; i++) {
+                        Pair temp = new Pair(mySyms[i].name, mySyms[i].symbol);
+                        SymbolList.add(temp);
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "That didn't work! Do you have an internet connection?", Toast.LENGTH_LONG).show();
-            }
-        });
+                    db.populateSymbols(SymbolList);
+                }, error -> Toast.makeText(getContext(), "Error retrieving Symbol Data. Do you have an internet connection?", Toast.LENGTH_LONG).show());
         // Add the request to the RequestQueue.
         queue.add(symbolRequest);
         return true;
@@ -431,18 +400,15 @@ public class HomeFragment extends Fragment {
     private void setStartPeriodDate() {
 
         Calendar newCalendar = Calendar.getInstance();
-        sDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
+        sDatePickerDialog = new DatePickerDialog(Objects.requireNonNull(getActivity()), (view, year, monthOfYear, dayOfMonth) -> {
+            Calendar newDate = Calendar.getInstance();
+            newDate.set(year, monthOfYear, dayOfMonth);
 //                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                Date startDate = newDate.getTime();
-                String fdate = sdf.format(startDate);
+            Date startDate = newDate.getTime();
+            String fdate = sdf.format(startDate);
 
-                p_start.setText(fdate);
+            p_start.setText(fdate);
 
-            }
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 //        eDatePickerDialog.getDatePicker().setMinDate(sdf.parse(p_start.getText().toString()));
 
@@ -451,66 +417,59 @@ public class HomeFragment extends Fragment {
     private void setEndPeriodDate() {
 
         Calendar newCalendar = Calendar.getInstance();
-        eDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
+        eDatePickerDialog = new DatePickerDialog(Objects.requireNonNull(getActivity()), (view, year, monthOfYear, dayOfMonth) -> {
+            Calendar newDate = Calendar.getInstance();
+            newDate.set(year, monthOfYear, dayOfMonth);
 //                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                Date startDate = newDate.getTime();
-                String fdate = sdf.format(startDate);
-                p_end.setText(fdate);
-            }
+            Date startDate = newDate.getTime();
+            String fdate = sdf.format(startDate);
+            p_end.setText(fdate);
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 //        eDatePickerDialog.getDatePicker().setMinDate(sdf.parse(p_start.getText().toString()));
 
     }
 
     public void getPortfolioData(String syms, int userid) {
-        if (syms == "") {
+        if (syms.equals("")) {
             sumValue = 0.0;
             sumCost = 0.0;
             Toast.makeText(getContext(), "No assets in that date range", Toast.LENGTH_LONG).show();
         }
         final int uid = userid;
-        final RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + syms + "&types=quote,news,chart&range=1m&last=5";
+        final RequestQueue queue = Volley.newRequestQueue(Objects.requireNonNull(getContext()));
+        String url = "https://cloud.iexapis.com/stable/stock/market/batch?symbols=" + syms + "&types=quote,news,chart&range=1m&last=5&token=" + getString(R.string.TOKEN);
 //        String url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + syms + "&types=quote";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        ArrayList<stockValue> tempPortfolio = new ArrayList<>();
-                        if (response.equals("{}"))
-                            Toast.makeText(getActivity(), "No assets in that date range", Toast.LENGTH_LONG).show();
-                        else {
-                            sumCost = 0.0;
-                            sumValue = 0.0;
-                            GsonBuilder gsonBuilder = new GsonBuilder();
-                            gsonBuilder.registerTypeAdapter(APIInterface.Batches.class, new APIInterface.CompanyListDeserializer());
-                            qList = gsonBuilder.create().fromJson(response, APIInterface.Batches.class);
-                            for (int i = 0; i < qList.batches.size(); i++) {
+                response -> {
+                    ArrayList<stockValue> tempPortfolio = new ArrayList<>();
+                    if (response.equals("{}"))
+                        Toast.makeText(getActivity(), "No assets in that date range", Toast.LENGTH_LONG).show();
+                    else {
+                        sumCost = 0.0;
+                        sumValue = 0.0;
+                        GsonBuilder gsonBuilder = new GsonBuilder();
+                        gsonBuilder.registerTypeAdapter(APIInterface.Batches.class, new APIInterface.CompanyListDeserializer());
+                        qList = gsonBuilder.create().fromJson(response, APIInterface.Batches.class);
+                        System.out.println("qList size = " + qList.batches.size());
+                        for (int i = 0; i < qList.batches.size(); i++) {
 //                                System.out.print(qList.batches.get(i).quote.symbol);
-                                stockValue tempStock = db.getValue(uid, qList.batches.get(i).quote.symbol, p_start.getText().toString(), p_end.getText().toString());
+                            stockValue tempStock = db.getValue(uid, qList.batches.get(i).quote.symbol, p_start.getText().toString(), p_end.getText().toString());
 //                                tempStock = db.getValue(userid, qList.batches.get(i).quote.symbol);
 //                                System.out.print(uid+","+ qList.batches.get(i).quote.symbol + "," +p_start.getText().toString() + "," +p_end.getText().toString());
-                                tempStock.setCurrentPrice(qList.batches.get(i).quote.delayedPrice);
-                                if (tempStock.shares > 0) {
-                                    sumCost += tempStock.getExtendedPrice();
-                                    sumValue += tempStock.getCurrentValue();
-                                }
-                                tempPortfolio.add(tempStock);
-//                                System.out.println(tempStock.getSymbol() + "   C: " +sumCost + " , V: " + sumValue);
+                            tempStock.setCurrentPrice(qList.batches.get(i).quote.latestPrice);
+//                                System.out.println("latestPrice" + qList.batches.get(i).quote.latestPrice);
+//                                System.out.println(tempStock.getSymbol() + " shares = " + tempStock.shares*1);
+//                                System.out.println(tempStock.getSymbol() + " shares = " + tempStock.getShares()*1);
+                            if (tempStock.shares > 0) {
+                                sumCost += tempStock.getExtendedPrice();
+                                sumValue += tempStock.getCurrentValue();
                             }
-                            portfolioValue = tempPortfolio;
+                            tempPortfolio.add(tempStock);
+                            System.out.println(tempStock.getSymbol() + "   C: " +sumCost + " , V: " + sumValue);
                         }
+                        portfolioValue = tempPortfolio;
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "That didn't work! Do you have internet?", Toast.LENGTH_LONG).show();
-            }
-        });
+                }, error -> Toast.makeText(getContext(), "Error retrieving Stock Data. Do you have internet?", Toast.LENGTH_LONG).show());
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
@@ -592,7 +551,7 @@ public class HomeFragment extends Fragment {
             currentPrice = 0.0;
         }
 
-        public stockValue(String sym, Double shares, Double extPrice) {
+        stockValue(String sym, Double shares, Double extPrice) {
             symbol = sym;
             this.shares = shares;
             extendedPrice = extPrice;
@@ -614,15 +573,15 @@ public class HomeFragment extends Fragment {
             return symbol;
         }
 
-        public double getExtendedPrice() {
+        double getExtendedPrice() {
             return extendedPrice;
         }
 
-        public double getCurrentValue() {
+        double getCurrentValue() {
             return currentPrice * shares;
         }
 
-        public void setCurrentPrice(Double price) {
+        void setCurrentPrice(Double price) {
             currentPrice = price;
         }
     }
